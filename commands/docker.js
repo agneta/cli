@@ -12,18 +12,19 @@ module.exports = function(yargs) {
 
       yargs.command('build', 'Build the docker image', function() {
 
-        var CONTAINER_NAME = path.parse(path.resolve(process.cwd(),'..')).name;
-        CONTAINER_NAME = S(CONTAINER_NAME).replaceAll('-','').s;
+        var CONTAINER_NAME = path.parse(process.cwd()).name;
+        CONTAINER_NAME = S(CONTAINER_NAME).replaceAll('-', '').s;
         CONTAINER_NAME += '_dev';
+        CONTAINER_NAME = CONTAINER_NAME.toLowerCase();
 
         var CACHE_NAME = '.npm-cache.tgz';
 
         Promise.resolve()
           .then(function() {
 
-            if(!fs.existsSync(pathPkgLock)){
+            if (!fs.existsSync(pathPkgLock)) {
               console.log(`Init empty ${pathPkgLock}`);
-              return fs.writeFile(pathPkgLock,null);
+              return fs.writeFile(pathPkgLock, '{}');
             }
           })
           .then(function() {
@@ -36,15 +37,15 @@ module.exports = function(yargs) {
             }
 
           })
-          .then(function(){
+          .then(function() {
             return exec.run('docker-compose build dev');
           })
-          .then(function(){
+          .then(function() {
             return exec.run(`docker run --rm --entrypoint cat ${CONTAINER_NAME}:latest /tmp/package-lock.json > tmp/package-lock.json`);
           })
           .then(function() {
 
-            if(!fs.existsSync(pathPkgLockTmp)){
+            if (!fs.existsSync(pathPkgLockTmp)) {
               return;
             }
 
@@ -70,14 +71,14 @@ module.exports = function(yargs) {
       yargs.command('run', 'Run the portal', function() {
 
         exec.run('docker-compose up -d dev')
-        .then(function(){
+          .then(function() {
 
-          var terminal = 'x-terminal-emulator -e "docker-compose exec dev bash -c';
+            var terminal = 'x-terminal-emulator -e "docker-compose exec dev bash -c';
 
-          exec.run(`${terminal} 'tail -n 1000 -f .pm2/logs/output-0.log'"`);
-          exec.run(`${terminal} 'tail -n 1000 -f .pm2/logs/error-0.log'"`);
-          exec.run(`${terminal} 'pm2 list; exec /bin/bash -i'"`);
-        });
+            exec.run(`${terminal} 'tail -n 1000 -f .pm2/logs/output-0.log'"`);
+            exec.run(`${terminal} 'tail -n 1000 -f .pm2/logs/error-0.log'"`);
+            exec.run(`${terminal} 'pm2 list; exec /bin/bash -i'"`);
+          });
 
       });
 
