@@ -70,6 +70,16 @@ module.exports = function(yargs) {
 
       yargs.command('run', 'Run the portal', function() {
 
+        exec.run('docker-compose up -d dev')
+        .then(function(){
+
+          var terminal = 'x-terminal-emulator -e "docker-compose exec dev /bin/bash -c';
+
+          exec.run(`${terminal} 'tail -n 1000 -f .pm2/logs/output-0.log'"`);
+          exec.run(`${terminal} 'tail -n 1000 -f .pm2/logs/error-0.log'"`);
+          exec.run(`${terminal} 'pm2 list; exec /bin/bash -i'"`);
+        });
+
       });
 
       yargs.command('stop', 'Run the services', function() {});
