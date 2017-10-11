@@ -24,8 +24,8 @@ console.log(chalk.bold.blue(figlet.textSync('Agneta', {
 
 //-----------------------------------------------------------
 
+require('./commands/docker')(yargs);
 require('./commands/generate')(yargs);
-require('./commands/server')(yargs);
 require('./commands/start')(yargs);
 
 yargs
