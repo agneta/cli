@@ -3,7 +3,6 @@ services:
   dev:
     build:
       context: .
-      dockerfile: docker-image
     env_file:
       - ../keys/secrets.env
     environment:

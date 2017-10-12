@@ -2,7 +2,7 @@ const fs = require('fs-extra');
 const S = require('string');
 const path = require('path');
 const Promise = require('bluebird');
-const proc = require('../../lib/process');
+const proc = require('../../../lib/process');
 
 const pathPkgLock = 'package-lock.json';
 const pathPkgLockTmp = 'tmp/package-lock.json';
@@ -14,7 +14,7 @@ module.exports = function() {
   CONTAINER_NAME += '_dev';
   CONTAINER_NAME = CONTAINER_NAME.toLowerCase();
 
-  var CACHE_NAME = '.npm-cache.tgz';
+  var CACHE_NPM = '.cache/npm.tgz';
 
   return Promise.resolve()
     .then(function() {
@@ -44,10 +44,10 @@ module.exports = function() {
     })
     .then(function() {
       // Init empty cache file
-      if (!fs.existsSync(CACHE_NAME)) {
+      if (!fs.existsSync(CACHE_NPM)) {
 
-        console.log(`Init empty ${CACHE_NAME}`);
-        return proc.exec(`tar cvzf ${CACHE_NAME} --files-from /dev/null`);
+        console.log(`Init empty ${CACHE_NPM}`);
+        return proc.exec(`tar cvzf ${CACHE_NPM} --files-from /dev/null`);
 
       }
 
@@ -73,7 +73,7 @@ module.exports = function() {
       if (source != target) {
         console.log('Saving NPM cache');
 
-        proc.exec(`docker run --rm --entrypoint tar ${CONTAINER_NAME}:latest czf - /.cache/npm/ > ${CACHE_NAME}`,{
+        proc.exec(`docker run --rm --entrypoint tar ${CONTAINER_NAME}:latest czf - /.cache/npm/ > ${CACHE_NPM}`,{
           silent: true
         })
           .then(function() {

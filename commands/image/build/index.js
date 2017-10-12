@@ -12,7 +12,7 @@ module.exports = function(yargs) {
 
   require('./generate')(argv)
     .then(function() {
-      //return require('./run')();
+      return require('./run')();
     })
     .then(function() {
       console.log();
