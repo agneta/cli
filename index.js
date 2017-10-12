@@ -18,6 +18,7 @@ global.requireMain = function(pathModule) {
 
 //-----------------------------------------------------------
 
+console.log();
 console.log(chalk.bold.blue(figlet.textSync('Agneta', {
   font: 'Cyberlarge'
 })));
