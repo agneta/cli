@@ -1,0 +1,19 @@
+version: '2'
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: docker-image
+    env_file:
+      - ../keys/secrets.env
+    environment:
+      - NODE_ENV=development
+      - MODE=portal
+      - PORT=8082
+    ports:
+      - '8082:8082'
+    volumes:
+      - .:/home/app
+      - /home/app/node_modules
+      - <%-platformPath%>:/home/app/node_modules/agneta-platform
+      - /home/app/node_modules/agneta-platform/node_modules

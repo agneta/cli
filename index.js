@@ -35,7 +35,10 @@ yargs
     .help('h')
     .alias('h', 'help')
     .fail(function(message, error) {
-      console.error(chalk.red(error.stack));
+      console.error(chalk.red(message));
+      if(error){
+        console.error(chalk.red(error));
+      }
     });
 
 var argv = yargs.argv;

@@ -67,8 +67,8 @@ module.exports = function() {
       var entry = [
         '',
         '',
-        `Host ${host} gitlab.com`,
-        'Hostname gitlab.com',
+        `Host ${host} ${config.host}`,
+        `Hostname ${config.host}`,
         `IdentityFile ~/.ssh/${keyName}`,
         `User ${config.username}`
       ].join('\n');

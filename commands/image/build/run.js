@@ -1,9 +1,7 @@
-const yargonaut = require('yargonaut');
 const fs = require('fs-extra');
 const S = require('string');
 const path = require('path');
 const Promise = require('bluebird');
-const chalk = yargonaut.chalk();
 const proc = require('../../lib/process');
 
 const pathPkgLock = 'package-lock.json';
@@ -18,7 +16,7 @@ module.exports = function() {
 
   var CACHE_NAME = '.npm-cache.tgz';
 
-  Promise.resolve()
+  return Promise.resolve()
     .then(function() {
       return fs.ensureDir('tmp');
     })
@@ -98,9 +96,5 @@ module.exports = function() {
           return proc.exec('docker rmi $(docker images -f "dangling=true" -q) 2>&1');
         });
 
-    })
-    .then(function() {
-      console.log();
-      console.log(chalk.bold.green('Success!'));
     });
 };
