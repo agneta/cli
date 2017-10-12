@@ -19,21 +19,21 @@ const fs = require('fs-extra');
 const Promise = require('bluebird');
 const path = require('path');
 const _ = require('lodash');
+const config = require('./config');
 
-module.exports = function(app) {
+module.exports = function() {
 
-  var config = app.get('git');
   var base_dir = process.cwd();
 
-  app.git = {
+  var git = {
     name: '.git',
     native: simplegit(base_dir)
   };
 
-  var repoPath = path.join(base_dir, app.git.name);
+  var repoPath = path.join(base_dir, git.name);
   var initiated;
 
-  app.git.native.outputHandler(function(command, stdout, stderr) {
+  git.native.outputHandler(function(command, stdout, stderr) {
     stdout.pipe(process.stdout);
     stderr.pipe(process.stderr);
   });
@@ -41,7 +41,7 @@ module.exports = function(app) {
   return Promise.resolve()
     .then(function() {
       if (!fs.existsSync(repoPath)) {
-        return app.git.native.init(repoPath, 0)
+        return git.native.init(repoPath, 0)
           .then(function() {
             return true;
           });
@@ -50,38 +50,38 @@ module.exports = function(app) {
     .then(function(_initiated) {
 
       initiated = _initiated;
-      return app.git.native.getRemotes();
+      return git.native.getRemotes();
 
     })
     .then(function(remotes) {
 
-      app.git.remotes = remotes;
+      git.remotes = remotes;
 
       var foundRemote = _.find(remotes, {
         name: config.remote.name
       });
 
       if (!foundRemote) {
-        return app.git.native.addRemote(config.remote.name, config.remote.url)
+        return git.native.addRemote(config.remote.name, config.remote.url)
           .then(function() {
-            return app.git.native.getRemotes();
+            return git.native.getRemotes();
           })
           .then(function(remotes) {
-            app.git.remotes = remotes;
+            git.remotes = remotes;
           });
       }
 
     })
     .then(function() {
 
-      console.log('remotes', app.git.remotes);
+      console.log('remotes', git.remotes);
 
-      return app.git.native.branch();
+      return git.native.branch();
     })
     .then(function(result) {
 
       console.log('branch', result);
-      app.git.branch = result;
+      git.branch = result;
 
       return {
         initiated: initiated
@@ -93,23 +93,23 @@ module.exports = function(app) {
         return;
       }
 
-      return app.git.native.checkoutLocalBranch(config.branch)
+      return git.native.checkoutLocalBranch(config.branch)
         .then(function() {
           console.log(`Fetching from remote ${config.remote.name} with branch ${config.branch}`);
-          return app.git.native.fetch(config.remote.name, config.branch);
+          return git.native.fetch(config.remote.name, config.branch);
         })
         .then(function() {
-          return app.git.native.reset(['--hard', 'FETCH_HEAD']);
+          return git.native.reset(['--hard', 'FETCH_HEAD']);
         })
         .then(function() {
-          return app.git.native.clean(['-df']);
+          return git.native.clean(['-df']);
         });
 
     })
     .then(function() {
 
       console.log('Git repository is ready');
-      console.log('Current branch is', app.git.branch.current);
+      console.log('Current branch is', git.branch.current);
 
     });
 

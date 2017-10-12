@@ -1,4 +1,4 @@
-const proc = require('../lib/process');
+const proc = require('../../lib/process');
 
 module.exports = function() {
 

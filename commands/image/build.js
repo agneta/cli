@@ -4,7 +4,7 @@ const S = require('string');
 const path = require('path');
 const Promise = require('bluebird');
 const chalk = yargonaut.chalk();
-const proc = require('../lib/process');
+const proc = require('../../lib/process');
 
 const pathPkgLock = 'package-lock.json';
 const pathPkgLockTmp = 'tmp/package-lock.json';
