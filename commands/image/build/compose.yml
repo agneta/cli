@@ -12,7 +12,7 @@ services:
     ports:
       - '<%-config.port%>:<%-config.port%>'
     volumes:
-      - .:/home/app
-      - /home/app/node_modules
-      - <%-platformPath%>:/home/app/node_modules/agneta-platform
-      - /home/app/node_modules/agneta-platform/node_modules
+      - .:<%-config.path.app%>
+      - <%-config.path.app%>/node_modules
+      - <%-platformPath%>:<%-config.path.app%>/node_modules/agneta-platform
+      - <%-config.path.app%>/node_modules/agneta-platform/node_modules

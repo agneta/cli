@@ -9,7 +9,7 @@ module.exports = function() {
 
       proc.exec(`${terminal} 'tail -n 1000 -f .pm2/logs/output-0.log'"`);
       proc.exec(`${terminal} 'tail -n 1000 -f .pm2/logs/error-0.log'"`);
-      proc.exec(`${terminal} 'pm2 list; exec /bin/bash -i'"`);
+      proc.exec(`${terminal} 'agneta process list; exec /bin/bash -i'"`);
     });
 
 };

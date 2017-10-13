@@ -6,23 +6,39 @@ module.exports = function(yargs) {
   var argv = yargs
     .alias('m', 'mode')
     .describe('m', 'Select build mode')
-    .choices('m', ['test', 'prd', 'dev', 'srv'])
+    .choices('m', ['test', 'prd', 'dev', 'srv', 'gen'])
     .help('help')
     .argv;
 
-  require('./server')(argv)
-    .then(function() {
-      if (argv.m == 'srv') {
-        return;
-      }
-      return require('./generate')(argv)
+  switch (argv.m) {
+
+    case 'srv':
+
+      require('./server')(argv);
+      break;
+
+    case 'gen':
+
+      require('./generate')(argv);
+      break;
+
+    default:
+
+      require('./server')(argv)
         .then(function() {
-          return require('./run')();
-        })
-        .then(function() {
-          console.log();
-          console.log(chalk.bold.green('Success!'));
+          return require('./generate')(argv)
+            .then(function() {
+              return require('./run')();
+            })
+            .then(function() {
+              console.log();
+              console.log(chalk.bold.green('Success!'));
+            });
         });
-    });
+
+      break;
+  }
+
+
 
 };
