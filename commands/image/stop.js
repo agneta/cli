@@ -1,7 +1,15 @@
 const proc = require('../../lib/process');
 
-module.exports = function() {
 
-  proc.exec('docker-compose stop dev');
+function promise() {
 
+  return proc.exec('docker-compose stop dev');
+
+}
+
+module.exports = {
+  cmd: function() {
+    promise();
+  },
+  promise: promise
 };

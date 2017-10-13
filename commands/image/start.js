@@ -2,7 +2,7 @@ const proc = require('../../lib/process');
 
 module.exports = function() {
 
-  proc.exec('docker-compose up -d dev')
+  proc.exec('docker-compose up -d --force-recreate dev')
     .then(function() {
 
       var terminal = 'x-terminal-emulator -e "docker-compose exec dev bash -c';
