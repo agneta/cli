@@ -3,8 +3,11 @@ const path = require('path');
 const S = require('string');
 const Promise = require('bluebird');
 const config = require('./config');
+const request = require('request-promise');
+const configBuild = require('../build/config');
+const proc = require('../../../lib/process');
 
-module.exports = function() {
+module.exports = function(argv) {
 
   var pkg = require(
     path.join(process.cwd(), 'package.json')
@@ -15,17 +18,39 @@ module.exports = function() {
   keyName += '_rsa';
 
   var pathSSH = path.join(process.env.HOME, '.ssh');
-  var pathKeys = path.join(process.cwd(), '../keys');
 
-  var pathKeySource = path.join(pathKeys, 'git_rsa');
-  var pathPubSource = pathKeySource + '.pub';
+  var keySource;
+  var pubSource;
 
   var pathKeyTarget = path.join(pathSSH, keyName);
   var pathPubTarget = pathKeyTarget + '.pub';
 
   var pathSSHConfig = path.join(pathSSH, 'config');
+  var pathSSHHosts = path.join(pathSSH, 'known_hosts');
+
+  var serverHost = argv.ip || 'localhost';
+  var serverURL = `http://${serverHost}:${configBuild.server.port}`;
 
   return Promise.resolve()
+    .then(function() {
+      return fs.ensureFile(pathSSHHosts);
+    })
+    .then(function() {
+      return proc.exec(`ssh-keygen -R ${config.host}`);
+    })
+    .then(function() {
+      return proc.exec(`ssh-keyscan -H ${config.host} >> ${pathSSHHosts}`);
+    })
+    .then(function() {
+      return request.get(`${serverURL}/keys/git_rsa`);
+    })
+    .then(function(content) {
+      keySource = content;
+      return request.get(`${serverURL}/keys/git_rsa.pub`);
+    })
+    .then(function(content) {
+      pubSource = content;
+    })
     .then(function() {
 
       if (fs.existsSync(pathKeyTarget) &&
@@ -37,17 +62,23 @@ module.exports = function() {
 
       console.log(`${pathKeyTarget} does not exist`);
 
-      if (!fs.existsSync(pathKeySource) ||
-        !fs.existsSync(pathPubSource)
+      if (!keySource ||
+        !pubSource
       ) {
         throw new Error('Must have git rsa keys available to proceed');
       }
 
-      return fs.copy(pathKeySource, pathKeyTarget)
+      return fs.outputFile(pathKeyTarget, keySource)
         .then(function() {
-          fs.copy(pathPubSource, pathPubTarget);
+          return fs.outputFile(pathPubTarget, pubSource);
         });
 
+    })
+    .then(function() {
+      return proc.exec(`chmod 600 ${pathKeyTarget}`);
+    })
+    .then(function() {
+      return proc.exec(`chmod 600 ${pathPubTarget}`);
     })
     .then(function() {
       return fs.ensureFile(pathSSHConfig);
@@ -57,7 +88,7 @@ module.exports = function() {
     })
     .then(function(content) {
 
-      if(content.indexOf(keyName)>=0){
+      if (content.indexOf(keyName) >= 0) {
         console.log('SSH config entry already exists');
         return;
       }
@@ -69,7 +100,7 @@ module.exports = function() {
         '',
         `Host ${host} ${config.host}`,
         `Hostname ${config.host}`,
-        `IdentityFile ~/.ssh/${keyName}`,
+        `IdentityFile ${pathKeyTarget}`,
         `User ${config.username}`
       ].join('\n');
 
@@ -77,7 +108,7 @@ module.exports = function() {
 
       console.log('Add SSH config entry', entry);
 
-      return fs.writeFile(pathSSHConfig,content);
+      return fs.outputFile(pathSSHConfig, content);
     });
 
 };

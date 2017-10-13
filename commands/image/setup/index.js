@@ -1,8 +1,14 @@
-module.exports = function() {
+module.exports = function(yargs) {
 
-  require('./ssh')()
+  var argv = yargs
+    .option('ip', {
+      default: false
+    })
+    .argv;
+
+  require('./ssh')(argv)
     .then(function() {
-      //require('./git')(app);
+      return require('./git')();
     });
 
 };

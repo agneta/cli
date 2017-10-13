@@ -8,9 +8,9 @@ services:
     environment:
       - NODE_ENV=development
       - MODE=portal
-      - PORT=8082
+      - PORT=<%-config.port%>
     ports:
-      - '8082:8082'
+      - '<%-config.port%>:<%-config.port%>'
     volumes:
       - .:/home/app
       - /home/app/node_modules

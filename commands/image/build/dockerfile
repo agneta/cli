@@ -5,34 +5,28 @@ RUN apt-get install -y python
 RUN apt-get install -y build-essential
 RUN apt-get install -y libssh-dev
 RUN apt-get install -y libcurl4-gnutls-dev
+RUN apt-get install -y git
 
-RUN useradd --user-group --create-home --shell /bin/false app
 # Enviroment variables
-ENV HOME=/home/app
+ENV HOME=<%-config.path.home%>
 #ENV REGISTRY=http://192.168.0.100:8081/nexus/content/repositories/npm-proxy/
-
 
 #RUN npm config set registry $REGISTRY
 RUN npm config set registry https://registry.npmjs.org/
 RUN npm config set cache /.cache/npm --global
 <%-cli%>
 
-USER app
 
-# Copy cache contents (if any) from local machine
-ADD .npm-cache.tgz /
-COPY . $HOME
+COPY . <%-config.path.app%>
+WORKDIR <%-config.path.app%>
 
-RUN agneta image setup
+RUN agneta image setup --ip <%-config.server.ip%>
 
-# Install local packages
-
+# Copy npm cache and install packages
+ADD <%-config.path.npmCache%> /
 ADD package.json package-lock.json /tmp/
 RUN cd /tmp && npm install --prefer-offline --loglevel info
-RUN mkdir -p $HOME && cd $HOME && ln -s /tmp/node_modules
-RUN chown -R app:app $HOME/*
+RUN mkdir -p <%-config.path.app%> && cd <%-config.path.app%> && ln -s /tmp/node_modules
 
 # Start Agneta
-WORKDIR $HOME
-
 CMD ["npm", "start"]

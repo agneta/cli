@@ -3,13 +3,18 @@ const _ = require('lodash');
 const fs = require('fs-extra');
 const path = require('path');
 const proc = require('../../../lib/process');
+const config = require('./config');
 
 module.exports = function(argv) {
 
   var mode = argv.m || 'test';
   var pathCLI = path.join(__dirname, '../../..');
-  var buildData = {};
-  var composeData = {};
+  var buildData = {
+    config: config
+  };
+  var composeData = {
+    config: config
+  };
 
   return Promise.resolve()
 
@@ -25,16 +30,19 @@ module.exports = function(argv) {
           switch (mode) {
             case 'test':
 
-              var pathOutput = '.cache/cli.tgz';
               var pathOutputAbs = path.join(
                 process.cwd(),
-                pathOutput
+                config.path.cliCache
               );
 
-              return proc.exec(`tar cvzf ${pathOutputAbs} -C ${pathCLI} . --exclude='./.git'`)
+              return proc.spawn(`tar cvzf ${pathOutputAbs} --exclude=.git -C ${pathCLI} .`)
                 .then(function() {
                   console.log(`cli path to copy is ${pathCLI}`);
-                  buildData.cli = `ADD ${pathOutput} /usr/local/lib/node_modules`;
+                  var target = '/usr/local/lib/node_modules/agneta-cli';
+                  buildData.cli = [
+                    `ADD ${config.path.cliCache} ${target}`,
+                    `RUN ln -s ${target}/bin/agneta /usr/local/bin/agneta`
+                  ].join('\n');
                 });
 
             default:
@@ -53,7 +61,7 @@ module.exports = function(argv) {
 
     })
     //-------------------------------------------------------------------
-
+    // Generate dockerfile
     .then(function() {
 
       return fs.readFile(
@@ -71,7 +79,7 @@ module.exports = function(argv) {
         'dockerfile'
       );
 
-      return fs.writeFile(pathOuput, contentOutput);
+      return fs.outputFile(pathOuput, contentOutput);
 
     })
     .then(function() {
@@ -96,7 +104,7 @@ module.exports = function(argv) {
         'docker-compose.yml'
       );
 
-      return fs.writeFile(pathOuput, contentOutput);
+      return fs.outputFile(pathOuput, contentOutput);
 
     })
     .then(function() {
@@ -118,10 +126,9 @@ module.exports = function(argv) {
 
       var line = '/.cache/';
 
-      if (content.indexOf(line)<0) {
+      if (content.indexOf(line) < 0) {
         throw new Error(`Your .gitignore should have this line: ${line}`);
       }
-      console.log(content);
       var contentOutput = content.toString().replace(line, '');
 
       var pathOuput = path.join(
@@ -129,7 +136,7 @@ module.exports = function(argv) {
         '.dockerignore'
       );
 
-      return fs.writeFile(pathOuput, contentOutput);
+      return fs.outputFile(pathOuput, contentOutput);
 
     });
 

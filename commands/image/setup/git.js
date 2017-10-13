@@ -102,7 +102,7 @@ module.exports = function() {
           return git.native.reset(['--hard', 'FETCH_HEAD']);
         })
         .then(function() {
-          return git.native.clean(['-df']);
+          return git.native.clean('f',['-d']);
         });
 
     })

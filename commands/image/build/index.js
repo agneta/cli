@@ -4,19 +4,25 @@ const chalk = yargonaut.chalk();
 module.exports = function(yargs) {
 
   var argv = yargs
-  .alias('m', 'mode')
-  .describe('m', 'Select build mode')
-  .choices('m', ['test', 'prd', 'dev'])
-  .help('help')
-  .argv;
+    .alias('m', 'mode')
+    .describe('m', 'Select build mode')
+    .choices('m', ['test', 'prd', 'dev', 'srv'])
+    .help('help')
+    .argv;
 
-  require('./generate')(argv)
+  require('./server')(argv)
     .then(function() {
-      return require('./run')();
-    })
-    .then(function() {
-      console.log();
-      console.log(chalk.bold.green('Success!'));
+      if (argv.m == 'srv') {
+        return;
+      }
+      return require('./generate')(argv)
+        .then(function() {
+          return require('./run')();
+        })
+        .then(function() {
+          console.log();
+          console.log(chalk.bold.green('Success!'));
+        });
     });
 
 };

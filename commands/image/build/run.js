@@ -6,6 +6,7 @@ const proc = require('../../../lib/process');
 
 const pathPkgLock = 'package-lock.json';
 const pathPkgLockTmp = 'tmp/package-lock.json';
+const config = require('./config');
 
 module.exports = function() {
 
@@ -13,8 +14,6 @@ module.exports = function() {
   CONTAINER_NAME = S(CONTAINER_NAME).replaceAll('-', '').s;
   CONTAINER_NAME += '_dev';
   CONTAINER_NAME = CONTAINER_NAME.toLowerCase();
-
-  var CACHE_NPM = '.cache/npm.tgz';
 
   return Promise.resolve()
     .then(function() {
@@ -38,16 +37,16 @@ module.exports = function() {
 
       if (!fs.existsSync(pathPkgLock)) {
         console.log(`Init empty ${pathPkgLock}`);
-        return fs.writeFile(pathPkgLock, '{}');
+        return fs.outputFile(pathPkgLock, '{}');
       }
 
     })
     .then(function() {
       // Init empty cache file
-      if (!fs.existsSync(CACHE_NPM)) {
+      if (!fs.existsSync(config.path.npmCache)) {
 
-        console.log(`Init empty ${CACHE_NPM}`);
-        return proc.exec(`tar cvzf ${CACHE_NPM} --files-from /dev/null`);
+        console.log(`Init empty ${config.path.npmCache}`);
+        return proc.exec(`tar cvzf ${config.path.npmCache} --files-from /dev/null`);
 
       }
 
@@ -73,7 +72,7 @@ module.exports = function() {
       if (source != target) {
         console.log('Saving NPM cache');
 
-        proc.exec(`docker run --rm --entrypoint tar ${CONTAINER_NAME}:latest czf - /.cache/npm/ > ${CACHE_NPM}`,{
+        proc.exec(`docker run --rm --entrypoint tar ${CONTAINER_NAME}:latest czf - /.cache/npm/ > ${config.path.npmCache}`,{
           silent: true
         })
           .then(function() {
@@ -86,7 +85,8 @@ module.exports = function() {
           });
       }
 
-    })
+    });
+    /*
     .then(function() {
 
       //run cleanup commands so you don't amass images that you don't need
@@ -96,5 +96,5 @@ module.exports = function() {
           return proc.exec('docker rmi $(docker images -f "dangling=true" -q) 2>&1');
         });
 
-    });
+    });*/
 };
