@@ -2,11 +2,13 @@ const ip = require('ip');
 
 var user = 'root';
 var home = `/${user}`;
+var pathCache = '.cache';
 
 module.exports = {
   path: {
-    npmCache: '.cache/npm.tgz',
-    cliCache: '.cache/cli.tgz',
+    cache: pathCache,
+    npmCache: `${pathCache}/npm.tgz`,
+    cliCache: `${pathCache}/cli.tgz`,
     home: home,
     app: `${home}/app`
   },

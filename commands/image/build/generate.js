@@ -25,6 +25,11 @@ module.exports = function(argv) {
 
       return Promise.resolve()
         .then(function() {
+          return fs.ensureDir(
+            path.join(process.cwd(),config.path.cache)
+          );
+        })
+        .then(function() {
 
 
           switch (mode) {
