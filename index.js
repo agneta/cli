@@ -29,7 +29,6 @@ require('./commands/version')(yargs);
 require('./commands/image')(yargs);
 require('./commands/process')(yargs);
 require('./commands/generate')(yargs);
-require('./commands/start')(yargs);
 
 yargs
     .help('h')

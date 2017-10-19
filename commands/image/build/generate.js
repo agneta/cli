@@ -61,6 +61,7 @@ module.exports = function(argv) {
         .then(function() {
 
           composeData.platformPath = path.join(pathCLI, '../platform');
+          composeData.cliPath = pathCLI;
 
         });
 
