@@ -13,7 +13,7 @@ services:
       - '<%-config.port%>:<%-config.port%>'
     volumes:
       - .:<%-config.path.app%>
-      - <%-config.path.app%>/node_modules
       - <%-cliPath%>:/usr/local/lib/node_modules/agneta-cli
       - <%-platformPath%>:<%-config.path.app%>/node_modules/agneta-platform
-      - <%-config.path.app%>/node_modules/agneta-platform/node_modules
+      - <%-config.path.app%>/node_modules/uws
+      - <%-config.path.app%>/node_modules/agneta-platform/node_modules/uws
