@@ -12,11 +12,6 @@ module.exports = function(yargs) {
 
   switch (argv.m) {
 
-    case 'srv':
-
-      require('./server')(argv);
-      break;
-
     case 'gen':
 
       require('./generate')(argv);
