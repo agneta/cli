@@ -40,13 +40,15 @@ module.exports = function() {
         console.log('Keys already exist');
         return;
       }
+      return require('../../secrets/get').promise({
+        secretKey: process.env.AGNETA_SECRET_KEY,
+        props: ['keys.git.key', 'keys.git.pub']
+      });
+    })
+    .then(function(secrets) {
 
-      console.log(`${pathKeyTarget} does not exist`);
-
-      var secrets = global.requireServices('lib/secrets')({}).secrets;
-
-      var keySource = secrets.get('keys.git.key');
-      var pubSource = secrets.get('keys.git.pub');
+      var keySource = secrets[0];
+      var pubSource = secrets[1];
 
       if (!keySource ||
         !pubSource

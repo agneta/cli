@@ -15,6 +15,9 @@ module.exports = function(argv) {
   var composeData = {
     config: config
   };
+  var templateOptions = {
+    interpolate: /<%-([\s\S]+?)%>/g
+  };
 
   return Promise.resolve()
 
@@ -77,8 +80,8 @@ module.exports = function(argv) {
     })
     .then(function(content) {
 
-      var template = _.template(content);
-      var contentOutput = template(buildData);
+      var template = _.template(content,templateOptions);
+      var contentOutput = template(buildData,templateOptions);
 
       var pathOuput = path.join(
         process.cwd(),
@@ -102,8 +105,8 @@ module.exports = function(argv) {
     })
     .then(function(content) {
 
-      var template = _.template(content);
-      var contentOutput = template(composeData);
+      var template = _.template(content,templateOptions);
+      var contentOutput = template(composeData,templateOptions);
 
       var pathOuput = path.join(
         process.cwd(),

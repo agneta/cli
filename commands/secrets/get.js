@@ -7,23 +7,31 @@ const _ = require('lodash');
 var secretsPath = path.join(process.cwd(), 'secrets.json');
 var keys = fs.readJsonSync(secretsPath);
 
-function promise(propPath) {
+function promise(options) {
 
-  if(!propPath){
+  var propPaths = options.props || [options.prop];
+
+  if (!propPaths.length) {
     throw new Error('Prop path is required');
   }
 
   return Promise.resolve()
     .then(function() {
+      if(options.secretKey){
+        return options.secretKey;
+      }
       return require('./key').promise();
     })
     .then(function(secretKey) {
 
-      var prop = getSecret(propPath);
-      if(!prop){
-        throw new Error(`Could not find prop with path: ${propPath}`);
-      }
-      return cryptojs.AES.decrypt(prop, secretKey).toString(cryptojs.enc.Utf8);
+      return Promise.mapSeries(propPaths, function(propPath) {
+
+        var prop = getSecret(propPath);
+        if (!prop) {
+          throw new Error(`Could not find prop with path: ${propPath}`);
+        }
+        return cryptojs.AES.decrypt(prop, secretKey).toString(cryptojs.enc.Utf8);
+      });
 
     });
 
@@ -52,7 +60,9 @@ function getSecret(path, keep) {
 
 module.exports = {
   command: function(argv) {
-    promise(argv.prop)
+    promise({
+      prop: argv.prop
+    })
       .then(function(secret) {
         console.log(`Secret property value is: ${secret}`);
       });
