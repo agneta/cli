@@ -52,8 +52,12 @@ module.exports = function() {
 
     })
     .then(function() {
-      var secretKey = 'aaaa';
-      return proc.spawn(`docker-compose build dev --build-arg AGNETA_SECRET_KEY=${secretKey}`);
+
+      return require('../../secrets/key').promise();
+
+    })
+    .then(function(secretKey) {
+      return proc.spawn(`docker-compose build --build-arg AGNETA_SECRET_KEY=${secretKey} dev`);
     })
     .then(function() {
       console.log('Extracting package-lock.json');

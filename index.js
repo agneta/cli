@@ -11,9 +11,12 @@ var chalk = yargonaut.chalk();
 
 //-----------------------------------------------------------
 
-global.pathMain = path.join(process.cwd(), 'node_modules', 'agneta-platform', 'main');
+global.pathPlatform = path.join(process.cwd(), 'node_modules', 'agneta-platform');
 global.requireMain = function(pathModule) {
-  return require(path.join(global.pathMain, pathModule));
+  return require(path.join(global.pathPlatform,'main', pathModule));
+};
+global.requireServices = function(pathModule) {
+  return require(path.join(global.pathPlatform,'services', pathModule));
 };
 
 //-----------------------------------------------------------
@@ -24,14 +27,10 @@ console.log(chalk.bold.blue(figlet.textSync('Agneta', {
 })));
 var version = require(path.join(__dirname,'package.json')).version;
 
-process.stdout.moveCursor(48,-2);
-process.stdout.write(`${chalk.bold.blue('CLI')} v.${version}\n\n`);
+console.log(`${chalk.bold.blue('CLI')} v.${version}\n\n`);
 
 
 //-----------------------------------------------------------
-
-
-
 
 require('./commands/default')(yargs);
 require('./commands/version')(yargs);

@@ -4,7 +4,6 @@ const S = require('string');
 const Promise = require('bluebird');
 const config = require('./config');
 const proc = require('../../../lib/process');
-
 module.exports = function() {
 
   var pkg = require(
@@ -43,6 +42,11 @@ module.exports = function() {
       }
 
       console.log(`${pathKeyTarget} does not exist`);
+
+      var secrets = global.requireServices('lib/secrets')({}).secrets;
+
+      var keySource = secrets.get('keys.git.key');
+      var pubSource = secrets.get('keys.git.pub');
 
       if (!keySource ||
         !pubSource

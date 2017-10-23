@@ -1,24 +1,61 @@
-const inquirer = require('inquirer');
-const config = require('../../lib/config');
 const cryptojs = require('crypto-js');
+const Promise = require('bluebird');
+const path = require('path');
+const fs = require('fs-extra');
+const _ = require('lodash');
 
-module.exports = function() {
+var secretsPath = path.join(process.cwd(), 'secrets.json');
+var keys = fs.readJsonSync(secretsPath);
 
-  Promise.resolve()
+function promise(propPath) {
+
+  if(!propPath){
+    throw new Error('Prop path is required');
+  }
+
+  return Promise.resolve()
     .then(function() {
-      return inquirer.prompt([{
-        type: 'password',
-        name: 'passphrase',
-        message: 'Enter a passphrase to decrypt the generated secret key'
-      }]);
+      return require('./key').promise();
     })
-    .then(function(answers) {
+    .then(function(secretKey) {
 
-      var secretKey = config.get('secretKey');
-      secretKey = cryptojs.AES.decrypt(secretKey, answers.passphrase).toString(cryptojs.enc.Utf8);
-      console.log(`Secret key is ${secretKey}`);
+      var prop = getSecret(propPath);
+      if(!prop){
+        throw new Error(`Could not find prop with path: ${propPath}`);
+      }
+      return cryptojs.AES.decrypt(prop, secretKey).toString(cryptojs.enc.Utf8);
+
     });
 
+}
 
+function getSecret(path, keep) {
 
+  var value = null;
+  var obj = null;
+  var env = process.env.NODE_ENV;
+
+  if (keys[env]) {
+    obj = keys[env];
+    value = _.get(obj, path);
+  }
+  if (!value) {
+    obj = keys.default;
+    value = _.get(obj, path);
+  }
+  if (!keep) {
+    _.unset(obj, path);
+  }
+  return value;
+
+}
+
+module.exports = {
+  command: function(argv) {
+    promise(argv.prop)
+      .then(function(secret) {
+        console.log(`Secret property value is: ${secret}`);
+      });
+  },
+  promise: promise
 };
