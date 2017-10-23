@@ -1,0 +1,9 @@
+phases:
+  install:
+    commands:
+      - apt-get update -y
+      - apt-get install -y docker-compose
+      - npm install agneta-cli -g
+  build:
+    commands:
+      - agneta image build

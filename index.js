@@ -22,8 +22,20 @@ console.log();
 console.log(chalk.bold.blue(figlet.textSync('Agneta', {
   font: 'Cyberlarge'
 })));
+var version = require(path.join(__dirname,'package.json')).version;
+
+process.stdout.moveCursor(48,-2);
+process.stdout.write(`${chalk.bold.blue('CLI')} v.${version}\n\n`);
+
 
 //-----------------------------------------------------------
+
+
+yargs.command('*','Default',function(){
+  console.log(chalk.bold.red('Command not found'));
+  console.log('Specify --help for available options');
+  console.log();
+});
 
 require('./commands/version')(yargs);
 require('./commands/image')(yargs);
@@ -38,7 +50,5 @@ yargs
       if(error){
         console.error(chalk.red(error));
       }
-    });
-
-var argv = yargs.argv;
-var command = argv && argv._[0];
+    })
+    .argv;

@@ -26,7 +26,7 @@ module.exports = function(argv) {
       return Promise.resolve()
         .then(function() {
           return fs.ensureDir(
-            path.join(process.cwd(),config.path.cache)
+            path.join(process.cwd(), config.path.cache)
           );
         })
         .then(function() {
@@ -144,7 +144,27 @@ module.exports = function(argv) {
 
       return fs.outputFile(pathOuput, contentOutput);
 
+    })
+    //---------------------------------------------------------------
+    // Generate Docker Ignore file
+    .then(function() {
+
+      return fs.readFile(
+        path.join(__dirname, 'buildspec.yml')
+      );
+
+    })
+    .then(function(content) {
+
+      var pathOuput = path.join(
+        process.cwd(),
+        'buildspec.yml'
+      );
+
+      return fs.outputFile(pathOuput, content);
+
     });
+
 
 
 };
