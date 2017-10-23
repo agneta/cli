@@ -17,8 +17,4 @@ module.exports = function(yargs) {
 
   });
 
-  yargs.command('secrets', 'encrypt secrets and use the generated key to access the credentials', function() {
-    require('../lib/secrets')();
-
-  });
 };

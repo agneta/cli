@@ -21,7 +21,7 @@ RUN npm config set cache /.cache/npm --global
 COPY . <%-config.path.app%>
 WORKDIR <%-config.path.app%>
 
-RUN agneta image setup --ip <%-config.server.ip%>
+RUN agneta image setup
 
 # Copy npm cache and install packages
 ADD <%-config.path.npmCache%> /

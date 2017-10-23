@@ -3,8 +3,6 @@ services:
   dev:
     build:
       context: .
-    env_file:
-      - ../keys/secrets.env
     environment:
       - NODE_ENV=development
       - MODE=portal

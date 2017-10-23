@@ -24,19 +24,14 @@ module.exports = function(yargs) {
 
     default:
 
-      require('./server')(argv)
+      require('./generate')(argv)
         .then(function() {
-          return require('./generate')(argv)
-            .then(function() {
-              return require('./run')();
-            })
-            .then(function() {
-              console.log();
-              console.log(chalk.bold.green('Success!'));
-            });
+          return require('./run')();
+        })
+        .then(function() {
+          console.log();
+          console.log(chalk.bold.green('Success!'));
         });
-
-      break;
   }
 
 

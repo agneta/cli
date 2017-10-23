@@ -3,11 +3,9 @@ const path = require('path');
 const S = require('string');
 const Promise = require('bluebird');
 const config = require('./config');
-const request = require('request-promise');
-const configBuild = require('../build/config');
 const proc = require('../../../lib/process');
 
-module.exports = function(argv) {
+module.exports = function() {
 
   var pkg = require(
     path.join(process.cwd(), 'package.json')
@@ -19,17 +17,11 @@ module.exports = function(argv) {
 
   var pathSSH = path.join(process.env.HOME, '.ssh');
 
-  var keySource;
-  var pubSource;
-
   var pathKeyTarget = path.join(pathSSH, keyName);
   var pathPubTarget = pathKeyTarget + '.pub';
 
   var pathSSHConfig = path.join(pathSSH, 'config');
   var pathSSHHosts = path.join(pathSSH, 'known_hosts');
-
-  var serverHost = argv.ip || 'localhost';
-  var serverURL = `http://${serverHost}:${configBuild.server.port}`;
 
   return Promise.resolve()
     .then(function() {
@@ -40,16 +32,6 @@ module.exports = function(argv) {
     })
     .then(function() {
       return proc.exec(`ssh-keyscan -H ${config.host} >> ${pathSSHHosts}`);
-    })
-    .then(function() {
-      return request.get(`${serverURL}/keys/git_rsa`);
-    })
-    .then(function(content) {
-      keySource = content;
-      return request.get(`${serverURL}/keys/git_rsa.pub`);
-    })
-    .then(function(content) {
-      pubSource = content;
     })
     .then(function() {
 
