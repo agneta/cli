@@ -1,6 +1,4 @@
 const fs = require('fs-extra');
-const S = require('string');
-const path = require('path');
 const Promise = require('bluebird');
 const proc = require('../../../lib/process');
 
@@ -10,10 +8,6 @@ const config = require('./config');
 
 module.exports = function() {
 
-  var CONTAINER_NAME = path.parse(process.cwd()).name;
-  CONTAINER_NAME = S(CONTAINER_NAME).replaceAll('-', '').s;
-  CONTAINER_NAME += '_dev';
-  CONTAINER_NAME = CONTAINER_NAME.toLowerCase();
 
   return Promise.resolve()
     .then(function() {
@@ -61,7 +55,7 @@ module.exports = function() {
     })
     .then(function() {
       console.log('Extracting package-lock.json');
-      return proc.exec(`docker run --rm --entrypoint cat ${CONTAINER_NAME}:latest /tmp/package-lock.json > tmp/package-lock.json`,{
+      return proc.exec(`docker run --rm --entrypoint cat ${config.image} /tmp/package-lock.json > tmp/package-lock.json`,{
         silent: true
       });
     })
@@ -77,7 +71,7 @@ module.exports = function() {
       if (source != target) {
         console.log('Saving NPM cache');
 
-        proc.exec(`docker run --rm --entrypoint tar ${CONTAINER_NAME}:latest czf - /.cache/npm/ > ${config.path.npmCache}`,{
+        return proc.exec(`docker run --rm --entrypoint tar ${config.image} czf - /.cache/npm/ > ${config.path.npmCache}`,{
           silent: true
         })
           .then(function() {

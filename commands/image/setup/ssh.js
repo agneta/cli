@@ -1,19 +1,12 @@
 const fs = require('fs-extra');
 const path = require('path');
-const S = require('string');
 const Promise = require('bluebird');
 const config = require('./config');
+const configstore = require('../../lib/config');
 const proc = require('../../../lib/process');
 module.exports = function() {
 
-  var pkg = require(
-    path.join(process.cwd(), 'package.json')
-  );
-
-  var keyName = pkg.name || path.parse(process.cwd()).name;
-  keyName = S(keyName).slugify().replaceAll('-', '_').s;
-  keyName += '_rsa';
-
+  var keyName = configstore.name + '_rsa';
   var pathSSH = path.join(process.env.HOME, '.ssh');
 
   var pathKeyTarget = path.join(pathSSH, keyName);

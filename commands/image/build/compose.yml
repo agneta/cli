@@ -1,6 +1,7 @@
 version: '2'
 services:
   dev:
+    image: '<%-config.image%>'
     build:
       context: .
     environment:

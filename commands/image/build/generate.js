@@ -7,13 +7,13 @@ const config = require('./config');
 
 module.exports = function(argv) {
 
-  var mode = argv.m || 'test';
+  var mode = argv.mode || 'test';
   var pathCLI = path.join(__dirname, '../../..');
   var buildData = {
     config: config
   };
   var composeData = {
-    config: config
+    config: config,
   };
   var templateOptions = {
     interpolate: /<%-([\s\S]+?)%>/g
@@ -55,7 +55,7 @@ module.exports = function(argv) {
 
             default:
 
-              buildData.cli = 'RUN npm install --global agneta-cli --prefer-offline';
+              buildData.cli = 'RUN npm install --global --prefer-offline agneta-cli';
 
               break;
           }
