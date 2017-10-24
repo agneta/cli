@@ -2,11 +2,18 @@ FROM node:8-alpine
 
 RUN apk -v --update add \
         python \
-        build-essential \
+        openssh \
+        build-base \
         libssh-dev \
-        libcurl4-gnutls-dev \
         git \
         graphicsmagick \
+        bash \
+        libc6-compat \
+        gawk \
+        sed \
+        grep \
+        bc \
+        coreutils \
         && \
     apk -v --purge del py-pip && \
     rm /var/cache/apk/*

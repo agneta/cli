@@ -2,7 +2,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const Promise = require('bluebird');
 const config = require('./config');
-const configstore = require('../../lib/config');
+const configstore = require('../../../lib/config');
 const proc = require('../../../lib/process');
 module.exports = function() {
 
