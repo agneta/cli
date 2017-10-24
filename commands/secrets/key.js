@@ -7,6 +7,11 @@ function promise() {
 
   var tries = 0;
 
+  var secretKey = config.get('secretKey');
+  if(!secretKey){
+    return Promise.reject('No secret key is stored.');
+  }
+
   function tryGet() {
 
 
@@ -23,8 +28,6 @@ function promise() {
           message: 'Enter a passphrase to decrypt the generated secret key'
         }])
           .then(function(answers) {
-
-            var secretKey = config.get('secretKey');
             secretKey = cryptojs.AES.decrypt(secretKey, answers.passphrase);
 
             try {
