@@ -6,9 +6,10 @@ const Promise = require('bluebird');
 function promise() {
 
   var tries = 0;
+  var envSecret = process.env.AGNETA_SECRET_KEY;
 
   var secretKey = config.get('secretKey');
-  if(!secretKey){
+  if(!secretKey && !envSecret){
     return Promise.reject('No secret key is stored.');
   }
 
@@ -18,8 +19,8 @@ function promise() {
     return Promise.resolve()
       .then(function() {
 
-        if (process.env.AGNETA_SECRET_KEY) {
-          return process.env.AGNETA_SECRET_KEY;
+        if (envSecret) {
+          return envSecret;
         }
 
         return inquirer.prompt([{
