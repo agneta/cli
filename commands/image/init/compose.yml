@@ -5,14 +5,16 @@ services:
     build:
       context: .
     environment:
-      - NODE_ENV=development
-      - MODE=portal
+      - PORT=4444
     volumes:
       - .:/home/app
     working_dir: /home/app
     command: agneta image build -m dev
+    ports:
+      - '4444:4444'
   dev:
     image: '<%-config.image%>'
+    privileged: true
     build:
       context: .
     environment:
@@ -23,7 +25,7 @@ services:
       - '<%-config.port%>:<%-config.port%>'
     volumes:
       - .:<%-config.path.app%>
-      - <%-cliPath%>:/usr/local/lib/node_modules/agneta-cli
-      - <%-platformPath%>:<%-config.path.app%>/node_modules/agneta-platform
+      - <%-config.path.projectCli%>:/usr/local/lib/node_modules/agneta-cli
+      - <%-config.path.projectPlatform%>:<%-config.path.app%>/node_modules/agneta-platform
       - <%-config.path.app%>/node_modules/uws
       - <%-config.path.app%>/node_modules/agneta-platform/node_modules/uws

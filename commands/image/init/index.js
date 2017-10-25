@@ -2,16 +2,10 @@ const Promise = require('bluebird');
 const _ = require('lodash');
 const fs = require('fs-extra');
 const path = require('path');
-const proc = require('../../../lib/process');
-const config = require('../build/config');
+const config = require('../config');
 
-function promise(argv) {
+function promise() {
 
-  var mode = argv.mode;
-  var pathCLI = path.join(__dirname, '../../..');
-  var buildData = {
-    config: config
-  };
   var composeData = {
     config: config,
   };
@@ -21,54 +15,6 @@ function promise(argv) {
 
   return Promise.resolve()
 
-    //-------------------------------------------------------------------
-    // Set Template Data
-
-    .then(function() {
-
-      return Promise.resolve()
-        .then(function() {
-          return fs.ensureDir(
-            path.join(process.cwd(), config.path.cache)
-          );
-        })
-        .then(function() {
-
-
-          switch (mode) {
-            case 'development':
-
-              var pathOutputAbs = path.join(
-                process.cwd(),
-                config.path.cliCache
-              );
-
-              return proc.spawn(`tar cvzf ${pathOutputAbs} --exclude=.git -C ${pathCLI} .`)
-                .then(function() {
-                  console.log(`cli path to copy is ${pathCLI}`);
-                  var target = '/usr/local/lib/node_modules/agneta-cli';
-                  buildData.cli = [
-                    `ADD ${config.path.cliCache} ${target}`,
-                    `RUN ln -s ${target}/bin/agneta /usr/local/bin/agneta`
-                  ].join('\n');
-                });
-
-            default:
-
-              buildData.cli = 'RUN npm install --global --prefer-offline agneta-cli';
-
-              break;
-          }
-
-        })
-        .then(function() {
-
-          composeData.platformPath = path.join(pathCLI, '../platform');
-          composeData.cliPath = pathCLI;
-
-        });
-
-    })
     //-------------------------------------------------------------------
     // Generate dockerfile
     .then(function() {
@@ -81,7 +27,9 @@ function promise(argv) {
     .then(function(content) {
 
       var template = _.template(content, templateOptions);
-      var contentOutput = template(buildData, templateOptions);
+      var contentOutput = template({
+        config: config
+      }, templateOptions);
 
       var pathOuput = path.join(
         process.cwd(),

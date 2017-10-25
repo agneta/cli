@@ -1,7 +1,9 @@
 const yargonaut = require('yargonaut');
 const chalk = yargonaut.chalk();
-const config = require('./config');
+const config = require('../config');
 const configstore = require('../../../lib/config');
+const fs = require('fs-extra');
+const path = require('path');
 
 module.exports = function(yargs) {
 
@@ -27,12 +29,22 @@ module.exports = function(yargs) {
 
   config.image = argv.image || `${configstore.name}:latest`;
 
-  if(argv.docker){
+  if (argv.docker) {
     require('./docker')();
     return;
   }
 
   require('../init').promise(argv)
+    .then(function() {
+      return fs.ensureDir(
+        path.join(process.cwd(), config.path.cache)
+      );
+    })
+    .then(function() {
+
+      return require('./cli')(argv.mode);
+
+    })
     .then(function() {
       return require('./run')();
     })

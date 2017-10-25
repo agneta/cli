@@ -26,7 +26,7 @@ ARG AGNETA_SECRET_KEY=3
 #RUN npm config set registry $REGISTRY
 RUN npm config set registry https://registry.npmjs.org/
 RUN npm config set cache /.cache/npm --global
-<%-cli%>
+<%-config.cli%>
 
 
 COPY . <%-config.path.app%>

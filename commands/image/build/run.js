@@ -4,7 +4,7 @@ const proc = require('../../../lib/process');
 
 const pathPkgLock = 'package-lock.json';
 const pathPkgLockTmp = 'tmp/package-lock.json';
-const config = require('./config');
+const config = require('../config');
 
 module.exports = function() {
 
