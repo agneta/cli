@@ -2,16 +2,13 @@ version: '2'
 services:
   build:
     image: agneta-build
+    privileged: true
     build:
       context: .
-    environment:
-      - PORT=4444
     volumes:
       - .:/home/app
     working_dir: /home/app
-    command: agneta image build -m dev
-    ports:
-      - '4444:4444'
+    command: agneta image build -m portal
   dev:
     image: '<%-config.image%>'
     privileged: true

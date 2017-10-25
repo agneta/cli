@@ -26,7 +26,7 @@ ARG AGNETA_SECRET_KEY=3
 #RUN npm config set registry $REGISTRY
 RUN npm config set registry https://registry.npmjs.org/
 RUN npm config set cache /.cache/npm --global
-<%-config.cli%>
+<%-config.commands.cli%>
 
 
 COPY . <%-config.path.app%>
@@ -35,7 +35,8 @@ WORKDIR <%-config.path.app%>
 RUN agneta image setup
 
 # Copy npm cache and install packages
-ADD <%-config.path.npmCache%> /
+<%-config.commands.npm%>
+
 ADD package.json package-lock.json /tmp/
 RUN cd /tmp && npm install --prefer-offline --loglevel info
 RUN mkdir -p <%-config.path.app%> && cd <%-config.path.app%> && ln -s /tmp/node_modules

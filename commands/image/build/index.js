@@ -42,7 +42,7 @@ module.exports = function(yargs) {
     })
     .then(function() {
 
-      return require('./cli')(argv.mode);
+      return require('./compress')(argv.mode);
 
     })
     .then(function() {

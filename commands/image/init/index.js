@@ -4,7 +4,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const config = require('../config');
 
-function promise() {
+function promise(argv) {
 
   var composeData = {
     config: config,
@@ -12,6 +12,8 @@ function promise() {
   var templateOptions = {
     interpolate: /<%-([\s\S]+?)%>/g
   };
+
+  require('./commands')(argv);
 
   return Promise.resolve()
 
@@ -130,7 +132,7 @@ module.exports = {
           choices: ['development', 'portal'],
           default: 'development'
         }
-      });
+      }).argv;
 
     promise(argv);
 

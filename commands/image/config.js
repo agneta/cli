@@ -15,7 +15,7 @@ var data = {
   },
   user: user,
   port: 8082,
-  data: {}
+  commands: {}
 };
 
 data.path.projectPlatform = path.join(data.path.projectCli, '../platform');
