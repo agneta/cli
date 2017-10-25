@@ -3,11 +3,11 @@ const _ = require('lodash');
 const fs = require('fs-extra');
 const path = require('path');
 const proc = require('../../../lib/process');
-const config = require('./config');
+const config = require('../build/config');
 
-module.exports = function(argv) {
+function promise(argv) {
 
-  var mode = argv.mode || 'test';
+  var mode = argv.mode;
   var pathCLI = path.join(__dirname, '../../..');
   var buildData = {
     config: config
@@ -36,7 +36,7 @@ module.exports = function(argv) {
 
 
           switch (mode) {
-            case 'test':
+            case 'development':
 
               var pathOutputAbs = path.join(
                 process.cwd(),
@@ -80,8 +80,8 @@ module.exports = function(argv) {
     })
     .then(function(content) {
 
-      var template = _.template(content,templateOptions);
-      var contentOutput = template(buildData,templateOptions);
+      var template = _.template(content, templateOptions);
+      var contentOutput = template(buildData, templateOptions);
 
       var pathOuput = path.join(
         process.cwd(),
@@ -105,8 +105,8 @@ module.exports = function(argv) {
     })
     .then(function(content) {
 
-      var template = _.template(content,templateOptions);
-      var contentOutput = template(composeData,templateOptions);
+      var template = _.template(content, templateOptions);
+      var contentOutput = template(composeData, templateOptions);
 
       var pathOuput = path.join(
         process.cwd(),
@@ -169,5 +169,23 @@ module.exports = function(argv) {
     });
 
 
+}
 
+module.exports = {
+  cmd: function(yargs) {
+
+    var argv = yargs
+      .options({
+        mode: {
+          alias: 'm',
+          describe: 'Select build mode',
+          choices: ['development', 'portal'],
+          default: 'development'
+        }
+      });
+
+    promise(argv);
+
+  },
+  promise: promise
 };

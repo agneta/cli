@@ -1,5 +1,16 @@
 version: '2'
 services:
+  build:
+    image: agneta-build
+    build:
+      context: .
+    environment:
+      - NODE_ENV=development
+      - MODE=portal
+    volumes:
+      - .:/home/app
+    working_dir: /home/app
+    command: agneta image build -m dev
   dev:
     image: '<%-config.image%>'
     build:

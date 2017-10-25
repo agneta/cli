@@ -8,6 +8,7 @@ module.exports = function(yargs) {
       yargs.command('stop', 'Stop running the image', require('./stop.js').cmd);
       yargs.command('restart', 'Restart the image', require('./restart.js'));
       yargs.command('setup', 'Setup the image when building', require('./setup'));
+      yargs.command('init', 'Init project with docker files', require('./init').cmd);
 
     });
 };
