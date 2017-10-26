@@ -1,7 +1,7 @@
 const path = require('path');
 
-var user = 'root';
-var home = `/${user}`;
+var user = 'agneta';
+var home = `/home/${user}`;
 var pathCache = '.cache';
 
 var data = {

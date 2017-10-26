@@ -19,9 +19,8 @@ RUN apk -v --update add \
     rm /var/cache/apk/*
 
 # Enviroment variables
-ENV HOME=<%-config.path.home%>
+
 ARG AGNETA_SECRET_KEY=3
-#ENV REGISTRY=http://192.168.0.100:8081/nexus/content/repositories/npm-proxy/
 
 #RUN npm config set registry $REGISTRY
 RUN npm config set registry https://registry.npmjs.org/
@@ -30,6 +29,7 @@ RUN npm config set cache /.cache/npm --global
 
 
 COPY . <%-config.path.app%>
+
 WORKDIR <%-config.path.app%>
 
 RUN agneta image setup
@@ -42,4 +42,5 @@ RUN cd /tmp && npm install --prefer-offline --loglevel info
 RUN mkdir -p <%-config.path.app%> && cd <%-config.path.app%> && ln -s /tmp/node_modules
 
 # Start Agneta
+ENV HOME=<%-config.path.home%>
 CMD ["agneta", "process", "start"]
