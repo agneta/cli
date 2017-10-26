@@ -4,6 +4,7 @@ module.exports = function(yargs) {
 
     yargs.command('build', 'Encrypt the the secrets and store the key with a passphrase', require('./build'));
     yargs.command('key', 'Get the secret key with passphrase', require('./key').command);
+    yargs.command('set', 'Set the secret key with passphrase', require('./set'));
     yargs.command('get [prop]', 'Get the secret property descrypted', {
       prop: {
         describe: 'The property path to the secret',
