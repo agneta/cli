@@ -13,8 +13,13 @@ module.exports = function(yargs) {
   var argv = yargs
     .option('in', {
       alias: 'i',
-      describe: 'secrets js file',
+      describe: 'Path to the decrypted secrets file',
       required: true
+    })
+    .option('key', {
+      alias: 'k',
+      describe: 'Secret key to use for encrypting',
+      required: false
     })
     .help('help')
     .argv;
@@ -28,7 +33,7 @@ module.exports = function(yargs) {
   var pathOutput = path.join(process.cwd(), outputName);
 
   var keys = require(pathInput);
-  var secretKey = uuidv1();
+  var secretKey = argv.key || uuidv1();
   var output = {};
 
   keys.isValid = 'yes';
