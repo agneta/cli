@@ -1,10 +1,14 @@
 const path = require('path');
+const config = require('../../lib/config');
 
 var user = 'agneta';
 var home = `/home/${user}`;
 var pathCache = '.cache';
 
 var data = {
+  name: config.name,
+  domain: `${config.name}.localhost`,
+  image: `${config.name}:latest`,
   path: {
     cache: pathCache,
     npmCache: `${pathCache}/npm.tgz`,
@@ -14,7 +18,8 @@ var data = {
     projectCli: path.join(__dirname, '../..'),
   },
   user: user,
-  port: 8082,
+  port: 443,
+  portHttp: 80,
   commands: {}
 };
 

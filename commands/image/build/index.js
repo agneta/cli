@@ -1,7 +1,6 @@
 const yargonaut = require('yargonaut');
 const chalk = yargonaut.chalk();
 const config = require('../config');
-const configstore = require('../../../lib/config');
 const fs = require('fs-extra');
 const path = require('path');
 
@@ -26,8 +25,6 @@ module.exports = function(yargs) {
     })
     .help('help')
     .argv;
-
-  config.image = argv.image || `${configstore.name}:latest`;
 
   if (argv.docker) {
     require('./docker')();

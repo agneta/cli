@@ -14,6 +14,8 @@ function promise(argv) {
   };
 
   require('./commands')(argv);
+  
+  config.image = argv.image || config.image;
 
   return Promise.resolve()
 

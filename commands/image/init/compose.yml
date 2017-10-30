@@ -9,14 +9,19 @@ services:
     working_dir: /home/app
     command: agneta image build -m portal
   dev:
+    domainname: '<%-config.domain%>'
+    hostname: '<%-config.domain%>'
     image: '<%-config.image%>'
     build:
       context: .
     environment:
       - NODE_ENV=development
       - MODE=portal
+      - HOST_NAME=<%-config.domain%>
       - PORT=<%-config.port%>
+      - PORT_HTTP=<%-config.portHttp%>
     ports:
+      - '<%-config.portHttp%>:<%-config.portHttp%>'
       - '<%-config.port%>:<%-config.port%>'
     volumes:
       - .:<%-config.path.app%>
