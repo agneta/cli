@@ -98,7 +98,7 @@ function promise(argv) {
     })
     .then(function(content) {
 
-      var lines = ['/.cache/', '/entrypoint.sh'];
+      var lines = ['/.cache/'];
 
       for (var line of lines) {
 

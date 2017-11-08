@@ -21,11 +21,12 @@ services:
       - NODE_ENV=development
       - MODE=portal
       - HOST_NAME=<%-config.domain%>
+      - ENDPOINT=https://<%-config.domain%>
       - PORT_HTTP=<%-config.portHttp%>
       - PORT=<%-config.port%>
     ports:
-      - '<%-config.portHttp%>:80'
-      - '<%-config.port%>:443'
+      - '80:<%-config.portHttp%>'
+      - '443:<%-config.port%>'
     volumes:
       - .:<%-config.path.app%>
       - <%-config.path.projectCli%>:/usr/local/lib/node_modules/agneta-cli
