@@ -30,7 +30,7 @@ RUN npm config set cache /.cache/npm --global
 
 
 COPY . <%-config.path.app%>
-
+ENV HOME=<%-config.path.home%>
 WORKDIR <%-config.path.app%>
 
 RUN agneta image setup
@@ -43,7 +43,6 @@ RUN cd /tmp && npm install --prefer-offline --loglevel info
 RUN mkdir -p <%-config.path.app%> && cd <%-config.path.app%> && ln -s /tmp/node_modules
 
 # Start Agneta
-ENV HOME=<%-config.path.home%>
 
 RUN chmod +x <%-config.path.app%>/entrypoint.sh
 ENTRYPOINT ["<%-config.path.app%>/entrypoint.sh"]

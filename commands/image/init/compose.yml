@@ -21,8 +21,8 @@ services:
       - NODE_ENV=development
       - MODE=portal
       - HOST_NAME=<%-config.domain%>
-      - PORT=<%-config.port%>
       - PORT_HTTP=<%-config.portHttp%>
+      - PORT=<%-config.port%>
     ports:
       - '<%-config.portHttp%>:80'
       - '<%-config.port%>:443'

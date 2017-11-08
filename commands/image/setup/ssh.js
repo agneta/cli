@@ -81,7 +81,7 @@ module.exports = function() {
         '',
         `Host ${host} ${config.host}`,
         `Hostname ${config.host}`,
-        `IdentityFile ${pathKeyTarget}`,
+        `IdentityFile ~/.ssh/${keyName}`,
         `User ${config.username}`
       ].join('\n');
 
