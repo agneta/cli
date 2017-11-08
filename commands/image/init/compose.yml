@@ -24,8 +24,8 @@ services:
       - PORT=<%-config.port%>
       - PORT_HTTP=<%-config.portHttp%>
     ports:
-      - '<%-config.portHttp%>:<%-config.portHttp%>'
-      - '<%-config.port%>:<%-config.port%>'
+      - '<%-config.portHttp%>:80'
+      - '<%-config.port%>:443'
     volumes:
       - .:<%-config.path.app%>
       - <%-config.path.projectCli%>:/usr/local/lib/node_modules/agneta-cli

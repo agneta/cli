@@ -22,8 +22,8 @@ var data = {
     projectCli: path.join(__dirname, '../..'),
   },
   user: user,
-  port: 443,
-  portHttp: 80,
+  port: 8082,
+  portHttp: 8081,
   commands: {}
 };
 
