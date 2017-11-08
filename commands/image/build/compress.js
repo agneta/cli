@@ -13,7 +13,7 @@ module.exports = function(mode) {
   switch (mode) {
     case 'development':
 
-      return proc.spawn(`tar cvzf ${pathOutputAbs} --exclude=.git -C ${config.path.projectCli} .`);
+      return proc.spawn(`tar czf ${pathOutputAbs} --exclude=.git -C ${config.path.projectCli} .`);
   }
 
 };

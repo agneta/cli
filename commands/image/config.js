@@ -1,9 +1,13 @@
 const path = require('path');
 const config = require('../../lib/config');
+const os = require('os');
 
-var user = 'agneta';
-var home = `/home/${user}`;
+var user = os.userInfo();
+user.username = 'agneta';
+
+var home = `/home/${user.username}`;
 var pathCache = '.cache';
+
 
 var data = {
   name: config.name,

@@ -14,6 +14,7 @@ RUN apk -v --update add \
         grep \
         bc \
         coreutils \
+        su-exec \
         && \
     apk -v --purge del py-pip && \
     rm /var/cache/apk/*
@@ -43,4 +44,7 @@ RUN mkdir -p <%-config.path.app%> && cd <%-config.path.app%> && ln -s /tmp/node_
 
 # Start Agneta
 ENV HOME=<%-config.path.home%>
+
+RUN chmod +x <%-config.path.app%>/entrypoint.sh
+ENTRYPOINT ["<%-config.path.app%>/entrypoint.sh"]
 CMD ["agneta", "process", "start"]

@@ -15,6 +15,9 @@ services:
     build:
       context: .
     environment:
+      - USER=<%-config.user.username%>
+      - USER_ID=<%-config.user.uid%>
+      - GROUP_ID=<%-config.user.gid%>
       - NODE_ENV=development
       - MODE=portal
       - HOST_NAME=<%-config.domain%>

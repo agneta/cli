@@ -14,11 +14,24 @@ function promise(argv) {
   };
 
   require('./commands')(argv);
-  
+
   config.image = argv.image || config.image;
 
   return Promise.resolve()
 
+    .then(function() {
+
+      var name = 'entrypoint.sh';
+      var outputFile = path.join(process.cwd(), name);
+
+      return fs.copy(
+          path.join(__dirname, name),
+          outputFile
+        )
+        .then(function() {
+          return fs.chmod(outputFile, '0700');
+        });
+    })
     //-------------------------------------------------------------------
     // Generate dockerfile
     .then(function() {
@@ -85,19 +98,22 @@ function promise(argv) {
     })
     .then(function(content) {
 
-      var line = '/.cache/';
+      var lines = ['/.cache/', '/entrypoint.sh'];
 
-      if (content.indexOf(line) < 0) {
-        throw new Error(`Your .gitignore should have this line: ${line}`);
+      for (var line of lines) {
+
+        if (content.indexOf(line) < 0) {
+          throw new Error(`Your .gitignore should have this line: ${line}`);
+        }
+        content = content.toString().replace(line, '');
       }
-      var contentOutput = content.toString().replace(line, '');
 
       var pathOuput = path.join(
         process.cwd(),
         '.dockerignore'
       );
 
-      return fs.outputFile(pathOuput, contentOutput);
+      return fs.outputFile(pathOuput, content);
 
     })
     //---------------------------------------------------------------
