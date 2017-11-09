@@ -51,7 +51,6 @@ RUN USER_ID=${USER_ID:-9001} && \
     adduser -S -u $USER_ID -G $USER $USER && \
     chown -R $USER:$USER $HOME
 
-RUN chmod +x <%-config.path.app%>/entrypoint.sh
 USER <%-config.user.username%>
 
 #------------------------------------------------------------
@@ -62,4 +61,4 @@ RUN npm install --prefer-offline --loglevel info
 #------------------------------------------------------------
 # Start
 
-ENTRYPOINT ["<%-config.path.app%>/entrypoint.sh"]
+CMD ["agneta", "process", "start"]

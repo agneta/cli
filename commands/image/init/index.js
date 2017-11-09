@@ -19,19 +19,6 @@ function promise(argv) {
 
   return Promise.resolve()
 
-    .then(function() {
-
-      var name = 'entrypoint.sh';
-      var outputFile = path.join(process.cwd(), name);
-
-      return fs.copy(
-          path.join(__dirname, name),
-          outputFile
-        )
-        .then(function() {
-          return fs.chmod(outputFile, '0700');
-        });
-    })
     //-------------------------------------------------------------------
     // Generate dockerfile
     .then(function() {

@@ -3,7 +3,10 @@ const config = require('../../lib/config');
 const os = require('os');
 
 var user = os.userInfo();
+
 user.username = 'agneta';
+user.uid = user.uid || 1000;
+user.gid = user.gid || 1000;
 
 var home = `/home/${user.username}`;
 var pathCache = '.cache';
