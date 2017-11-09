@@ -23,28 +23,43 @@ RUN apk -v --update add \
 
 ARG AGNETA_SECRET_KEY=3
 
-#RUN npm config set registry $REGISTRY
-RUN npm config set registry https://registry.npmjs.org/
-RUN npm config set cache /.cache/npm --global
-<%-config.commands.cli%>
-
+# ---------------------------------------------------
+# Setup workspace
 
 COPY . <%-config.path.app%>
-
 WORKDIR <%-config.path.app%>
 
-RUN agneta image setup
-
-# Copy npm cache and install packages
 <%-config.commands.npm%>
+<%-config.commands.cli%>
 
-ADD package.json package-lock.json /tmp/
-RUN cd /tmp && npm install --prefer-offline --loglevel info
-RUN mkdir -p <%-config.path.app%> && cd <%-config.path.app%> && ln -s /tmp/node_modules
+RUN agneta image setup
+RUN npm config set cache <%-config.path.home%>/.cache/npm --global
 
-# Start Agneta
+# ---------------------------------------------------
+# Configure Agneta user
+
 ENV HOME=<%-config.path.home%>
+ENV USER=<%-config.user.username%>
+ENV USER_ID=<%-config.user.uid%>
+ENV GROUP_ID=<%-config.user.gid%>
+
+RUN USER_ID=${USER_ID:-9001} && \
+    GROUP_ID=${GROUP_ID:-9001} && \
+    mv /root/.ssh $HOME/.ssh && \
+    deluser --remove-home node && \
+    addgroup -S -g $GROUP_ID $USER && \
+    adduser -S -u $USER_ID -G $USER $USER && \
+    chown -R $USER:$USER $HOME
 
 RUN chmod +x <%-config.path.app%>/entrypoint.sh
+USER <%-config.user.username%>
+
+#------------------------------------------------------------
+# BEGIN NPM
+
+RUN npm install --prefer-offline --loglevel info
+
+#------------------------------------------------------------
+# Start
+
 ENTRYPOINT ["<%-config.path.app%>/entrypoint.sh"]
-CMD ["agneta", "process", "start"]

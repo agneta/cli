@@ -15,10 +15,7 @@ services:
     build:
       context: .
     environment:
-      - USER=<%-config.user.username%>
-      - USER_ID=<%-config.user.uid%>
-      - GROUP_ID=<%-config.user.gid%>
-      - NODE_ENV=development
+      - NODE_ENV=production
       - MODE=portal
       - HOST_NAME=<%-config.domain.portal%>
       - ENDPOINT=https://<%-config.domain.portal%>
@@ -34,9 +31,6 @@ services:
     build:
       context: .
     environment:
-      - USER=<%-config.user.username%>
-      - USER_ID=<%-config.user.uid%>
-      - GROUP_ID=<%-config.user.gid%>
       - NODE_ENV=production
       - MODE=services
       - HOST_NAME=<%-config.domain.services%>
@@ -46,9 +40,34 @@ services:
     ports:
       - '80:<%-config.portHttp.services%>'
       - '443:<%-config.port.services%>'
+  pages:
+    domainname: '<%-config.domain.pages%>'
+    hostname: '<%-config.domain.pages%>'
+    image: '<%-config.image%>'
+    build:
+      context: .
+    environment:
+      - NODE_ENV=production
+      - MODE=pages
+      - HOST_NAME=<%-config.domain.pages%>
+      - ENDPOINT=https://<%-config.domain.pages%>
+      - PORT_HTTP=<%-config.portHttp.pages%>
+      - PORT=<%-config.port.pages%>
+    ports:
+      - '80:<%-config.portHttp.pages%>'
+      - '443:<%-config.port.pages%>'
   portal_dev:
     extends: portal
+    environment:
+      - NODE_ENV=development
     volumes: <%-config.volumes%>
   services_dev:
     extends: services
+    environment:
+      - NODE_ENV=development
+    volumes: <%-config.volumes%>
+  pages_dev:
+    extends: pages
+    environment:
+      - NODE_ENV=development
     volumes: <%-config.volumes%>

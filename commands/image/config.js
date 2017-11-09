@@ -13,7 +13,8 @@ var data = {
   name: config.name,
   domain: {
     portal: `${config.name}.portal.localhost`,
-    services: `${config.name}.services.localhost`
+    services: `${config.name}.services.localhost`,
+    pages: `${config.name}.pages.localhost`
   },
   image: `${config.name}:latest`,
   path: {
@@ -27,11 +28,13 @@ var data = {
   user: user,
   portHttp: {
     portal: 8081,
-    services: 9091
+    services: 9091,
+    pages: 7071
   },
   port: {
     portal: 8082,
-    services: 9092
+    services: 9092,
+    pages: 7072
   },
   commands: {}
 };
