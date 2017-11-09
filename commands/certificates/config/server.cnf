@@ -1,0 +1,31 @@
+[ req ]
+default_bits           = 4096
+days                   = 9999
+distinguished_name     = req_distinguished_name
+attributes             = req_attributes
+prompt                 = no
+x509_extensions        = x509_ext
+
+[ req_distinguished_name ]
+C                      = US
+ST                     = MA
+L                      = Boston
+O                      = Example Co
+OU                     = techops
+CN                     = localhost
+emailAddress           = certs@example.com
+
+[ req_attributes ]
+challengePassword      = password
+
+[ x509_ext ]
+authorityInfoAccess = @issuer_info
+subjectAltName = @alternate_names
+
+[ issuer_info ]
+OCSP;URI.0 = http://ocsp.example.com/
+caIssuers;URI.0 = http://example.com/ca.cert
+
+[ alternate_names ]
+DNS.1 = localhost
+IP.1 = 127.0.0.1
