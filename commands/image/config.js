@@ -11,7 +11,10 @@ var pathCache = '.cache';
 
 var data = {
   name: config.name,
-  domain: `${config.name}.localhost`,
+  domain: {
+    portal:`${config.name}.portal.localhost`,
+    services:`${config.name}.services.localhost`
+  },
   image: `${config.name}:latest`,
   path: {
     cache: pathCache,
@@ -22,8 +25,14 @@ var data = {
     projectCli: path.join(__dirname, '../..'),
   },
   user: user,
-  port: 8082,
-  portHttp: 8081,
+  portHttp: {
+    portal: 8081,
+    services: 9091
+  },
+  port: {
+    portal: 8082,
+    services: 9092
+  },
   commands: {}
 };
 

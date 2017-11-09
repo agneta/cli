@@ -8,9 +8,9 @@ services:
       - .:/home/app
     working_dir: /home/app
     command: agneta image build -m portal
-  dev:
-    domainname: '<%-config.domain%>'
-    hostname: '<%-config.domain%>'
+  portal:
+    domainname: '<%-config.domain.portal%>'
+    hostname: '<%-config.domain.portal%>'
     image: '<%-config.image%>'
     build:
       context: .
@@ -20,16 +20,35 @@ services:
       - GROUP_ID=<%-config.user.gid%>
       - NODE_ENV=development
       - MODE=portal
-      - HOST_NAME=<%-config.domain%>
-      - ENDPOINT=https://<%-config.domain%>
-      - PORT_HTTP=<%-config.portHttp%>
-      - PORT=<%-config.port%>
+      - HOST_NAME=<%-config.domain.portal%>
+      - ENDPOINT=https://<%-config.domain.portal%>
+      - PORT_HTTP=<%-config.portHttp.portal%>
+      - PORT=<%-config.port.portal%>
     ports:
-      - '80:<%-config.portHttp%>'
-      - '443:<%-config.port%>'
+      - '80:<%-config.portHttp.portal%>'
+      - '443:<%-config.port.portal%>'
     volumes:
       - .:<%-config.path.app%>
       - <%-config.path.projectCli%>:/usr/local/lib/node_modules/agneta-cli
       - <%-config.path.projectPlatform%>:<%-config.path.app%>/node_modules/agneta-platform
       - <%-config.path.app%>/node_modules/uws
       - <%-config.path.app%>/node_modules/agneta-platform/node_modules/uws
+  services:
+    domainname: '<%-config.domain.services%>'
+    hostname: '<%-config.domain.services%>'
+    image: '<%-config.image%>'
+    build:
+      context: .
+    environment:
+      - USER=<%-config.user.username%>
+      - USER_ID=<%-config.user.uid%>
+      - GROUP_ID=<%-config.user.gid%>
+      - NODE_ENV=production
+      - MODE=services
+      - HOST_NAME=<%-config.domain.services%>
+      - ENDPOINT=https://<%-config.domain.services%>
+      - PORT_HTTP=<%-config.portHttp.services%>
+      - PORT=<%-config.port.services%>
+    ports:
+      - '80:<%-config.portHttp.services%>'
+      - '443:<%-config.port.services%>'

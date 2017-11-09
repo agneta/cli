@@ -1,5 +1,4 @@
 const path = require('path');
-const spawn = require('child_process').spawn;
 module.exports = function(yargs) {
 
   var agnetaPlatform = path.join(process.cwd(),'node_modules/agneta-platform');
@@ -26,8 +25,6 @@ module.exports = function(yargs) {
       });
 
       require(agnetaPlatform);
-
-      spawn('pm2',['logs']).stdout.pipe(process.stdout);
 
     });
 };
