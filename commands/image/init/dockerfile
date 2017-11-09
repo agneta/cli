@@ -32,18 +32,18 @@ WORKDIR <%-config.path.app%>
 <%-config.commands.npm%>
 <%-config.commands.cli%>
 
-RUN agneta image setup
-RUN npm config set cache <%-config.path.home%>/.cache/npm --global
+RUN agneta image setup && \
+    npm config set cache <%-config.path.home%>/.cache/npm --global && \
+    npm config set package-lock false
 
 # ---------------------------------------------------
 # Configure Agneta user
 
-ENV HOME=<%-config.path.home%>
-ENV USER=<%-config.user.username%>
-ENV USER_ID=<%-config.user.uid%>
-ENV GROUP_ID=<%-config.user.gid%>
-
-RUN USER_ID=${USER_ID:-9001} && \
+RUN export HOME=<%-config.path.home%> && \
+    export USER=<%-config.user.username%> && \
+    export USER_ID=<%-config.user.uid%> && \
+    export GROUP_ID=<%-config.user.gid%> && \
+    USER_ID=${USER_ID:-9001} && \
     GROUP_ID=${GROUP_ID:-9001} && \
     mv /root/.ssh $HOME/.ssh && \
     deluser --remove-home node && \
