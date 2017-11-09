@@ -29,20 +29,20 @@ ARG AGNETA_SECRET_KEY=3
 COPY . <%-config.path.app%>
 WORKDIR <%-config.path.app%>
 
-<%-config.commands.npm%>
-<%-config.commands.cli%>
+<%-config.commands.addAgnetaCli%>
 
-RUN agneta image setup && \
+RUN <%-config.commands.installAgnetaCli%> && \
+    agneta image setup && \
     npm config set cache <%-config.path.home%>/.cache/npm --global && \
-    npm config set package-lock false
-
-# ---------------------------------------------------
-# Configure Agneta user
-
-RUN export HOME=<%-config.path.home%> && \
+    npm config set package-lock false && \
+    # ---------------------------------------------------
+    # Set Enviroment variables
+    export HOME=<%-config.path.home%> && \
     export USER=<%-config.user.username%> && \
     export USER_ID=<%-config.user.uid%> && \
     export GROUP_ID=<%-config.user.gid%> && \
+    # ---------------------------------------------------
+    # Configure Agneta user
     USER_ID=${USER_ID:-9001} && \
     GROUP_ID=${GROUP_ID:-9001} && \
     mv /root/.ssh $HOME/.ssh && \
@@ -56,7 +56,7 @@ USER <%-config.user.username%>
 #------------------------------------------------------------
 # BEGIN NPM
 
-RUN npm install --prefer-offline --loglevel info
+RUN npm install --prefer-offline --no-shrinkwrap --loglevel info
 
 #------------------------------------------------------------
 # Start
