@@ -27,12 +27,6 @@ services:
     ports:
       - '80:<%-config.portHttp.portal%>'
       - '443:<%-config.port.portal%>'
-    volumes:
-      - .:<%-config.path.app%>
-      - <%-config.path.projectCli%>:/usr/local/lib/node_modules/agneta-cli
-      - <%-config.path.projectPlatform%>:<%-config.path.app%>/node_modules/agneta-platform
-      - <%-config.path.app%>/node_modules/uws
-      - <%-config.path.app%>/node_modules/agneta-platform/node_modules/uws
   services:
     domainname: '<%-config.domain.services%>'
     hostname: '<%-config.domain.services%>'
@@ -52,3 +46,9 @@ services:
     ports:
       - '80:<%-config.portHttp.services%>'
       - '443:<%-config.port.services%>'
+  portal_dev:
+    extends: portal
+    volumes: <%-config.volumes%>
+  services_dev:
+    extends: services
+    volumes: <%-config.volumes%>

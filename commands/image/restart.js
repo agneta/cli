@@ -1,9 +1,9 @@
 
-module.exports = function() {
+module.exports = function(argv) {
 
-  require('./stop').promise()
+  require('./stop').promise(argv)
   .then(function(){
-    return require('./start')();
+    return require('./start')(argv);
   });
 
 };

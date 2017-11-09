@@ -1,15 +1,16 @@
 const proc = require('../../lib/process');
 
 
-function promise() {
+function promise(argv) {
 
-  return proc.exec('docker-compose stop portal');
+  return proc.exec(`docker-compose stop ${argv.service}`);
 
 }
 
 module.exports = {
-  cmd: function() {
-    promise();
+  cmd: function(argv) {
+
+    promise(argv);
   },
   promise: promise
 };

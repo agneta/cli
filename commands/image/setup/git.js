@@ -31,7 +31,6 @@ module.exports = function() {
   };
 
   var repoPath = path.join(base_dir, git.name);
-  var initiated;
 
   git.native.outputHandler(function(command, stdout, stderr) {
     stdout.pipe(process.stdout);
@@ -40,58 +39,24 @@ module.exports = function() {
 
   return Promise.resolve()
     .then(function() {
-      if (!fs.existsSync(repoPath)) {
-        return git.native.init(repoPath, 0)
-          .then(function() {
-            return true;
-          });
-      }
-    })
-    .then(function(_initiated) {
-
-      initiated = _initiated;
-      return git.native.getRemotes();
-
-    })
-    .then(function(remotes) {
-
-      git.remotes = remotes;
-
-      var foundRemote = _.find(remotes, {
-        name: config.remote.name
-      });
-
-      if (!foundRemote) {
-        return git.native.addRemote(config.remote.name, config.remote.url)
-          .then(function() {
-            return git.native.getRemotes();
-          })
-          .then(function(remotes) {
-            git.remotes = remotes;
-          });
-      }
-
+      return git.native.init(repoPath, 0)
+        .then(function() {
+          return true;
+        });
     })
     .then(function() {
 
-      console.log('remotes', git.remotes);
-
-      return git.native.branch();
-    })
-    .then(function(result) {
-
-      console.log('branch', result);
-      git.branch = result;
-
-      return {
-        initiated: initiated
-      };
+      return git.native.addRemote(config.remote.name, config.remote.url)
+        .then(function() {
+          return git.native.getRemotes();
+        })
+        .then(function(remotes) {
+          git.remotes = remotes;
+          console.log('remotes', git.remotes);
+        });
 
     })
-    .then(function(result) {
-      if (!result.initiated) {
-        return;
-      }
+    .then(function() {
 
       return git.native.checkoutLocalBranch(config.branch)
         .then(function() {
@@ -102,14 +67,22 @@ module.exports = function() {
           return git.native.reset(['--hard', 'FETCH_HEAD']);
         })
         .then(function() {
-          return git.native.clean('f',['-d']);
+          return git.native.clean('f', ['-d']);
+        });
+
+    })
+    .then(function() {
+
+      return git.native.branch()
+        .then(function(result) {
+          git.branch = result;
+          console.log('Current branch is', git.branch.current);
         });
 
     })
     .then(function() {
 
       console.log('Git repository is ready');
-      console.log('Current branch is', git.branch.current);
 
     });
 
