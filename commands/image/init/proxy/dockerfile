@@ -1,1 +1,1 @@
-FROM nginx:mainline-alpine
+FROM haproxy:1.7-alpine

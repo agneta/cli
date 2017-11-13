@@ -19,9 +19,9 @@ services:
       - ENDPOINT=https://<%-config.domain.portal%>
       - PORT_HTTP=<%-config.portHttp.portal%>
       - PORT=<%-config.port.portal%>
-    ports:
-      - '80:<%-config.portHttp.portal%>'
-      - '443:<%-config.port.portal%>'
+    expose:
+      - '<%-config.portHttp.portal%>'
+      - '<%-config.port.portal%>'
   live:
     image: '<%-config.image.app%>'
     build:
@@ -56,7 +56,8 @@ services:
       - MODE=proxy
     ports:
       - '80:8080'
-      - '443:8081'
+      - '443:4343'
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ./.proxy/subdomains.conf:/etc/nginx/conf.d/zzzzz_subdomains.conf:ro
+      - ./.proxy/config.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro

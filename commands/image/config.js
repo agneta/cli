@@ -32,12 +32,12 @@ var data = {
   },
   user: user,
   portHttp: {
-    portal: 8081,
-    live: 9091
+    portal: 8181,
+    live: 8282
   },
   port: {
-    portal: 8082,
-    live: 9092
+    portal: 9191,
+    live: 9292
   },
   commands: {}
 };
