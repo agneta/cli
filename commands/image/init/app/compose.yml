@@ -1,0 +1,62 @@
+version: '2'
+services:
+  build:
+    image: agneta-build
+    build:
+      context: .
+    volumes:
+      - .:/home/app
+    working_dir: /home/app
+    command: agneta image build -m portal
+  portal:
+    image: '<%-config.image.app%>'
+    build:
+      context: .
+    environment:
+      - NODE_ENV=production
+      - MODE=portal
+      - HOST_NAME=<%-config.domain.portal%>
+      - ENDPOINT=https://<%-config.domain.portal%>
+      - PORT_HTTP=<%-config.portHttp.portal%>
+      - PORT=<%-config.port.portal%>
+    ports:
+      - '80:<%-config.portHttp.portal%>'
+      - '443:<%-config.port.portal%>'
+  live:
+    image: '<%-config.image.app%>'
+    build:
+      context: .
+    environment:
+      - NODE_ENV=production
+      - MODE=live
+      - HOST_NAME=<%-config.domain.live%>
+      - ENDPOINT=https://<%-config.domain.live%>
+      - PORT_HTTP=<%-config.portHttp.live%>
+      - PORT=<%-config.port.live%>
+    ports:
+      - '80:<%-config.portHttp.live%>'
+      - '443:<%-config.port.live%>'
+  portal_dev:
+    extends: portal
+    environment:
+      - NODE_ENV=development
+    volumes: <%-config.volumes%>
+  live_dev:
+    extends: live
+    environment:
+      - NODE_ENV=development
+    volumes: <%-config.volumes%>
+  proxy:
+    image: '<%-config.image.proxy%>'
+    build:
+      context: .
+      dockerfile: .proxy/dockerfile
+    environment:
+      - NODE_ENV=development
+      - MODE=proxy
+    ports:
+      - '80:8080'
+      - '443:8081'
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./.proxy/subdomains.conf:/etc/nginx/conf.d/zzzzz_subdomains.conf:ro

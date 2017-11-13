@@ -2,15 +2,14 @@ const proc = require('../../../lib/process');
 
 module.exports = function() {
 
-
   return Promise.resolve()
-  .then(function() {
+    .then(function() {
 
-    return require('../../secrets/key').promise();
+      return require('../../secrets/key').promise();
 
-  })
-  .then(function(secretKey) {
-    return proc.spawn(`docker-compose run -e AGNETA_SECRET_KEY=${secretKey} build`);
-  });
+    })
+    .then(function(secretKey) {
+      return proc.spawn(`docker-compose run -e AGNETA_SECRET_KEY=${secretKey} build`);
+    });
 
 };

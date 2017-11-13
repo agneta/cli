@@ -16,10 +16,12 @@ var data = {
   name: config.name,
   domain: {
     portal: `${config.name}.portal.localhost`,
-    services: `${config.name}.services.localhost`,
-    pages: `${config.name}.pages.localhost`
+    live: `${config.name}.live.localhost`
   },
-  image: `${config.name}:latest`,
+  image: {
+    app: `${config.name}:latest`,
+    proxy: `${config.name}-proxy:latest`,
+  },
   path: {
     cache: pathCache,
     npmCache: `${pathCache}/npm.tgz`,
@@ -31,13 +33,11 @@ var data = {
   user: user,
   portHttp: {
     portal: 8081,
-    services: 9091,
-    pages: 7071
+    live: 9091
   },
   port: {
     portal: 8082,
-    services: 9092,
-    pages: 7072
+    live: 9092
   },
   commands: {}
 };
