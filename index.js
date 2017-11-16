@@ -2,9 +2,9 @@ var path = require('path');
 var yargs = require('yargs');
 
 var yargonaut = require('yargonaut')
-    .style('blue')
-    .helpStyle('green')
-    .errorsStyle('red');
+  .style('blue')
+  .helpStyle('green')
+  .errorsStyle('red');
 
 var figlet = yargonaut.figlet();
 var chalk = yargonaut.chalk();
@@ -33,6 +33,7 @@ console.log(`${chalk.bold.blue('CLI')} v.${version}\n\n`);
 //-----------------------------------------------------------
 
 require('./commands/default')(yargs);
+require('./commands/config')(yargs);
 require('./commands/version')(yargs);
 require('./commands/image')(yargs);
 require('./commands/process')(yargs);
@@ -40,6 +41,6 @@ require('./commands/generate')(yargs);
 require('./commands/secrets')(yargs);
 
 yargs
-    .help('h')
-    .alias('h', 'help')
-    .argv;
+  .help('h')
+  .alias('h', 'help')
+  .argv;

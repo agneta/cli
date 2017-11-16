@@ -10,7 +10,7 @@ module.exports = function(yargs) {
         describe: 'The property path to the secret',
         required: true
       }},
-      require('./get').command);
+    require('./get').command);
     require('../default')(yargs);
   });
 

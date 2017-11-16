@@ -4,11 +4,8 @@ const cryptojs = require('crypto-js');
 
 module.exports = function() {
 
-
-  console.log('haha');
   Promise.resolve()
     .then(function() {
-      console.log('haha');
       return inquirer.prompt([{
         type: 'text',
         name: 'secretKey',

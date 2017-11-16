@@ -11,6 +11,9 @@ module.exports = function(yargs) {
       yargs.command('stop <service>', 'Stop running the image', builder,require('./stop.js').cmd);
       yargs.command('restart <service>', 'Restart the image', builder,require('./restart.js'));
 
+      require('../default')(yargs);
+      
+
       function builder(yargs) {
 
         yargs.positional('service', {
