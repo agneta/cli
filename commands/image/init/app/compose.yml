@@ -33,9 +33,9 @@ services:
       - ENDPOINT=https://<%-config.domain.live%>
       - PORT_HTTP=<%-config.portHttp.live%>
       - PORT=<%-config.port.live%>
-    ports:
-      - '80:<%-config.portHttp.live%>'
-      - '443:<%-config.port.live%>'
+    expose:
+      - '<%-config.portHttp.live%>'
+      - '<%-config.port.live%>'
   portal_dev:
     extends: portal
     environment:
