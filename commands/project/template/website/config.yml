@@ -1,0 +1,11 @@
+title:
+  en: "Your Title"
+subtitle:
+  en: "Your Description"
+
+#-----------------------------------------------
+
+language:
+  default:
+    key: 'en'
+    value: 'English'

@@ -5,12 +5,6 @@ module.exports = function(yargs) {
 
   });
 
-  yargs.command('project', 'Create a new Agneta project', function() {
-
-    global.requireMain('generate/project')();
-
-  });
-
   yargs.command('services', 'Add services to the client applications', function() {
 
     global.requireMain('generate/services')();
