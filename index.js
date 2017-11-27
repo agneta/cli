@@ -38,7 +38,7 @@ require('./commands/version')(yargs);
 require('./commands/image')(yargs);
 require('./commands/process')(yargs);
 require('./commands/generate')(yargs);
-require('./commands/secrets')(yargs);
+require('./commands/secret')(yargs);
 
 yargs
   .help('h')

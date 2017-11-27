@@ -1,0 +1,13 @@
+{
+  "name": "${config.name}",
+  "description": "",
+  "version": "0.0.1",
+  "main": "index.js",
+  "dependencies": {
+    "agneta-platform": "${config.version}"
+  },
+  "scripts": {
+    "start": "node node_modules/agneta-platform",
+    "test": "node_modules/mocha/bin/mocha node_modules/agneta-platform/test --timeout 10000"
+  }
+}

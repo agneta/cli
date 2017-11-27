@@ -15,10 +15,8 @@
  *   limitations under the License.
  */
 const simplegit = require('simple-git/promise');
-const fs = require('fs-extra');
 const Promise = require('bluebird');
 const path = require('path');
-const _ = require('lodash');
 const config = require('./config');
 
 module.exports = function() {

@@ -33,7 +33,7 @@ module.exports = function() {
         console.log('Keys already exist');
         return;
       }
-      return require('../../secrets/get').promise({
+      return require('../../secret/get').promise({
         secretKey: process.env.AGNETA_SECRET_KEY,
         props: ['keys.git.key', 'keys.git.pub']
       });

@@ -1,0 +1,17 @@
+{
+  "name": "${config.name}",
+  "description": "",
+  "main": "",
+  "license": "",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  }
+}

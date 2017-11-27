@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const config = require('../../lib/config');
+const config = require('../../../lib/config');
 const cryptojs = require('crypto-js');
 const Promise = require('bluebird');
 
@@ -8,13 +8,12 @@ function promise() {
   var tries = 0;
   var envSecret = process.env.AGNETA_SECRET_KEY;
 
-  var secretKey = config.get('secretKey');
-  if(!secretKey && !envSecret){
-    return Promise.reject('No secret key is stored.');
-  }
-
   function tryGet() {
 
+    var secretKey = config.get('secretKey');
+    if(!secretKey && !envSecret){
+      return Promise.reject('No secret key is stored.');
+    }
 
     return Promise.resolve()
       .then(function() {

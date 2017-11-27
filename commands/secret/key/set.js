@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const config = require('../../lib/config');
+const config = require('../../../lib/config');
 const cryptojs = require('crypto-js');
 
 module.exports = function() {

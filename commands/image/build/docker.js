@@ -5,7 +5,7 @@ module.exports = function() {
   return Promise.resolve()
     .then(function() {
 
-      return require('../../secrets/key').promise();
+      return require('../../secret/key/get').promise();
 
     })
     .then(function(secretKey) {

@@ -10,7 +10,7 @@ module.exports = function() {
     })
     .then(function() {
 
-      return require('../../secrets/key').promise();
+      return require('../../secret/key/get').promise();
 
     })
     .then(function(secretKey) {

@@ -3,6 +3,7 @@ const Promise = require('bluebird');
 const path = require('path');
 const fs = require('fs-extra');
 const _ = require('lodash');
+const inquirer = require('inquirer');
 
 var secretsPath = path.join(process.cwd(), 'secrets.json');
 var keys = fs.readJsonSync(secretsPath);
@@ -17,7 +18,7 @@ function promise(options) {
 
   return Promise.resolve()
     .then(function() {
-      if(options.secretKey){
+      if (options.secretKey) {
         return options.secretKey;
       }
       return require('./key').promise();
@@ -59,12 +60,30 @@ function getSecret(path, keep) {
 }
 
 module.exports = {
-  command: function(argv) {
-    promise({
-      prop: argv.prop
-    })
+  command: function() {
+    var secretKey;
+    Promise.resolve()
+      .then(function() {
+        return require('./key/get').promise();
+      })
+      .then(function(_secretKey) {
+        secretKey = _secretKey;
+        return inquirer.prompt([{
+          type: 'text',
+          name: 'prop',
+          message: 'Enter the property you wish to get'
+        }]);
+      })
+      .then(function(options) {
+        return promise({
+          secretKey: secretKey,
+          prop: options.prop
+        });
+      })
       .then(function(secret) {
-        console.log(`Secret property value is: ${secret}`);
+        console.log('Secret property value is:');
+        console.log(secret);
+        console.log();
       });
   },
   promise: promise
