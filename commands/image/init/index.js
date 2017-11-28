@@ -2,6 +2,7 @@ const app = require('./app');
 const proxy = require('./proxy');
 
 function promise(argv) {
+  argv = argv || {};
   return app(argv)
     .then(function() {
       return proxy(argv);

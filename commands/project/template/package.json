@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "main": "index.js",
   "dependencies": {
-    "agneta-platform": "${config.version}"
+    "agneta-platform": "${config.platform.version}"
   },
   "scripts": {
     "start": "node node_modules/agneta-platform",

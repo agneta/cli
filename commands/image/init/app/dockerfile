@@ -1,64 +1,13 @@
-FROM node:8-alpine
-
-RUN apk -v --update add \
-        python \
-        openssh \
-        build-base \
-        libssh-dev \
-        git \
-        graphicsmagick \
-        bash \
-        libc6-compat \
-        gawk \
-        sed \
-        grep \
-        bc \
-        coreutils \
-        su-exec \
-        && \
-    apk -v --purge del py-pip && \
-    rm /var/cache/apk/*
-
-# Enviroment variables
+FROM agneta:latest
 
 ARG AGNETA_SECRET_KEY=3
 
-# ---------------------------------------------------
-# Setup workspace
-
 COPY . <%-config.path.app%>
-WORKDIR <%-config.path.app%>
 
-<%-config.commands.addAgnetaCli%>
-
-RUN <%-config.commands.installAgnetaCli%> && \
-    agneta image setup && \
-    npm config set cache <%-config.path.home%>/.cache/npm --global && \
-    npm config set package-lock false && \
-    # ---------------------------------------------------
-    # Set Enviroment variables
-    export HOME=<%-config.path.home%> && \
-    export USER=<%-config.user.username%> && \
-    export USER_ID=<%-config.user.uid%> && \
-    export GROUP_ID=<%-config.user.gid%> && \
-    # ---------------------------------------------------
-    # Configure Agneta user
-    USER_ID=${USER_ID:-9001} && \
-    GROUP_ID=${GROUP_ID:-9001} && \
+RUN agneta image setup && \
     mv /root/.ssh $HOME/.ssh && \
-    deluser --remove-home node && \
-    addgroup -S -g $GROUP_ID $USER && \
-    adduser -S -u $USER_ID -G $USER $USER && \
-    chown -R $USER:$USER $HOME
+    chown -R $USER:$USER $HOME && \
+    npm install --prefer-offline --no-shrinkwrap --loglevel info
 
 USER <%-config.user.username%>
-
-#------------------------------------------------------------
-# BEGIN NPM
-
-RUN npm install --prefer-offline --no-shrinkwrap --loglevel info
-
-#------------------------------------------------------------
-# Start
-
 CMD ["agneta", "process", "start"]

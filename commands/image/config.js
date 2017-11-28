@@ -19,10 +19,12 @@ var data = {
     live: 'live.localhost'
   },
   image: {
+    base: 'agneta:latest',
     app: `${config.name}:latest`,
     proxy: `${config.name}-proxy:latest`,
   },
   path: {
+    ouput: path.join(process.cwd(),'.image'),
     cache: pathCache,
     npmCache: `${pathCache}/npm.tgz`,
     cliCache: `${pathCache}/cli.tgz`,
