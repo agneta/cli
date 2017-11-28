@@ -24,18 +24,16 @@ WORKDIR <%-config.path.app%>
 RUN <%-config.commands.installAgnetaCli%> && \
     npm config set cache <%-config.path.home%>/.cache/npm --global && \
     npm config set package-lock false && \
-    # ---------------------------------------------------
-    # Set Enviroment variables
     export HOME=<%-config.path.home%> && \
     export USER=<%-config.user.username%> && \
     export USER_ID=<%-config.user.uid%> && \
     export GROUP_ID=<%-config.user.gid%> && \
-    # ---------------------------------------------------
-    # Configure Agneta user
     USER_ID=${USER_ID:-9001} && \
     GROUP_ID=${GROUP_ID:-9001} && \
     deluser --remove-home node && \
     addgroup -S -g $GROUP_ID $USER && \
-    adduser -S -u $USER_ID -G $USER $USER
+    adduser -S -u $USER_ID -G $USER $USER && \
+    chown -R $USER:$USER $HOME
 
+USER <%-config.user.username%>
 RUN npm install agneta-platform --prefer-offline --no-shrinkwrap --loglevel info

@@ -3,11 +3,6 @@ FROM agneta:latest
 ARG AGNETA_SECRET_KEY=3
 
 COPY . <%-config.path.app%>
+RUN npm install --prefer-offline --no-shrinkwrap --loglevel info
 
-RUN agneta image setup && \
-    mv /root/.ssh $HOME/.ssh && \
-    chown -R $USER:$USER $HOME && \
-    npm install --prefer-offline --no-shrinkwrap --loglevel info
-
-USER <%-config.user.username%>
 CMD ["agneta", "process", "start"]
