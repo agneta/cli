@@ -3,6 +3,7 @@ FROM agneta:latest
 ARG AGNETA_SECRET_KEY=3
 
 COPY . <%-config.path.app%>
-RUN npm install --prefer-offline --no-shrinkwrap --loglevel info
+RUN npm install --prefer-offline --no-shrinkwrap --loglevel info && \
+    echo "\"${AGNETA_SECRET_KEY}\"" >> <%-config.path.home%>/secret.json
 
 CMD ["agneta", "process", "start"]
