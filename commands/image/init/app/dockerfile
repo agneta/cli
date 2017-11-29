@@ -1,4 +1,4 @@
-FROM agneta:latest
+FROM agneta/base
 
 ARG AGNETA_SECRET_KEY=3
 
