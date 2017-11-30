@@ -45,7 +45,7 @@ var data = {
   commands: {}
 };
 
-data.path.projectPlatform = path.join(data.path.projectCli, '../platform');
+data.path.projectPlatform = config.agneta.get('platform');
 
 data.volumes = [
   '',

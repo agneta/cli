@@ -17,5 +17,8 @@ module.exports = function() {
     })
     .then(function() {
       return fs.copy(path.join(__dirname, 'dockerfile'), path.join(pathProxy, 'dockerfile'));
+    })
+    .then(function(){
+      console.log('Generated proxy configuration');
     });
 };

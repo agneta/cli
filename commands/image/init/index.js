@@ -1,11 +1,17 @@
-const app = require('./app');
-const proxy = require('./proxy');
+const Promise = require('bluebird');
 
 function promise(argv) {
   argv = argv || {};
-  return app(argv)
+
+  return Promise.resolve()
     .then(function() {
-      return proxy(argv);
+      return require('./check')();
+    })
+    .then(function() {
+      return require('./app')(argv);
+    })
+    .then(function() {
+      return require('./proxy')(argv);
     });
 }
 

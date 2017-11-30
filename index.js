@@ -31,7 +31,11 @@ console.log(`${chalk.bold.blue('CLI')} v.${version}\n\n`);
 
 //-----------------------------------------------------------
 
-require('./lib/check')()
+Promise.resolve()
   .then(function() {
-    require('./commands')();
+    return require('./commands')();
+  })
+  .catch(function(err){
+    console.error(chalk.bold.red(err.message));
+    console.error(err.stack);
   });

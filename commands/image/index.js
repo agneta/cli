@@ -3,6 +3,8 @@ module.exports = function(yargs) {
   yargs
     .command('image', 'Manage agneta images', function(yargs) {
 
+      require('../../lib/check').project();
+
       yargs.command('build', 'Build the an image of the agneta project', require('./build'));
       yargs.command('setup', 'Setup the image when building', require('./setup'));
       yargs.command('init', 'Init project with docker files', require('./init').cmd);
@@ -24,6 +26,6 @@ module.exports = function(yargs) {
         });
 
       }
-
     });
+
 };
