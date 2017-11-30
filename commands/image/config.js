@@ -32,6 +32,7 @@ var data = {
     app: `${home}/app`,
     projectCli: path.join(__dirname, '../..'),
   },
+  serverName: config.get('server.name'),
   user: user,
   portHttp: {
     portal: 8181,
@@ -49,7 +50,6 @@ data.path.projectPlatform = path.join(data.path.projectCli, '../platform');
 data.volumes = [
   '',
   `      - .:${data.path.app}`,
-  `      - ${config.dir.absolute}:${path.join(home,config.dir.relative)}`,
   `      - ${data.path.projectCli}:/usr/local/lib/node_modules/agneta-cli`,
   `      - ${data.path.projectPlatform}:${data.path.app}/node_modules/agneta-platform`,
   `      - ${data.path.app}/node_modules/uws`,

@@ -16,6 +16,7 @@ services:
       - NODE_ENV=production
       - MODE=portal
       - HOST_NAME=<%-config.domain.portal%>
+      - SERVER_NAME=<%-config.serverName%>
       - ENDPOINT=https://<%-config.domain.portal%>
       - PORT_HTTP=<%-config.portHttp.portal%>
       - PORT=<%-config.port.portal%>
@@ -30,6 +31,7 @@ services:
       - NODE_ENV=production
       - MODE=live
       - HOST_NAME=<%-config.domain.live%>
+      - SERVER_NAME=<%-config.serverName%>
       - ENDPOINT=https://<%-config.domain.live%>
       - PORT_HTTP=<%-config.portHttp.live%>
       - PORT=<%-config.port.live%>
