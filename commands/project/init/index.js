@@ -7,6 +7,9 @@ module.exports = function() {
       return require('./output')(options);
     })
     .then(function() {
+      return require('./secrets')(options);
+    })
+    .then(function() {
       return require('../../image/init').promise();
     })
     .then(function() {
