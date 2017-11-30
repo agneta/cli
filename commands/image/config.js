@@ -32,7 +32,7 @@ var data = {
     app: `${home}/app`,
     projectCli: path.join(__dirname, '../..'),
   },
-  serverName: config.get('server.name'),
+  serverName: config.agneta.get('server.name'),
   user: user,
   portHttp: {
     portal: 8181,

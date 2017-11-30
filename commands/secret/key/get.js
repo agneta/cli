@@ -10,7 +10,7 @@ function promise() {
 
   function tryGet() {
 
-    var secretKey = config.get('secretKey');
+    var secretKey = config.project.get('secretKey');
     if(!secretKey && !envSecret){
       return Promise.reject('No secret key is stored.');
     }

@@ -20,7 +20,7 @@ module.exports = function() {
     .then(function(answers) {
 
       var secretKey = cryptojs.AES.encrypt(answers.secretKey, answers.passphrase).toString();
-      config.set('secretKey', secretKey);
+      config.project.set('secretKey', secretKey);
 
     })
     .then(function() {

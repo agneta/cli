@@ -17,8 +17,8 @@ module.exports = function() {
 
     })
     .then(function(answers) {
-      console.log(answers);
-      config.set(answers.name,answers.value);
+      //console.log(answers);
+      config.agneta.set(answers.name,answers.value);
 
     })
     .then(function() {

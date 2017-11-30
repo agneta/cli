@@ -14,7 +14,7 @@ module.exports = function() {
     })
     .then(function(answers) {
 
-      console.log(config.get(answers.name));
+      console.log(config.agneta.get(answers.name));
 
     });
 
