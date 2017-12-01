@@ -2,7 +2,7 @@ const path = require('path');
 const config = require('./config');
 const pass = config.password;
 
-module.exports = function() {
+module.exports = function(options) {
 
   const outDir = path.join(process.cwd(), 'tmp', 'certificates');
   const cnfDir = path.join(__dirname, 'config');
@@ -14,6 +14,7 @@ module.exports = function() {
   return {
     config: config,
     pass: pass,
+    main: options,
     //
     outDir: outDir,
     cnfDir: cnfDir,

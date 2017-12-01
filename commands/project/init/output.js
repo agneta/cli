@@ -22,30 +22,36 @@ module.exports = function(options) {
           var promise = Promise.resolve()
             .then(function() {
 
-              if (!item.stats.isFile()) {
-                return;
-              }
-
               var location = path.relative(sourceDir, item.path);
               var locationTarget = path.join(destDir, location);
 
-              console.log(location);
+              if (item.stats.isDirectory()) {
 
-              if (options.config.templates[location]) {
-                return fs.readFile(item.path)
-                  .then(function(content) {
-                    content = _.template(content)(options);
-                    return fs.outputFile(locationTarget, content);
+                return fs.ensureDir(locationTarget);
+
+              }
+
+              if (item.stats.isFile()) {
+
+                //console.log(location);
+
+                if (options.config.templates[location]) {
+                  return fs.readFile(item.path)
+                    .then(function(content) {
+                      content = _.template(content)(options);
+                      return fs.outputFile(locationTarget, content);
+                    });
+                }
+
+                return fs.exists(locationTarget)
+                  .then(function(exists) {
+                    if (exists) {
+                      return;
+                    }
+                    return fs.copy(item.path, locationTarget);
                   });
               }
 
-              return fs.exists(locationTarget)
-                .then(function(exists) {
-                  if (exists) {
-                    return;
-                  }
-                  return fs.copy(item.path, locationTarget);
-                });
 
             });
 

@@ -5,6 +5,10 @@ subtitle:
 
 #-----------------------------------------------
 
+domain:
+  production: 'localhost'
+  staging: 'staging.localhost'
+
 language:
   default:
     key: 'en'
