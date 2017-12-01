@@ -10,6 +10,7 @@ services:
     command: agneta image build -m portal
   portal:
     image: '<%-config.image.app%>'
+    network_mode: 'host'
     build:
       context: .
     environment:
@@ -25,6 +26,7 @@ services:
       - '<%-config.port.portal%>'
   live:
     image: '<%-config.image.app%>'
+    network_mode: 'host'
     build:
       context: .
     environment:
