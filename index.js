@@ -38,4 +38,5 @@ Promise.resolve()
   .catch(function(err){
     console.error(chalk.bold.red(err.message));
     console.error(err.stack);
+    process.exit();
   });

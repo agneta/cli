@@ -14,6 +14,7 @@ module.exports = function() {
     })
     .then(function() {
       console.log('Your project is ready');
+      process.exit();
     });
 
 };
