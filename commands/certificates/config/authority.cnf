@@ -19,13 +19,13 @@ prompt                 = no
 output_password        = password
 
 [ req_distinguished_name ]
-C                      = US
-ST                     = MA
-L                      = Boston
-O                      = Example Co
-OU                     = techops
-CN                     = ca
-emailAddress           = certs@example.com
+C                      = <%-country%>
+ST                     = <%-state%>
+L                      = <%-locality%>
+O                      = <%-organization%>
+OU                     = <%-unit%>
+CN                     = <%-name%>
+emailAddress           = <%-email%>
 
 [ req_attributes ]
 challengePassword      = test

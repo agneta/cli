@@ -6,6 +6,10 @@ const Promise = require('bluebird');
 
 module.exports = function(options) {
 
+  if(!options.config.client){
+    return;
+  }
+
   var names = _.keys(options.config.client);
   var template;
 

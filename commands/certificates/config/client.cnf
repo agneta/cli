@@ -11,7 +11,6 @@ C                      = <%-country%>
 ST                     = <%-state%>
 L                      = <%-locality%>
 O                      = <%-organization%>
-OU                     = <%-unit%>
 CN                     = <%-name%>
 emailAddress           = <%-email%>
 

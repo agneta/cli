@@ -26,6 +26,7 @@
     "mongodb": "^2.2.33",
     "package-json": "^4.0.1",
     "pm2": "^2.7.1",
+    "promised-exec": "^1.0.1",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "simple-git": "^1.79.0",

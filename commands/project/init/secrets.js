@@ -61,6 +61,14 @@ module.exports = function() {
     })
     .then(function() {
 
+      return require('../../certificates')({
+        secretKey: secretKey,
+        secrets: secrets
+      });
+
+    })
+    .then(function() {
+
       if (!secrets.isValid) {
         secrets.isValid = encrypt('yes');
       }

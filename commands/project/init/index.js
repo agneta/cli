@@ -15,6 +15,9 @@ module.exports = function() {
     .then(function() {
       console.log('Your project is ready');
       process.exit();
+    })
+    .catch(function(error) {
+      console.error(error);
     });
 
 };

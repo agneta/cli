@@ -1,33 +1,21 @@
 module.exports = {
-  password: '',
-  client: {
-    test: {
-      country: '',
-      state: '',
-      locality: '',
-      organization: '',
-      unit: '',
-      name: '',
-      email: '',
-      password: ''
-    }
-  },
+  password: 'password',
   authority: {
-    country: '',
-    state: '',
-    locality: '',
-    organization: '',
-    unit: '',
-    name: '',
-    email: ''
+    country: 'US',
+    state: 'FL',
+    locality: 'Pensacola',
+    organization: 'Agneta Network Applications, LLC',
+    unit: 'IT Services',
+    name: 'www.agneta.io',
+    email: 'support@agneta.io'
   },
   server: {
-    country: '',
-    state: '',
-    locality: '',
-    organization: '',
-    unit: '',
-    name: '',
-    email: ''
+    country: 'US',
+    state: 'FL',
+    locality: 'Pensacola',
+    organization: 'Agneta Network Applications, LLC',
+    unit: 'IT Services',
+    name: 'www.agneta.io',
+    email: 'support@agneta.io'
   }
 };
