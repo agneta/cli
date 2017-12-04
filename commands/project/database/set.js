@@ -1,7 +1,6 @@
 const inquirer = require('inquirer');
 const _ = require('lodash');
 const cryptojs = require('crypto-js');
-const MongoClient = require('mongodb').MongoClient;
 
 module.exports = function(options) {
 
@@ -18,7 +17,7 @@ module.exports = function(options) {
     .then(function() {
 
       console.log();
-      console.log('Lets connect to your mongodb database:');
+      console.log('Lets setup your mongodb database:');
       console.log();
 
       return inquirer.prompt([{
@@ -49,20 +48,8 @@ module.exports = function(options) {
       ]);
     })
     .then(function(_answers) {
+
       answers = _answers;
-
-      var credentials = '';
-      if (answers.username && answers.password) {
-        credentials = `${answers.username}:${answers.password}@`;
-      }
-      var url = `mongodb://${credentials}${answers.host}:${answers.port}/${answers.database}`;
-      console.log(url);
-      return MongoClient.connect(url);
-
-    })
-    .then(function() {
-
-      console.log('Your connection to mongodb is successful. Database settings will be stored');
       secrets.default.db = {};
 
       for (var key in answers) {

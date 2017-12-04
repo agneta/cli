@@ -9,9 +9,6 @@ function promise(argv) {
     })
     .then(function() {
       return require('./app')(argv);
-    })
-    .then(function() {
-      return require('./proxy')(argv);
     });
 }
 

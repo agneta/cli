@@ -2,7 +2,13 @@ const proc = require('../../lib/process');
 
 module.exports = function(argv) {
 
-  proc.exec(`docker-compose up -d --force-recreate ${argv.service}`)
+  return Promise.resolve()
+    .then(function() {
+      return require('./init').promise();
+    })
+    .then(function() {
+      return proc.exec(`docker-compose up -d --force-recreate ${argv.service}`);
+    })
     .then(function() {
 
       var terminal = `x-terminal-emulator -e "docker-compose exec ${argv.service} bash -c  '`;

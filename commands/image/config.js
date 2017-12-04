@@ -33,6 +33,7 @@ var data = {
     projectCli: path.join(__dirname, '../..'),
   },
   serverName: config.agneta.get('server.name'),
+  serverIp: require('ip').address(),
   user: user,
   portHttp: {
     portal: 8181,

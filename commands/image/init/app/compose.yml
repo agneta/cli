@@ -10,7 +10,6 @@ services:
     command: agneta image build -m portal
   portal:
     image: '<%-config.image.app%>'
-    network_mode: 'host'
     build:
       context: .
     environment:
@@ -26,7 +25,6 @@ services:
       - '<%-config.port.portal%>'
   live:
     image: '<%-config.image.app%>'
-    network_mode: 'host'
     build:
       context: .
     environment:
@@ -50,14 +48,16 @@ services:
     environment:
       - NODE_ENV=development
     volumes: <%-config.volumes%>
-  proxy:
-    image: '<%-config.image.proxy%>'
-    build:
-      context: .
-      dockerfile: .proxy/dockerfile
+  mongodb:
+    image: mongo:3.4-jessie
     environment:
-      - NODE_ENV=development
-      - MODE=proxy
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    volumes:
+      - ./storage/db:/data/db
+    command: mongod --smallfiles --logpath=/dev/null
+  proxy:
+    image: haproxy:1.7-alpine
     ports:
       - '80:8080'
       - '443:4343'
