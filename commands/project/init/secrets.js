@@ -53,6 +53,8 @@ module.exports = function() {
     .then(function(_secretKey) {
 
       secretKey = _secretKey;
+      process.env.SECRET_KEY = secretKey;
+
       return require('../database/set')({
         secretKey: secretKey,
         secrets: secrets

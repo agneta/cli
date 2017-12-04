@@ -1,6 +1,7 @@
 module.exports = function() {
 
   var options = {};
+
   require('./config')()
     .then(function(config) {
       options.config = config;
@@ -11,6 +12,12 @@ module.exports = function() {
     })
     .then(function() {
       return require('../../image/init').promise();
+    })
+    .then(function() {
+      return require('./platform')(options);
+    })
+    .then(function() {
+      return require('./generate')();
     })
     .then(function() {
       console.log('Your project is ready');
