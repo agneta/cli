@@ -15,9 +15,8 @@ services:
     environment:
       - NODE_ENV=production
       - MODE=portal
-      - HOST_NAME=<%-config.domain.portal%>
+      - HOST_NAME=portal.localhost
       - SERVER_NAME=<%-config.serverName%>
-      - ENDPOINT=https://<%-config.domain.portal%>
       - PORT_HTTP=<%-config.portHttp.portal%>
       - PORT=<%-config.port.portal%>
     expose:
@@ -30,9 +29,8 @@ services:
     environment:
       - NODE_ENV=production
       - MODE=live
-      - HOST_NAME=<%-config.domain.live%>
+      - HOST_NAME=live.localhost
       - SERVER_NAME=<%-config.serverName%>
-      - ENDPOINT=https://<%-config.domain.live%>
       - PORT_HTTP=<%-config.portHttp.live%>
       - PORT=<%-config.port.live%>
     expose:
@@ -41,11 +39,13 @@ services:
   portal_dev:
     extends: portal
     environment:
+      - HOST_NAME=portal_dev.localhost
       - NODE_ENV=development
     volumes: <%-config.volumes%>
   live_dev:
     extends: live
     environment:
+      - HOST_NAME=live_dev.localhost
       - NODE_ENV=development
     volumes: <%-config.volumes%>
   mongoDB:

@@ -1,6 +1,6 @@
-var path = require('path');
-
-var yargonaut = require('yargonaut')
+const path = require('path');
+const config = require('./lib/config');
+const yargonaut = require('yargonaut')
   .style('blue')
   .helpStyle('green')
   .errorsStyle('red');
@@ -10,7 +10,7 @@ var chalk = yargonaut.chalk();
 
 //-----------------------------------------------------------
 
-global.pathPlatform = path.join(process.cwd(), 'node_modules', 'agneta-platform');
+global.pathPlatform = config.agneta.get('platform') || path.join(process.cwd(), 'node_modules', 'agneta-platform');
 global.requireMain = function(pathModule) {
   return require(path.join(global.pathPlatform, 'main', pathModule));
 };
