@@ -8,8 +8,8 @@ module.exports = function(options) {
   var pathProxy = path.join(process.cwd(), '.proxy');
 
   var data = {
-    use_backend: {},
-    backend: {}
+    use_backend: [],
+    backend: []
   };
 
   return Promise.resolve()
@@ -19,7 +19,6 @@ module.exports = function(options) {
     .then(function(backendTemplate) {
 
       backendTemplate = _.template(backendTemplate);
-
       return Promise.map(_.keys(options.images),function(name){
 
         var containers = options.images[name];
@@ -27,20 +26,21 @@ module.exports = function(options) {
           return;
         }
 
-        containers = containers.map(function(container){
-          return `server ${container.name} ${container.name} check`;
+
+        containers = containers.map(function(container,index){
+          return `server ${container.name}_${index} ${container.name}:${container.port} check`;
         }).join('\n    ');
 
-        data.use_backend[name] = [`acl is_${name} req_ssl_sni -i ${name}.localhost`,
+        data.use_backend.push([`acl is_${name} req_ssl_sni -i ${name}.localhost`,
           `use_backend nodes_${name} if is_${name}`
-        ].join('\n    ');
+        ].join('\n    '));
 
-        data.backend[name] = backendTemplate({
+        data.backend.push(backendTemplate({
           data:{
             name: name,
             containers: containers
           }
-        });
+        }));
 
       });
 
@@ -49,6 +49,9 @@ module.exports = function(options) {
       return fs.readFile(path.join(__dirname, 'config.cfg'));
     })
     .then(function(content) {
+
+      data.use_backend.join('\n');
+      data.backend.join('\n');
 
       content = _.template(content)({
         data: data

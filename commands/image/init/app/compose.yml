@@ -48,14 +48,18 @@ services:
     environment:
       - NODE_ENV=development
     volumes: <%-config.volumes%>
-  mongodb:
+  mongoDB:
     image: mongo:3.4-jessie
     environment:
       - MONGO_DATA_DIR=/data/db
       - MONGO_LOG_DIR=/dev/null
     volumes:
       - ./storage/db:/data/db
-    command: mongod --smallfiles --logpath=/dev/null
+    command: mongod --smallfiles --logpath=/dev/null --auth --port 27018
+    expose:
+      - "27018"
+    ports:
+      - "27018:27018"
   proxy:
     image: haproxy:1.7-alpine
     ports:
