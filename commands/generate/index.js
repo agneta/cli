@@ -2,16 +2,32 @@ const terminal = global.requireMain('server/terminal');
 
 module.exports = function(yargs) {
 
-  yargs.command('dependencies', 'Load from bower compomnents', init('dependencies'));
-  yargs.command('services', 'Add services to the client applications', init('services'));
+  yargs.command('generate', 'Generation tool', function(yargs) {
 
-  function init(name) {
-    return function() {
-      terminal()
-        .then(
-          global.requireMain(`./${name}`)
-        );
-    };
-  }
+    yargs.command('dependencies', 'Load from bower compomnents', init('dependencies'));
+    yargs.command('services', 'Add services to the client applications', init('services'));
+
+    function init(name) {
+
+      return function() {
+        Promise.resolve()
+          .then(function() {
+            return require('../secret/key/get').promise();
+          })
+          .then(function(secretKey) {
+            process.env.SECRET_KEY = secretKey;
+            return terminal();
+          })
+          .then(function(servers) {
+            return require(`./${name}`)(servers);
+          })
+          .then(function() {
+            process.exit();
+          });
+      };
+    }
+
+  });
+
 
 };
