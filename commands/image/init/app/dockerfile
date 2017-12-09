@@ -4,7 +4,8 @@ ARG AGNETA_SECRET_KEY=3
 
 COPY --chown=<%-config.user.username%>:<%-config.user.username%> . <%-config.path.app%>
 
-RUN npm install --prefer-offline --no-shrinkwrap --loglevel info && \
+RUN agneta image setup && \
+    npm install --prefer-offline --no-shrinkwrap --loglevel info && \
     echo "\"${AGNETA_SECRET_KEY}\"" >> <%-config.path.home%>/secret.json
 
 CMD ["agneta", "process", "start"]

@@ -37,45 +37,19 @@ module.exports = function() {
 
   return Promise.resolve()
     .then(function() {
-      return git.native.init(repoPath, 0)
-        .then(function() {
-          return true;
-        });
-    })
-    .then(function() {
 
-      return git.native.addRemote(config.remote.name, config.remote.url)
-        .then(function() {
-          return git.native.getRemotes();
-        })
-        .then(function(remotes) {
-          git.remotes = remotes;
-          console.log('remotes', git.remotes);
-        });
+      return git.native.init(repoPath, 0);
 
     })
     .then(function() {
 
-      return git.native.checkoutLocalBranch(config.branch)
-        .then(function() {
-          console.log(`Fetching from remote ${config.remote.name} with branch ${config.branch}`);
-          return git.native.fetch(config.remote.name, config.branch);
-        })
-        .then(function() {
-          return git.native.reset(['--hard', 'FETCH_HEAD']);
-        })
-        .then(function() {
-          return git.native.clean('f', ['-d']);
-        });
+      return git.native.addRemote(config.remote.name, config.remote.url);
 
     })
     .then(function() {
 
-      return git.native.branch()
-        .then(function(result) {
-          git.branch = result;
-          console.log('Current branch is', git.branch.current);
-        });
+      console.log(`Fetching changes from remote ${config.remote.name}`);
+      return git.native.fetch(config.remote.name);
 
     })
     .then(function() {
