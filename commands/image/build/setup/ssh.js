@@ -34,15 +34,12 @@ module.exports = function() {
         console.log('Keys already exist');
         return;
       }
-      return require('../../secret/get').promise({
-        secretKey: process.env.AGNETA_SECRET_KEY,
-        props: ['keys.git.key', 'keys.git.pub']
-      });
-    })
-    .then(function(secrets) {
 
-      var keySource = secrets[0];
-      var pubSource = secrets[1];
+      var app = {};
+      var secrets = require('agneta-platform/services/lib/secrets')(app);
+
+      var keySource = secrets.get('keys.git.key');
+      var pubSource = secrets.get('keys.git.pub');
 
       if (!keySource ||
         !pubSource

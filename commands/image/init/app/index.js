@@ -83,7 +83,7 @@ module.exports = function(argv) {
     })
     .then(function(content) {
 
-      var lines = ['/.cache/'];
+      var lines = ['/.cache/','.agneta'];
 
       for (var line of lines) {
 

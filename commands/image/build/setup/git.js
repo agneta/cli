@@ -49,7 +49,7 @@ module.exports = function() {
     .then(function() {
 
       console.log(`Fetching changes from remote ${config.remote.name}`);
-      return git.native.fetch(config.remote.name);
+      return git.native.fetch(config.remote.name, 'master');
 
     })
     .then(function() {
