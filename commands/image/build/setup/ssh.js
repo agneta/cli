@@ -2,11 +2,12 @@ const fs = require('fs-extra');
 const path = require('path');
 const Promise = require('bluebird');
 const config = require('./config');
-const configstore = require('../../../lib/config');
-const proc = require('../../../lib/process');
+const exec = require('child-process-promise').exec;
+
+
 module.exports = function() {
 
-  var keyName = configstore.name + '_rsa';
+  var keyName = 'app_rsa';
   var pathSSH = path.join(process.env.HOME, '.ssh');
 
   var pathKeyTarget = path.join(pathSSH, keyName);
@@ -20,10 +21,10 @@ module.exports = function() {
       return fs.ensureFile(pathSSHHosts);
     })
     .then(function() {
-      return proc.exec(`ssh-keygen -R ${config.host}`);
+      return exec(`ssh-keygen -R ${config.host}`);
     })
     .then(function() {
-      return proc.exec(`ssh-keyscan -H ${config.host} >> ${pathSSHHosts}`);
+      return exec(`ssh-keyscan -H ${config.host} >> ${pathSSHHosts}`);
     })
     .then(function() {
 
@@ -56,10 +57,10 @@ module.exports = function() {
 
     })
     .then(function() {
-      return proc.exec(`chmod 600 ${pathKeyTarget}`);
+      return exec(`chmod 600 ${pathKeyTarget}`);
     })
     .then(function() {
-      return proc.exec(`chmod 600 ${pathPubTarget}`);
+      return exec(`chmod 600 ${pathPubTarget}`);
     })
     .then(function() {
       return fs.ensureFile(pathSSHConfig);
