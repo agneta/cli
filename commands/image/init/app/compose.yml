@@ -42,11 +42,11 @@ services:
       - HOST_NAME=portal_dev.localhost
       - NODE_ENV=development
     volumes: <%-config.volumes%>
-  portal_git:
+  portal_stg:
     extends: portal
     environment:
-      - HOST_NAME=portal_git.localhost
-      - NODE_ENV=development
+      - HOST_NAME=portal_stg.localhost
+      - NODE_ENV=staging
     volumes: <%-config.volumesAgneta%>
   live_dev:
     extends: live
