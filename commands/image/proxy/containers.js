@@ -6,7 +6,7 @@ const S = require('string');
 module.exports = function() {
 
   var images = {};
-  var names = ['portal_dev','live_dev'];
+  var names = ['portal_dev','live_dev','portal_stg'];
 
   return Promise.resolve()
     .then(function() {
