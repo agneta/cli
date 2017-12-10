@@ -8,6 +8,9 @@ module.exports = function(argv) {
 
   return Promise.resolve()
     .then(function() {
+      return require('../../lib/check')();
+    })
+    .then(function() {
       return require('./init').promise();
     })
     .then(function() {

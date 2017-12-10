@@ -2,7 +2,7 @@ const Promise = require('bluebird');
 const _ = require('lodash');
 const fs = require('fs-extra');
 const path = require('path');
-const config = require('../../config');
+const config = require('../config');
 
 module.exports = function(argv) {
 

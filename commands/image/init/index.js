@@ -5,9 +5,6 @@ function promise(argv) {
 
   return Promise.resolve()
     .then(function() {
-      return require('./check')();
-    })
-    .then(function() {
       return require('./app')(argv);
     });
 }
