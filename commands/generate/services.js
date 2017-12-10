@@ -1,8 +1,9 @@
-const log = global.requireMain('log');
-const projectPaths = global.requireMain('paths').core;
 const Promise = require('bluebird');
 
 module.exports = function(servers) {
+
+  const log = global.requireMain('log');
+  const projectPaths = global.requireMain('paths').core;
 
   return Promise.resolve()
     .then(function() {

@@ -1,9 +1,10 @@
-const log = global.requireMain('log');
-const projectPaths = global.requireMain('paths').core;
-const progress = global.requireMain('progress');
 const path = require('path');
 
 module.exports = function(servers) {
+
+  const log = global.requireMain('log');
+  const projectPaths = global.requireMain('paths').core;
+  const progress = global.requireMain('progress');
 
   return Promise.resolve()
     .then(function() {

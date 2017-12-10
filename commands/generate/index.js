@@ -1,4 +1,3 @@
-const terminal = global.requireMain('server/terminal');
 
 module.exports = function(yargs) {
 
@@ -8,6 +7,8 @@ module.exports = function(yargs) {
     yargs.command('services', 'Add services to the client applications', init('services'));
 
     function init(name) {
+
+      const terminal = global.requireMain('server/terminal');
 
       return function() {
         Promise.resolve()

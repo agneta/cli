@@ -1,8 +1,8 @@
 const Promise = require('bluebird');
 
-const terminal = global.requireMain('server/terminal');
-
 module.exports = function() {
+
+  const terminal = global.requireMain('server/terminal');
 
   var generators = ['dependencies', 'services'];
 
