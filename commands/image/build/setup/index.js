@@ -1,5 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
+const _ = require('lodash');
+_.mixin(require('lodash-deep'));
 
 Promise.resolve()
   .then(function() {

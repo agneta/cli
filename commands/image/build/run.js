@@ -1,7 +1,7 @@
 const fs = require('fs-extra');
 const Promise = require('bluebird');
 const proc = require('../../../lib/process');
-
+const config = require('../config');
 module.exports = function() {
 
   return Promise.resolve()
@@ -14,6 +14,6 @@ module.exports = function() {
 
     })
     .then(function(secretKey) {
-      return proc.spawn(`docker-compose build --build-arg AGNETA_SECRET_KEY=${secretKey} portal`);
+      return proc.spawn(`docker build --build-arg AGNETA_SECRET_KEY=${secretKey} --tag ${config.image.app} .`);
     });
 };
