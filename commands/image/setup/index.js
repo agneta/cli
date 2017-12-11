@@ -3,6 +3,10 @@ const path = require('path');
 const _ = require('lodash');
 _.mixin(require('lodash-deep'));
 
+global.requireMain = function(pathModule) {
+  return require(path.join('agneta-platform/main', pathModule));
+};
+
 Promise.resolve()
   .then(function() {
 
@@ -19,6 +23,13 @@ Promise.resolve()
   })
   .then(function() {
     return require('./git')();
+  })
+  .then(function() {
+    return require('./generate')();
+  })
+  .then(function() {
+    console.log('Agneta setup completed');
+    process.exit();
   })
   .catch(function(err){
     console.error(err);

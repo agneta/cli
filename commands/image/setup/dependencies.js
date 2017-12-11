@@ -3,13 +3,13 @@ const path = require('path');
 module.exports = function(servers) {
 
   const log = global.requireMain('log');
-  const projectPaths = global.requireMain('paths').core;
+  const projectPaths = global.requireMain('paths');
   const progress = global.requireMain('progress');
 
   return Promise.resolve()
     .then(function() {
       var utilityPath = path.join(
-        projectPaths.portalWebsite, 'utilities/dependencies'
+        projectPaths.portal.website, 'utilities/dependencies'
       );
 
       return require(utilityPath)({

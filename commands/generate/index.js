@@ -20,7 +20,7 @@ module.exports = function(yargs) {
             return terminal();
           })
           .then(function(servers) {
-            return require(`./${name}`)(servers);
+            return require(`../image/setup/${name}`)(servers);
           })
           .then(function() {
             process.exit();

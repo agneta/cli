@@ -3,18 +3,18 @@ const Promise = require('bluebird');
 module.exports = function(servers) {
 
   const log = global.requireMain('log');
-  const projectPaths = global.requireMain('paths').core;
+  const projectPaths = global.requireMain('paths');
 
   return Promise.resolve()
     .then(function() {
 
       return Promise.map([{
-        server: servers.servicesPortal,
-        dir: projectPaths.portalProjectGenerated
+        server: servers.portal.services,
+        dir: projectPaths.appPortal.generated
       },
       {
-        server: servers.servicesWebsite,
-        dir: projectPaths.generated
+        server: servers.app.services,
+        dir: projectPaths.app.generated
       },
       ], function(service) {
         return service.server.locals.app.generate.methods({

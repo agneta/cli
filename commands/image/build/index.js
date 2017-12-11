@@ -39,7 +39,7 @@ module.exports = function(yargs) {
     })
     .then(function() {
       return fs.copy(
-        path.join(__dirname,'setup'),
+        path.join(__dirname,'../setup'),
         path.join(process.cwd(),'.agneta/setup')
       );
     })

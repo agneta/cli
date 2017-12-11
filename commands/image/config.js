@@ -48,19 +48,13 @@ var data = {
 
 data.path.projectPlatform = config.agneta.get('platform');
 
-data.volumesAgneta = [
+data.volumes = [
   '',
+  `      - .:${data.path.app}`,
   `      - ${data.path.projectCli}:/usr/local/lib/node_modules/agneta-cli`,
   `      - ${data.path.projectPlatform}:${data.path.app}/node_modules/agneta-platform`,
   `      - ${data.path.app}/node_modules/uws`,
   `      - ${data.path.app}/node_modules/agneta-platform/node_modules/uws`
-]
-  .join('\n');
-
-data.volumes = [
-  '',
-  `      - .:${data.path.app}`,
-  data.volumesAgneta
 ].join('\n');
 
 

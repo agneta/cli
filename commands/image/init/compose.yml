@@ -49,7 +49,6 @@ services:
       - HOST_NAME=portal_stg.localhost
       - GIT_BRANCH=portal_dev
       - NODE_ENV=development
-    volumes: <%-config.volumesAgneta%>
   live_dev:
     extends: live
     environment:
