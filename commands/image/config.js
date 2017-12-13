@@ -19,7 +19,7 @@ var data = {
     live: 'live.localhost'
   },
   image: {
-    base: 'agneta:latest',
+    base: 'agneta/base:latest',
     app: `${config.name}:latest`,
     proxy: `${config.name}-proxy:latest`,
   },

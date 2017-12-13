@@ -15,7 +15,7 @@ module.exports = function(yargs) {
     interpolate: /<%-([\s\S]+?)%>/g
   };
 
-  require('../init/app/commands')(argv);
+  require('../init/commands')(argv);
 
   Promise.resolve()
 

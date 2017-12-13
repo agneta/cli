@@ -9,7 +9,7 @@ module.exports = function(servers) {
   return Promise.resolve()
     .then(function() {
       var utilityPath = path.join(
-        projectPaths.portal.website, 'utilities/dependencies'
+        projectPaths.portal.website, 'utilities/build/dependencies'
       );
 
       return require(utilityPath)({
@@ -17,7 +17,6 @@ module.exports = function(servers) {
         log: console.log,
         progress: progress
       })
-        .run()
         .then(function() {
           log.success('Success!');
         });
