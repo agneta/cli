@@ -1,4 +1,3 @@
-
 module.exports = function(yargs) {
 
   yargs.command('generate', 'Generation tool', function(yargs) {
@@ -21,6 +20,9 @@ module.exports = function(yargs) {
           })
           .then(function(servers) {
             return require(`../image/setup/${name}`)(servers);
+          })
+          .catch(function(err){
+            console.error(err);
           })
           .then(function() {
             process.exit();
