@@ -14,6 +14,6 @@ module.exports = function() {
 
     })
     .then(function(secretKey) {
-      return proc.spawn(`docker build --build-arg AGNETA_SECRET_KEY=${secretKey} --tag ${config.image.app} .`);
+      return proc.spawn(`docker build --build-arg AGNETA_SECRET_KEY=${secretKey} --tag ${config.image.app} --file ${config.image.file} .`);
     });
 };

@@ -19,6 +19,7 @@ var data = {
     live: 'live.localhost'
   },
   image: {
+    file: 'dockerfile',
     base: 'agneta/base:latest',
     app: `${config.name}:latest`,
     proxy: `${config.name}-proxy:latest`,

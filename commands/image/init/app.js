@@ -35,7 +35,7 @@ module.exports = function(argv) {
 
       var pathOuput = path.join(
         process.cwd(),
-        'dockerfile'
+        config.image.file
       );
 
       return fs.outputFile(pathOuput, contentOutput);
