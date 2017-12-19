@@ -73,6 +73,9 @@ services:
     ports:
       - '80:8080'
       - '443:4343'
+    expose:
+      - "80"
+      - "4343"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/run/docker.sock:/tmp/docker.sock:ro
