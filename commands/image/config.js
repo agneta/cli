@@ -44,7 +44,10 @@ var data = {
     portal: 9191,
     live: 9292
   },
-  commands: {}
+  commands: {},
+  docker:{
+    machine: 'docker.17.12.0'
+  }
 };
 
 data.path.projectPlatform = config.agneta.get('platform');

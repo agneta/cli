@@ -11,6 +11,9 @@ module.exports = function(argv) {
       return require('./init').promise();
     })
     .then(function() {
+      return require('./machine')();
+    })
+    .then(function() {
       return spawn('docker-compose',['up', '-d' ,'--force-recreate',argv.service],{ stdio: 'inherit' });
     })
     .then(function() {

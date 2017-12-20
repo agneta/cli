@@ -1,10 +1,16 @@
 const fs = require('fs-extra');
 const Promise = require('bluebird');
-const proc = require('../../../lib/process');
 const config = require('../config');
+const {
+  spawn
+} = require('child_process');
+
 module.exports = function() {
 
   return Promise.resolve()
+    .then(function() {
+      return require('../machine')();
+    })
     .then(function() {
       return fs.ensureDir('tmp');
     })
@@ -14,6 +20,32 @@ module.exports = function() {
 
     })
     .then(function(secretKey) {
-      return proc.spawn(`docker build --build-arg AGNETA_SECRET_KEY=${secretKey} --tag ${config.image.app} --file ${config.image.file} .`);
+      var child = spawn('docker', ['build',
+        '--build-arg',
+        `AGNETA_SECRET_KEY=${secretKey}`,
+        '--tag',
+        `${config.image.app}`,
+        '--file',
+        `${config.image.file}`,
+        '.'
+      ], {
+        stdio: 'inherit'
+      });
+
+      return new Promise(function(resolve,reject) {
+
+        child.on('error', function(err) {
+          reject(err);
+        });
+
+        child.on('disconnect', function() {
+          resolve();
+        });
+
+        child.on('close', function() {
+          resolve();
+        });
+
+      });
     });
 };
