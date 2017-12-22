@@ -13,7 +13,7 @@ module.exports = function() {
     })
     .then(function() {
 
-      var promise = spawn('docker-compose', ['up','proxy']);
+      var promise = spawn('docker-compose', ['up','--force-recreate','proxy']);
       var childProcess = promise.childProcess;
 
       childProcess.stdout.pipe(process.stdout);
