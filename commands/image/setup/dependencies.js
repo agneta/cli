@@ -9,7 +9,7 @@ module.exports = function(servers) {
   return Promise.resolve()
     .then(function() {
       var utilityPath = path.join(
-        projectPaths.portal.website, 'utilities/build/dependencies'
+        projectPaths.portal.website, 'utilities/generate/dependencies'
       );
 
       return require(utilityPath)({
