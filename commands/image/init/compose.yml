@@ -29,6 +29,7 @@ services:
     environment:
       - NODE_ENV=production
       - MODE=live
+      - GIT_BRANCH=live-production
       - HOST_NAME=live.localhost
       - SERVER_NAME=<%-config.serverName%>
       - PORT_HTTP=<%-config.portHttp.live%>
