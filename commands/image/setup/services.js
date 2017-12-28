@@ -9,11 +9,11 @@ module.exports = function(servers) {
     .then(function() {
 
       return Promise.map([{
-        server: servers.portal.services,
+        server: servers.servicesPortal,
         dir: projectPaths.appPortal.generated
       },
       {
-        server: servers.app.services,
+        server: servers.servicesWebsite,
         dir: projectPaths.app.generated
       },
       ], function(service) {

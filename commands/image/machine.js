@@ -6,9 +6,10 @@ module.exports = function() {
   if(!config.machine){
     return;
   }
+  console.log(`using docker machine: ${config.machine}`);
   return Promise.resolve()
     .then(function() {
-      return exec(`docker-machine env ${config.machine.name}`);
+      return exec(`docker-machine env ${config.machine}`);
     })
     .then(function(result) {
       result = result.stdout.split('#')[0].split('\n');
@@ -20,7 +21,7 @@ module.exports = function() {
 
         var key = line[0];
         var value = line[1].split('"')[0];
-
+        console.log(`${key}: ${value}`);
         process.env[key]=value;
       });
 

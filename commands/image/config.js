@@ -45,7 +45,7 @@ var data = {
     live: 9292
   },
   commands: {},
-  // Use when docker engine is on another machine:{}
+  machine: config.agneta.get('machine')
 };
 
 data.path.projectPlatform = config.agneta.get('platform');

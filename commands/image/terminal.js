@@ -13,6 +13,9 @@ module.exports = function(argv) {
 
   return Promise.resolve()
     .then(function() {
+      return require('./machine')();
+    })
+    .then(function() {
 
       var command = commands[argv.command];
 
