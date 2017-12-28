@@ -50,9 +50,8 @@ module.exports = function(options) {
     })
     .then(function(content) {
 
-      data.use_backend.join('\n');
-      data.backend.join('\n');
-
+      data.use_backend = data.use_backend.join('\n    ');
+      data.backend = data.backend.join('\n');
       content = _.template(content)({
         data: data
       });
