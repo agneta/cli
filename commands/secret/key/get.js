@@ -44,7 +44,7 @@ function promise() {
               }
               return tryGet();
             }
-
+            
             return secretKey;
           });
       });

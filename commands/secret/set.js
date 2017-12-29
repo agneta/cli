@@ -28,9 +28,30 @@ module.exports = function() {
         name: 'property',
         message: 'Enter the the property you want to set.'
       }, {
+        type: 'list',
+        name: 'type',
+        choices: [{
+          name: 'Write or paste the value',
+          value: 'value'
+        }, {
+          name: 'Read value from a file',
+          value: 'file'
+        }],
+        message: 'Enter the value of the property'
+      }, {
         type: 'text',
         name: 'value',
-        message: 'Enter the value of the property'
+        message: 'Enter the value of the property',
+        when: function(answers) {
+          return answers.type == 'value';
+        }
+      }, {
+        type: 'text',
+        name: 'file',
+        message: 'Enter the path of the file',
+        when: function(answers) {
+          return answers.type == 'file';
+        }
       }]);
 
     })
@@ -46,12 +67,18 @@ module.exports = function() {
       if (!output) {
         output = {};
       }
-
-      var value = cryptojs.AES.encrypt(answers.value, secretKey).toString();
+      var value = answers.value;
+      if (answers.file) {
+        value = fs.readFileSync(answers.file).toString('utf8');
+      }
+      value = cryptojs.AES.encrypt(value, secretKey).toString();
       output = _.set(output, answers.property, value);
       return fs.outputJson(pathOutput, output);
     })
     .then(function() {
       console.log('Secret value now added');
+    })
+    .catch(function(err){
+      console.error(err);
     });
 };
