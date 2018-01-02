@@ -8,11 +8,14 @@ module.exports = function(yargs) {
       yargs.command('base', 'Generate files for the base image', require('./base'));
       yargs.command('proxy', 'Generate files for the proxy and start the image', require('./proxy'));
 
-      yargs.command('start <service>', 'Start running the image built', builder,require('./start.js'));
-      yargs.command('stop <service>', 'Stop running the image', builder,require('./stop.js').cmd);
-      yargs.command('restart <service>', 'Restart the image', builder,require('./restart.js'));
+      yargs.command('start <service>', 'Start running the image built', builder,require('./start'));
+      yargs.command('stop <service>', 'Stop running the image', builder,require('./stop').cmd);
+      yargs.command('restart <service>', 'Restart the image', builder,require('./restart'));
 
-      yargs.command('terminal <service> <command>', 'Open terminal with specified service', builder,require('./terminal.js'));
+      var exec = require('./exec');
+      yargs.command('output <service>', 'Open output log of the running image', builder,exec.output);
+      yargs.command('error <service>', 'Open error log of the running image', builder,exec.error);
+      yargs.command('terminal <service>', 'Open a terminal of the running image', builder,exec.terminal);
 
       require('../default')(yargs);
 
