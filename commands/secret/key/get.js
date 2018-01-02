@@ -2,6 +2,8 @@ const inquirer = require('inquirer');
 const config = require('../../../lib/config');
 const cryptojs = require('crypto-js');
 const Promise = require('bluebird');
+const fs = require('fs-extra');
+const path = require('path');
 
 function promise() {
 
@@ -20,6 +22,14 @@ function promise() {
 
         if (envSecret) {
           return envSecret;
+        }
+
+        var keyPath = path.join(
+          process.cwd(), '../secret.json'
+        );
+
+        if(fs.existsSync(keyPath)) {
+          return fs.readJsonSync(keyPath, 'utf8');
         }
 
         return inquirer.prompt([{
@@ -44,9 +54,13 @@ function promise() {
               }
               return tryGet();
             }
-
             return secretKey;
           });
+      })
+      .then(function(secretKey){
+        process.env.AGNETA_SECRET_KEY = secretKey;
+        process.env.SECRET_KEY = secretKey;
+        return secretKey;
       });
   }
 

@@ -1,15 +1,33 @@
 const pm2 = require('pm2');
+const Promise = require('bluebird');
 
-module.exports = function() {
+function promise() {
 
-  pm2.stop('agneta',function(err,list){
+  return Promise.resolve()
+    .then(function() {
+      return new Promise(function(resolve,reject) {
 
-    if(err){
-      console.error(err);
-    }
+        pm2.stop('agneta',function(err,list){
 
-    console.log(list);
-    process.exit();
-  });
+          if(err){
+            reject(err);
+          }
 
+          resolve(list);
+        });
+
+      });
+    });
+
+}
+
+module.exports = {
+  promise: promise,
+  command: function(){
+    promise()
+      .then(function(list) {
+        console.log(list);
+        process.exit();
+      });
+  }
 };

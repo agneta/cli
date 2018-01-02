@@ -21,10 +21,10 @@ function exec(argv, command) {
 
 module.exports =  {
   output: function(argv){
-    return exec(argv,'tail -n 1000 -f ~/.pm2/logs/agneta-output-0.log');
+    return exec(argv,'agneta process output');
   },
   error: function(argv){
-    return exec(argv, 'tail -n 1000 -f ~/.pm2/logs/agneta-error-0.log');
+    return exec(argv, 'agneta process error');
   },
   terminal: function(argv){
     return exec(argv, 'exec /bin/bash -i');

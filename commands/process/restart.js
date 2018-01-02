@@ -1,16 +1,17 @@
-const pm2 = require('pm2');
 
 module.exports = function() {
 
-  pm2.restart('agneta',function(err,list){
-
-    if(err){
-      console.error(err);
-    }
-
-    console.log(list);
-    process.exit();
-
-  });
+  Promise.resolve()
+    .then(function() {
+      return require('./stop').promise();
+    })
+    .then(function() {
+      return require('./start').promise();
+    })
+    .then(function() {
+      console.log('Process restarted');
+      process.exit();
+    })
+    .catch(console.error);
 
 };
