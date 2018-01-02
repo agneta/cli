@@ -1,5 +1,5 @@
 const path = require('path');
-const agnetaPlatform = path.join(process.cwd(), 'node_modules/agneta-platform');
+const pm2 = require('pm2');
 
 function promise() {
 
@@ -11,10 +11,44 @@ function promise() {
 
   return Promise.resolve()
     .then(function() {
+      console.log('key');
+
       return require('../secret/key/get').promise();
     })
     .then(function() {
-      return require(agnetaPlatform);
+
+      return new Promise(function(resolve, reject) {
+        pm2.connect(function(err) {
+          if (err) {
+            return reject(err);
+          }
+          resolve();
+        });
+      });
+    })
+    .then(function() {
+      return new Promise(function(resolve, reject) {
+        var name = 'agneta';
+        var base = path.join(process.env.HOME, '.pm2/logs');
+        var outputPath = path.join(base, `${name}-output.log`);
+        var errorPath = path.join(base, `${name}-error.log`);
+
+        pm2.start({
+          name: name,
+          script: path.join(global.pathPlatform,'main', 'server', 'index.js'),
+          exec_mode: 'fork',
+          logDateFormat: '>> YYYY-MM-DD HH:mm:ss Z :',
+          output: outputPath,
+          error: errorPath,
+          cwd: process.cwd()
+        }, function(err) {
+          if (err) {
+            return reject(err);
+          }
+          resolve();
+        });
+      });
+
     });
 
 }
