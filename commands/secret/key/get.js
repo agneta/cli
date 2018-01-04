@@ -12,17 +12,14 @@ function promise() {
 
   function tryGet() {
 
-    var secretKey = config.project.get('secretKey');
-    if(!secretKey && !envSecret){
-      return Promise.reject('No secret key is stored.');
-    }
-
     return Promise.resolve()
       .then(function() {
 
         if (envSecret) {
           return envSecret;
         }
+
+        //------------------------------------------------
 
         var keyPath = path.join(
           process.cwd(), '../secret.json'
@@ -32,12 +29,20 @@ function promise() {
           return fs.readJsonSync(keyPath, 'utf8');
         }
 
+        //------------------------------------------------
+
         return inquirer.prompt([{
           type: 'password',
           name: 'passphrase',
           message: 'Enter a passphrase to decrypt the generated secret key'
         }])
           .then(function(answers) {
+
+            var secretKey = config.project.get('secretKey');
+            if(!secretKey){
+              return Promise.reject('No secret key is stored.');
+            }
+
             secretKey = cryptojs.AES.decrypt(secretKey, answers.passphrase);
 
             try {

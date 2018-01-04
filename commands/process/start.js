@@ -11,8 +11,6 @@ function promise() {
 
   return Promise.resolve()
     .then(function() {
-      console.log('key');
-
       return require('../secret/key/get').promise();
     })
     .then(function() {
@@ -85,7 +83,8 @@ module.exports = {
         console.log('Process started');
         console.log('View the logs by entering the following command:');
         console.log('agneta process [errors/output]');
-        process.exit();
+        // Do not exit the process since it is needed for docker to run properly
+        //process.exit();
       })
       .catch(console.error);
 

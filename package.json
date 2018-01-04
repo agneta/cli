@@ -1,6 +1,6 @@
 {
   "name": "agneta-cli",
-  "version": "0.12.1",
+  "version": "0.12.3",
   "bin": {
     "agneta": "./bin/agneta.js"
   },
