@@ -1,5 +1,6 @@
 const path = require('path');
 const config = require('./lib/config');
+const _ = require('lodash');
 const yargonaut = require('yargonaut')
   .style('blue')
   .helpStyle('green')
@@ -7,6 +8,8 @@ const yargonaut = require('yargonaut')
 
 var figlet = yargonaut.figlet();
 var chalk = yargonaut.chalk();
+
+_.mixin(require('lodash-deep'));
 
 //-----------------------------------------------------------
 

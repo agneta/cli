@@ -26,7 +26,7 @@ module.exports = function() {
       return inquirer.prompt([{
         type: 'text',
         name: 'property',
-        message: 'Enter the the property you want to set.'
+        message: 'Enter the property you want to set.'
       }, {
         type: 'list',
         name: 'type',
@@ -36,6 +36,9 @@ module.exports = function() {
         }, {
           name: 'Read value from a file',
           value: 'file'
+        },{
+          name: 'Enter a json format with mutiple values',
+          value: 'json'
         }],
         message: 'Enter the value of the property'
       }, {
@@ -52,6 +55,13 @@ module.exports = function() {
         when: function(answers) {
           return answers.type == 'file';
         }
+      },{
+        type: 'text',
+        name: 'json',
+        message: 'Enter the json with the values',
+        when: function(answers) {
+          return answers.type == 'json';
+        }
       }]);
 
     })
@@ -67,11 +77,26 @@ module.exports = function() {
       if (!output) {
         output = {};
       }
-      var value = answers.value;
+      var value;
+
       if (answers.file) {
         value = fs.readFileSync(answers.file).toString('utf8');
+        value = cryptojs.AES.encrypt(value, secretKey).toString();
       }
-      value = cryptojs.AES.encrypt(value, secretKey).toString();
+
+      if (answers.value) {
+        value = cryptojs.AES.encrypt(answers.value, secretKey).toString();
+      }
+
+      if (answers.json) {
+        value = JSON.parse(answers.json);
+
+        _.deepMapValues(value, function(jsonValue, path) {
+          jsonValue = cryptojs.AES.encrypt(jsonValue, secretKey).toString();
+          _.set(value, path, jsonValue);
+        });
+      }
+
       output = _.set(output, answers.property, value);
       return fs.outputJson(pathOutput, output);
     })

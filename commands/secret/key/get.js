@@ -31,17 +31,17 @@ function promise() {
 
         //------------------------------------------------
 
+        var secretKey = config.project.get('secretKey');
+        if(!secretKey){
+          return Promise.reject('No secret key is stored.');
+        }
+
         return inquirer.prompt([{
           type: 'password',
           name: 'passphrase',
           message: 'Enter a passphrase to decrypt the generated secret key'
         }])
           .then(function(answers) {
-
-            var secretKey = config.project.get('secretKey');
-            if(!secretKey){
-              return Promise.reject('No secret key is stored.');
-            }
 
             secretKey = cryptojs.AES.decrypt(secretKey, answers.passphrase);
 
