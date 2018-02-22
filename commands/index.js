@@ -7,7 +7,6 @@ module.exports = function(){
   require('./config')(yargs);
   require('./version')(yargs);
   require('./image')(yargs);
-  require('./process')(yargs);
   require('./generate')(yargs);
   require('./project')(yargs);
   require('./secret')(yargs);
