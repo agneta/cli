@@ -9,6 +9,7 @@ module.exports = function(options) {
 
     yargs.command('get', 'Get a configuration value', require('./get')(options));
     yargs.command('set', 'Set a configuration value', require('./set')(options));
+    yargs.command('edit', 'Open config file with an editor', require('./edit')(options));
 
     yargs.command('*', 'Show all configuration values',require('./show')(options) );
 
