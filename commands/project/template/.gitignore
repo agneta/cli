@@ -15,6 +15,7 @@ node_modules
 socketcluster
 bower_components
 *.sublime-workspace
+.agneta
 .git
 .git-portal
 .apt/

@@ -11,7 +11,7 @@ module.exports = function(yargs) {
     yargs.command('errors', 'Log errors', require('./log').errors);
     yargs.command('output', 'Log output', require('./log').output);
 
-    yargs.command('init', 'Start a new agneta project', require('./init'));
+    yargs.command('setup', 'Start a new agneta project', require('./setup'));
 
     require('../common/config')({
       yargs: yargs,

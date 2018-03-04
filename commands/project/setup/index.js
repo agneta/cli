@@ -11,6 +11,9 @@ module.exports = function() {
       return require('./secrets')(options);
     })
     .then(function() {
+      return require('./git')(options);
+    })
+    .then(function() {
       return require('../../image/init').promise();
     })
     .then(function() {

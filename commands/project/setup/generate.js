@@ -9,7 +9,7 @@ module.exports = function() {
   return terminal()
     .then(function(servers) {
       return Promise.each(generators, function(generator) {
-        return require(`../../generate/${generator}`)(servers);
+        return require(`../../image/setup/${generator}`)(servers);
       });
     });
 
