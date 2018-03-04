@@ -29,7 +29,7 @@ module.exports = function() {
       return require('./icons')(options);
     })
     .then(function() {
-      //return require('./generate')(options);
+      return require('./generate')(options);
     })
     .then(function() {
       console.log('Your project is ready');
