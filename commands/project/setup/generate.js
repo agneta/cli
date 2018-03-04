@@ -1,16 +1,11 @@
 const Promise = require('bluebird');
 
-module.exports = function() {
-
-  const terminal = global.requireMain('server/terminal');
+module.exports = function(options) {
 
   var generators = ['dependencies', 'services'];
 
-  return terminal()
-    .then(function(servers) {
-      return Promise.each(generators, function(generator) {
-        return require(`../../image/setup/${generator}`)(servers);
-      });
-    });
+  return Promise.each(generators, function(generator) {
+    return require(`../../image/setup/${generator}`)(options.servers);
+  });
 
 };

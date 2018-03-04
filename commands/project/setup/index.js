@@ -1,3 +1,5 @@
+const terminal = global.requireMain('server/terminal');
+
 module.exports = function() {
 
   var options = {};
@@ -20,7 +22,14 @@ module.exports = function() {
       return require('./platform')(options);
     })
     .then(function() {
-      return require('./generate')();
+      return terminal();
+    })
+    .then(function(servers) {
+      options.servers = servers;
+      return require('./icons')(options);
+    })
+    .then(function() {
+      //return require('./generate')(options);
     })
     .then(function() {
       console.log('Your project is ready');
