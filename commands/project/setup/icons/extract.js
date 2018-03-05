@@ -19,8 +19,8 @@ const fs = require('fs-extra');
 const ProgressBar = require('progress');
 const Promise = require('bluebird');
 const chalk = require('chalk');
-const glob = Promise.promisify(require('glob'));
-
+const S = require('string');
+const _ = require('lodash');
 module.exports = function(options) {
 
   var icons = {};
@@ -30,34 +30,15 @@ module.exports = function(options) {
   console.log(chalk.blue('Searching for Icons...'));
 
   return fs.readdir(options.searchDir)
-    .then(function(files) {
+    .then(function(items) {
 
       var result = [];
 
-      return Promise.map(files, function(file) {
-
-        var base = path.join(file, 'svg', 'production');
-        var svgDir = path.join(options.searchDir, base);
-
-        return fs.lstat(svgDir)
-          .then(function() {
-            return glob('**/*_24px.svg', {
-              cwd: svgDir,
-              nodir: true,
-              nosort: true,
-              stat: false
-            });
-          })
-          .then(function(found) {
-            result.push({
-              base: base,
-              files: found
-            });
-          })
-          .catch(function() {
-
-          });
-      })
+      return Promise.map(items, options.search(
+        _.extend({
+          result: result
+        },options)
+      ))
         .then(function() {
           return result;
         });
@@ -70,10 +51,10 @@ module.exports = function(options) {
         return Promise.map(dir.files, function(file) {
           var parsed = path.parse(file);
           var name = parsed.name;
-          name = name.split('_');
-          name.pop();
-          name.shift();
-          name = name.join('_');
+
+          if(options.fixName){
+            name = options.fixName(name);
+          }
 
           icons[name] = path.join(dir.base, file);
           names.push(name);
@@ -92,8 +73,9 @@ module.exports = function(options) {
       return Promise.map(names, function(name) {
 
         var sourcePath = path.join(options.searchDir, icons[name]);
+        var destName = S(name).slugify().s;
         var destPath = path.join(
-          options.destDir, name
+          options.destDir, destName
         );
         var uploadOptions = {
           source: sourcePath,

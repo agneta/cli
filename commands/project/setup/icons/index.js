@@ -1,5 +1,4 @@
 const extract = require('./extract');
-const paths = global.requireMain('paths');
 const path = require('path');
 const Promise = require('bluebird');
 const spawn = require('child-process-promise').spawn;
@@ -8,14 +7,10 @@ const inquirer = require('inquirer');
 
 module.exports = function(_options) {
 
-  var pkgName = 'material-design-icons';
-  var options = _.extend({
-    searchDir: path.join(paths.core.project,
-      'node_modules',
-      pkgName
-    ),
-    destDir: path.join('icons','material')
-  },_options);
+  var packages = [
+    require('./agneta'),
+    require('./material')
+  ];
 
   return Promise.resolve()
     .then(function() {
@@ -34,22 +29,56 @@ module.exports = function(_options) {
     });
 
   function init() {
-    return Promise.resolve()
-      .then(function() {
+    return Promise.map(packages,function(pkg){
 
-        console.log(`Intalling ${pkgName}...`);
-        var promise = spawn('npm',['install',pkgName]);
-        var childProcess = promise.childProcess;
+      var searchDir = null;
 
-        childProcess.stdout.pipe(process.stdout);
-        childProcess.stderr.pipe(process.stderr);
+      try {
+        searchDir = getModulePath();
+      } catch(e) {
+        console.error(e.message);
+      }
 
-        return promise;
+      return Promise.resolve()
+        .then(function() {
 
-      })
-      .then(function() {
-        return extract(options);
-      });
+          if(searchDir){
+            return;
+          }
+
+          console.log(`Intalling ${pkg.module}...`);
+          var promise = spawn('npm',['install',pkg.module]);
+          var childProcess = promise.childProcess;
+
+          childProcess.stdout.pipe(process.stdout);
+          childProcess.stderr.pipe(process.stderr);
+
+          return promise
+            .then(function() {
+              searchDir = getModulePath();
+            });
+
+        })
+        .then(function() {
+
+          var options = _.extend({
+            searchDir: path.parse(searchDir).dir ,
+            destDir: path.join('icons',pkg.dir),
+          },_options,pkg);
+
+          return extract(options);
+        });
+
+      function getModulePath() {
+        return require.resolve(pkg.module,{
+          paths: [path.join(process.cwd(),'node_modules')]
+            .concat(module.paths)
+        });
+      }
+    },{
+      concurrency: 1
+    });
+
   }
 
 };
