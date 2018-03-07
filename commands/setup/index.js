@@ -1,5 +1,3 @@
-const terminal = global.requireMain('server/terminal');
-
 module.exports = function() {
 
   var options = {};
@@ -25,7 +23,7 @@ module.exports = function() {
       return require('./platform')(options);
     })
     .then(function() {
-      return terminal();
+      return global.requireMain('server/terminal')();
     })
     .then(function(servers) {
       options.servers = servers;
