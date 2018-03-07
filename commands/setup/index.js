@@ -1,6 +1,8 @@
-module.exports = function() {
+module.exports = function(yargs) {
 
-  var options = {};
+  var options = {
+    argv: yargs.argv
+  };
 
   require('./config')()
     .then(function(config) {

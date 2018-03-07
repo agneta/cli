@@ -1,5 +1,5 @@
 {
-  "name": "${config.name}",
+  "name": "${package.name}",
   "description": "",
   "version": "0.0.1",
   "main": "index.js",

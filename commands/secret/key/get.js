@@ -8,7 +8,7 @@ const path = require('path');
 function promise() {
 
   var tries = 0;
-  var envSecret = process.env.AGNETA_SECRET_KEY;
+  var envSecret = process.env.AGNETA_SECRET_KEY || process.env.SECRET_KEY;
 
   function tryGet() {
 

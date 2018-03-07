@@ -39,7 +39,7 @@ module.exports = function() {
         }])
           .then(function(answers) {
 
-            var secretKey = cryptoRandomString(18);
+            var secretKey = cryptoRandomString(18).toString('utf8');
             secretKey = cryptojs.AES.encrypt(secretKey, answers.passphrase).toString();
             config.project.set('secretKey', secretKey);
             return secretKey;

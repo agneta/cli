@@ -26,7 +26,7 @@ module.exports = function(options) {
       .then(function() {
 
         return Promise.each(generators, function(generator) {
-          return require(`../../image/setup/${generator}`)(options.servers);
+          return require(`../image/setup/${generator}`)(options.servers);
         });
       });
   }

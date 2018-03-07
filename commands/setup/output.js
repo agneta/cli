@@ -3,14 +3,59 @@ const path = require('path');
 const fs = require('fs-extra');
 const Promise = require('bluebird');
 const _ = require('lodash');
+const inquirer = require('inquirer');
+const S = require('string');
 
 module.exports = function(options) {
 
   var sourceDir = path.join(__dirname, '../template');
-  var destDir = process.cwd();
+  var projectDir = process.cwd();
+  var projectName;
 
+  var templateData = {
+    config: options.config
+  };
   return Promise.resolve()
     .then(function() {
+
+      if(!options.argv.location){
+        return;
+      }
+
+      projectDir = path.join(process.cwd(),options.argv.location);
+      projectName = path.parse(projectDir).name;
+    })
+    .then(function() {
+
+      if(projectName){
+        return;
+      }
+
+      return inquirer.prompt([{
+        type: 'text',
+        name: 'name',
+        message: 'What is the name of your project?'
+      }])
+        .then(function(answers) {
+
+          projectName = answers.name;
+          projectDir = path.join(
+            process.cwd(),answers.name
+          );
+
+        });
+    })
+    .then(function() {
+
+      templateData.package = {
+        name: S(projectName).slugify().s
+      };
+
+      return fs.ensureDir(projectDir);
+    })
+    .then(function() {
+
+      process.chdir(projectDir);
 
       return new Promise(function(resolve, reject) {
 
@@ -23,7 +68,7 @@ module.exports = function(options) {
             .then(function() {
 
               var location = path.relative(sourceDir, item.path);
-              var locationTarget = path.join(destDir, location);
+              var locationTarget = path.join(projectDir, location);
 
               if (item.stats.isDirectory()) {
 
@@ -38,7 +83,7 @@ module.exports = function(options) {
                 if (options.config.templates[location]) {
                   return fs.readFile(item.path)
                     .then(function(content) {
-                      content = _.template(content)(options);
+                      content = _.template(content)(templateData);
                       return fs.outputFile(locationTarget, content);
                     });
                 }
