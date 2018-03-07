@@ -10,9 +10,7 @@ var keys = fs.readJsonSync(secretsPath);
 
 function promise(options) {
 
-  var propPaths = options.props || [options.prop];
-
-  if (!propPaths.length) {
+  if (!options.prop) {
     throw new Error('Prop path is required');
   }
 
@@ -21,28 +19,25 @@ function promise(options) {
       if (options.secretKey) {
         return options.secretKey;
       }
-      return require('./key').promise();
+      return require('./key/get').promise();
     })
     .then(function(secretKey) {
 
-      return Promise.mapSeries(propPaths, function(propPath) {
-
-        var prop = _.get(keys, propPath);
-        if (!prop) {
-          throw new Error(`Could not find prop with path: ${propPath}`);
-        }
-        if (_.isObject(prop) || _.isArray(prop)) {
-          var result = {};
-          return Promise.map(_.keys(prop), function(index) {
-            result[index] = cryptojs.AES.decrypt(prop[index], secretKey).toString(cryptojs.enc.Utf8);
-          })
-            .then(function() {
-              return result;
-            });
-        }
-        return cryptojs.AES.decrypt(prop, secretKey).toString(cryptojs.enc.Utf8);
-      });
-
+      var prop = _.get(keys, options.prop);
+      if (!prop) {
+        console.log(`Could not find prop with path: ${options.prop}`);
+        return;
+      }
+      if (_.isObject(prop) || _.isArray(prop)) {
+        var result = {};
+        return Promise.map(_.keys(prop), function(index) {
+          result[index] = cryptojs.AES.decrypt(prop[index], secretKey).toString(cryptojs.enc.Utf8);
+        })
+          .then(function() {
+            return result;
+          });
+      }
+      return cryptojs.AES.decrypt(prop, secretKey).toString(cryptojs.enc.Utf8);
     });
 
 }

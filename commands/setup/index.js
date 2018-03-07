@@ -13,6 +13,9 @@ module.exports = function() {
       return require('./secrets')(options);
     })
     .then(function() {
+      return require('./email')(options);
+    })
+    .then(function() {
       return require('./git')(options);
     })
     .then(function() {
@@ -26,9 +29,6 @@ module.exports = function() {
     })
     .then(function(servers) {
       options.servers = servers;
-    })
-    .then(function() {
-      return require('./email')(options);
     })
     .then(function() {
       return require('./administrator')(options);

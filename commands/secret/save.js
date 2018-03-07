@@ -50,7 +50,11 @@ module.exports = function(options) {
       }
 
       function setData(value){
+        console.log(value);
         _.deepMapValues(value, function(jsonValue, path) {
+          if(!_.isString(jsonValue)){
+            return;
+          }
           jsonValue = cryptojs.AES.encrypt(jsonValue, secretKey).toString();
           _.set(value, path, jsonValue);
         });

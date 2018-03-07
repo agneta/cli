@@ -1,18 +1,19 @@
 const inquirer = require('inquirer');
+const _ = require('lodash');
 
-module.exports = function(options) {
+module.exports = function() {
 
   var answers;
-  var services = options
-    .servers
-    .servicesPortal
-    .locals
-    .app;
 
   return Promise.resolve()
     .then(function() {
-      var email = services.get('email');
-      if(email.provider){
+      return require('../../secret/get').promise({
+        prop: 'default.email'
+      });
+    })
+    .then(function(email) {
+
+      if(_.get(email,'provider')){
         console.log(`Your email provider is already selected. (${email.provider})`);
         return;
       }
@@ -24,23 +25,26 @@ module.exports = function(options) {
         name: 'provider',
         choices:[
           {
-            name: 'nodemailer',
-            value: 'Nodemailer'
+            name: 'Nodemailer',
+            value: 'nodemailer'
           },
           {
-            name: 'sendgrid',
-            value: 'Sendgrid'
+            name: 'Sendgrid',
+            value: 'sendgrid'
           }
         ],
         message: 'Select an email provider:'
       }])
         .then(function(_answers) {
           answers = _answers;
-          return require(`./${answers.provider}`)(options);
+          return require(`./${answers.provider}`)();
         })
         .then(function(details) {
-          details.property = answers.provider;
-          return require('../../secret/save')(details);
+          details.provider = answers.provider;
+          return require('../../secret/save')({
+            property: 'default.email',
+            data: details
+          });
         });
     });
 };
