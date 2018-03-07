@@ -36,7 +36,7 @@ module.exports = function() {
       }
 
       var app = {};
-      var secrets = require('agneta-platform/services/lib/secrets')(app);
+      var secrets = global.requireMain('../services/lib/secrets')(app);
 
       var keySource = secrets.get('keys.git.key');
       var pubSource = secrets.get('keys.git.pub');

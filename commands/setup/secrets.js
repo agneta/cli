@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
-const config = require('../../../lib/config');
+const config = require('../../lib/config');
 const inquirer = require('inquirer');
 const cryptojs = require('crypto-js');
 const cryptoRandomString = require('crypto-random-string');
@@ -47,7 +47,7 @@ module.exports = function() {
 
       }
 
-      return require('../../secret/key/get').promise();
+      return require('../secret/key/get').promise();
 
     })
     .then(function(_secretKey) {

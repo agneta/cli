@@ -1,23 +1,13 @@
-const cryptojs = require('crypto-js');
-const _ = require('lodash');
-const fs = require('fs-extra');
-const path = require('path');
 const inquirer = require('inquirer');
+const _ = require('lodash');
 
 module.exports = function() {
 
-  var outputName = 'secrets.json';
-  var pathOutput = path.join(process.cwd(), outputName);
-
-  var output = {};
-  var answers;
   var secretKey;
 
   Promise.resolve()
     .then(function() {
-
       return require('./key/get').promise();
-
     })
     .then(function(_secretKey) {
 
@@ -65,40 +55,12 @@ module.exports = function() {
       }]);
 
     })
-    .then(function(_answers) {
-      answers = _answers;
-      return fs.ensureFile(pathOutput);
-    })
-    .then(function() {
-      return fs.readJson(pathOutput);
-    })
-    .then(function(_output) {
-      output = _output;
-      if (!output) {
-        output = {};
-      }
-      var value;
-
-      if (answers.file) {
-        value = fs.readFileSync(answers.file).toString('utf8');
-        value = cryptojs.AES.encrypt(value, secretKey).toString();
-      }
-
-      if (answers.value) {
-        value = cryptojs.AES.encrypt(answers.value, secretKey).toString();
-      }
-
-      if (answers.json) {
-        value = JSON.parse(answers.json);
-
-        _.deepMapValues(value, function(jsonValue, path) {
-          jsonValue = cryptojs.AES.encrypt(jsonValue, secretKey).toString();
-          _.set(value, path, jsonValue);
-        });
-      }
-
-      output = _.set(output, answers.property, value);
-      return fs.outputJson(pathOutput, output);
+    .then(function(answers) {
+      return require('./save')(
+        _.extend({
+          secretKey: secretKey
+        },answers)
+      );
     })
     .then(function() {
       console.log('Secret value now added');

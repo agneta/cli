@@ -63,9 +63,6 @@ module.exports = {
       },
       zip: 'Company zip'
     },
-    sendgrid: {
-      apiKey: '',
-    },
     contacts: {
       /*
       contact_name: {

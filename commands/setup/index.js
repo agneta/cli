@@ -16,7 +16,7 @@ module.exports = function() {
       return require('./git')(options);
     })
     .then(function() {
-      return require('../../image/init').promise();
+      return require('../image/init').promise();
     })
     .then(function() {
       return require('./platform')(options);
@@ -26,6 +26,14 @@ module.exports = function() {
     })
     .then(function(servers) {
       options.servers = servers;
+    })
+    .then(function() {
+      return require('./email')(options);
+    })
+    .then(function() {
+      return require('./administrator')(options);
+    })
+    .then(function() {
       return require('./icons')(options);
     })
     .then(function() {

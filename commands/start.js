@@ -11,7 +11,7 @@ function promise() {
 
   return Promise.resolve()
     .then(function() {
-      return require('../secret/key/get').promise();
+      return require('./secret/key/get').promise();
     })
     .then(function() {
 

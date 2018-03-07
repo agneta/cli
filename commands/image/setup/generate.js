@@ -2,7 +2,7 @@ module.exports = function() {
 
   return Promise.resolve()
     .then(function() {
-      return require('agneta-platform/main/server/terminal')();
+      return global.requireMain('server/terminal')();
     })
     .then(function(servers) {
       return require('./dependencies')(servers);

@@ -3,11 +3,14 @@ module.exports = {
     "es6": true,
     "node": true
   },
-  "extends": "eslint:recommended",
+  "plugins": ["node"],
+  "extends": ["eslint:recommended", "plugin:node/recommended"],
   "parserOptions": {
     "sourceType": "module"
   },
   "rules": {
+    "node/exports-style": ["error", "module.exports"],
+    "no-process-exit": "off",
     "no-console": ["error", {
       allow: ["warn", "error", "log"]
     }],

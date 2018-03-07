@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
-const config = require('../../../lib/config');
+const config = require('../../lib/config');
 
 module.exports = function() {
 
