@@ -3,6 +3,7 @@ var yargs = require('yargs');
 module.exports = function(){
 
 
+  require('./cert')(yargs);
   require('./default')(yargs);
   require('./config')(yargs);
   require('./version')(yargs);

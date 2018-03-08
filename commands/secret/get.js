@@ -29,13 +29,18 @@ function promise(options) {
         return;
       }
       if (_.isObject(prop) || _.isArray(prop)) {
-        var result = {};
-        return Promise.map(_.keys(prop), function(index) {
-          result[index] = cryptojs.AES.decrypt(prop[index], secretKey).toString(cryptojs.enc.Utf8);
-        })
-          .then(function() {
-            return result;
-          });
+
+        _.deepMapValues(prop, function(value, path) {
+          if(!_.isString(value)){
+            return;
+          }
+          path = path || 0;
+          value = cryptojs.AES.decrypt(value, secretKey).toString(cryptojs.enc.Utf8);
+          _.set(prop, path, value);
+        });
+
+        return prop;
+
       }
       return cryptojs.AES.decrypt(prop, secretKey).toString(cryptojs.enc.Utf8);
     });
