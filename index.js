@@ -13,7 +13,11 @@ _.mixin(require('lodash-deep'));
 
 //-----------------------------------------------------------
 
-global.pathPlatform = config.agneta.get('platform') || path.join(process.cwd(), 'node_modules', 'agneta-platform');
+global.pathPlatform =
+  config.project.get('platform') ||
+  config.agneta.get('platform') ||
+  path.join(process.cwd(), 'node_modules', 'agneta-platform');
+
 global.requireMain = function(pathModule) {
   return require(path.join(global.pathPlatform, 'main', pathModule));
 };
@@ -38,7 +42,7 @@ Promise.resolve()
   .then(function() {
     return require('./commands')();
   })
-  .catch(function(err){
+  .catch(function(err) {
     console.error(chalk.bold.red(err.message));
     console.error(err.stack);
     process.exit();

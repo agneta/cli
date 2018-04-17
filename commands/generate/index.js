@@ -3,7 +3,7 @@ module.exports = function(yargs) {
   yargs.command('generate', 'Generation tool', function(yargs) {
 
     yargs.command('dependencies', 'Load from bower compomnents', init('dependencies'));
-    yargs.command('services', 'Add services to the client applications', init('services'));
+    yargs.command('scripts', 'Create bundled scripts for your project', init('scripts'));
 
     function init(name) {
 

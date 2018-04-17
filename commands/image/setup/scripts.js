@@ -17,13 +17,13 @@ module.exports = function(servers) {
         dir: projectPaths.app.generated
       },
       ], function(service) {
-        return service.server.locals.app.generate.methods({
+        return service.server.locals.app.generate.scripts({
           outputDir: service.dir
         });
       });
 
     })
     .then(function() {
-      log.success('Exported Services');
+      log.success('Exported Scripts');
     });
 };
