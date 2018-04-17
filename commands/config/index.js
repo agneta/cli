@@ -16,6 +16,7 @@ module.exports = function(yargs) {
     yargs.command(options.command, 'Set and get configuration variables', function(yargs) {
 
       yargs.command('get', 'Get a configuration value', require('./get')(options));
+      yargs.command('delete', 'Delete a configuration value', require('./delete')(options));
       yargs.command('set', 'Set a configuration value', require('./set')(options));
       yargs.command('edit', 'Open config file with an editor', require('./edit')(options));
 
