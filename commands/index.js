@@ -5,7 +5,6 @@ module.exports = function(){
 
   require('./cert')(yargs);
   require('./config')(yargs);
-  require('./version')(yargs);
   require('./image')(yargs);
   require('./generate')(yargs);
   require('./secret')(yargs);
@@ -18,6 +17,14 @@ module.exports = function(){
   yargs.command('output', 'Log output', require('./log').output);
   yargs.command('setup <location>', 'Start a new agneta project', require('./setup'));
 
-  require('./default')(yargs);
+  var argv=yargs
+    .recommendCommands()
+    .strict()
+    .version(false)
+    .help(false)
+    .argv;
+  if(argv && !argv._[0]){
+    yargs.showHelp();
+  }
 
 };

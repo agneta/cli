@@ -5,7 +5,8 @@ module.exports = function(yargs) {
   init({
     command: 'config',
     yargs: yargs,
-    type: 'project'
+    type: 'project',
+    isGlobal: true
   });
 
   function init(options) {
@@ -19,14 +20,17 @@ module.exports = function(yargs) {
       yargs.command('delete', 'Delete a configuration value', require('./delete')(options));
       yargs.command('set', 'Set a configuration value', require('./set')(options));
       yargs.command('edit', 'Open config file with an editor', require('./edit')(options));
+      yargs.command('show', 'Show all configuration values', require('./show')(options));
 
-      init({
-        command: 'global',
-        yargs: yargs,
-        type: 'agneta'
-      });
+      require('../default')(yargs);
 
-      yargs.command('*', 'Show all configuration values', require('./show')(options));
+      if(options.isGlobal){
+        init({
+          command: 'global',
+          yargs: yargs,
+          type: 'agneta'
+        });
+      }
 
     });
 
