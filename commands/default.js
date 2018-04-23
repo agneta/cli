@@ -1,16 +1,14 @@
-const chalk = require('chalk');
-
+var shown = false;
 module.exports = function(yargs) {
+  if(shown){
+    return;
+  }
+  shown =  true;
+  yargs
+    .strict()
+    .version(false)
+    .help(false)
+    .argv;
 
-  yargs.command('*', 'Default', function(yargs) {
-    var argv = yargs.argv;
-    if(!argv._.length){
-      console.log('Welcome!');
-    }else{
-      console.log(chalk.bold.red('Command not found'));
-    }
-    console.log('Specify --help for available options');
-    console.log();
-  });
-
+  yargs.showHelp();
 };

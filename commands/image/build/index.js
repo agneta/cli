@@ -1,5 +1,4 @@
-const yargonaut = require('yargonaut');
-const chalk = yargonaut.chalk();
+const chalk = require('chalk');
 const config = require('../config');
 const fs = require('fs-extra');
 const path = require('path');
