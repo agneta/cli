@@ -4,7 +4,6 @@ const fs = require('fs-extra');
 const Promise = require('bluebird');
 const _ = require('lodash');
 const inquirer = require('inquirer');
-const slugify = require('slugify');
 
 module.exports = function(options) {
   var sourceDir = path.join(__dirname, '../template');
@@ -43,7 +42,7 @@ module.exports = function(options) {
     })
     .then(function() {
       templateData.package = {
-        name: slugify(projectName)
+        name: _.kebabCase(projectName)
       };
 
       return fs.ensureDir(projectDir);

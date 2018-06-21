@@ -19,7 +19,6 @@ const fs = require('fs-extra');
 const ProgressBar = require('progress');
 const Promise = require('bluebird');
 const chalk = require('chalk');
-const slugify = require('slugify');
 const _ = require('lodash');
 module.exports = function(options) {
   var icons = {};
@@ -75,7 +74,7 @@ module.exports = function(options) {
         names,
         function(name) {
           var sourcePath = path.join(options.searchDir, icons[name]);
-          var destName = slugify(name);
+          var destName = _.kebabCase(name);
           var destPath = path.join(options.destDir, destName);
           var uploadOptions = {
             source: sourcePath,

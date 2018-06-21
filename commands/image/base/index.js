@@ -7,56 +7,38 @@ const { spawn } = require('child_process');
 
 module.exports = function(yargs) {
   var argv = yargs;
-
-  var composeData = {
-    config: config
-  };
-
   var templateOptions = {
     interpolate: /<%-([\s\S]+?)%>/g
   };
 
   var baseDir = path.join(config.path.agneta, 'image-base');
-  var dockerFilePath = path.join(baseDir, 'dockerfile');
 
   require('../init/commands')(argv);
 
+  function outputFile(name) {
+    Promise.resolve()
+      .then(function() {
+        return fs.readFile(path.join(__dirname, name));
+      })
+      .then(function(content) {
+        var template = _.template(content, templateOptions);
+        var contentOutput = template(
+          {
+            config: config
+          },
+          templateOptions
+        );
+
+        return fs.outputFile(path.join(baseDir, name), contentOutput);
+      });
+  }
+
   Promise.resolve()
-
-    //-------------------------------------------------------------------
-    // Generate dockerfile
     .then(function() {
-      return fs.readFile(path.join(__dirname, 'dockerfile'));
-    })
-    .then(function(content) {
-      var template = _.template(content, templateOptions);
-      var contentOutput = template(
-        {
-          config: config
-        },
-        templateOptions
+      return Promise.map(
+        ['dockerfile', 'bootstrap.sh', 'compose.yml'],
+        outputFile
       );
-
-      return fs.outputFile(dockerFilePath, contentOutput);
-    })
-    .then(function() {
-      console.log('Generated build file');
-    })
-    //---------------------------------------------------------------
-    // Generate compose file
-    .then(function() {
-      return fs.readFile(path.join(__dirname, 'compose.yml'));
-    })
-    .then(function(content) {
-      var template = _.template(content, templateOptions);
-      var contentOutput = template(composeData, templateOptions);
-
-      var pathOuput = path.join(baseDir, 'docker-compose.yml');
-
-      return fs.outputFile(pathOuput, contentOutput);
-    })
-    .then(function() {
-      console.log('Generated compose file');
     })
     .then(function() {
       var child = spawn(
