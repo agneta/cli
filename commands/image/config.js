@@ -11,7 +11,6 @@ user.gid = user.gid || 1000;
 var home = `/home/${user.username}`;
 var pathCache = '.cache';
 
-
 var data = {
   name: config.name,
   domain: {
@@ -22,16 +21,16 @@ var data = {
     file: 'dockerfile',
     base: 'agneta/base:latest',
     app: `${config.name}:latest`,
-    proxy: `${config.name}-proxy:latest`,
+    proxy: `${config.name}-proxy:latest`
   },
   path: {
     ouput: path.join(process.cwd(), '.image'),
+    agneta: path.join(process.env.HOME, '.agneta'),
     cache: pathCache,
-    npmCache: `${pathCache}/npm.tgz`,
     cliCache: `${pathCache}/cli.tgz`,
     home: home,
     app: `${home}/app`,
-    projectCli: path.join(__dirname, '../..'),
+    projectCli: path.join(__dirname, '../..')
   },
   serverName: config.agneta.get('server.name'),
   serverIp: require('ip').address(),
@@ -54,10 +53,11 @@ data.volumes = [
   '',
   `      - .:${data.path.app}`,
   `      - ${data.path.projectCli}:/usr/local/lib/node_modules/agneta-cli`,
-  `      - ${data.path.projectPlatform}:${data.path.app}/node_modules/agneta-platform`,
+  `      - ${data.path.projectPlatform}:${
+    data.path.app
+  }/node_modules/agneta-platform`,
   `      - ${data.path.app}/node_modules/uws`,
   `      - ${data.path.app}/node_modules/agneta-platform/node_modules/uws`
 ].join('\n');
-
 
 module.exports = data;

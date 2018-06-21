@@ -19,32 +19,35 @@ const fs = require('fs-extra');
 const ProgressBar = require('progress');
 const Promise = require('bluebird');
 const chalk = require('chalk');
-const S = require('string');
+const slugify = require('slugify');
 const _ = require('lodash');
 module.exports = function(options) {
-
   var icons = {};
 
   console.log();
   console.log('-----------------------------------');
   console.log(chalk.blue('Searching for Icons...'));
 
-  return fs.readdir(options.searchDir)
+  return fs
+    .readdir(options.searchDir)
     .then(function(items) {
-
       var result = [];
 
-      return Promise.map(items, options.search(
-        _.extend({
-          result: result
-        },options)
-      ))
-        .then(function() {
-          return result;
-        });
+      return Promise.map(
+        items,
+        options.search(
+          _.extend(
+            {
+              result: result
+            },
+            options
+          )
+        )
+      ).then(function() {
+        return result;
+      });
     })
     .then(function(result) {
-
       var names = [];
 
       return Promise.map(result, function(dir) {
@@ -52,49 +55,42 @@ module.exports = function(options) {
           var parsed = path.parse(file);
           var name = parsed.name;
 
-          if(options.fixName){
+          if (options.fixName) {
             name = options.fixName(name);
           }
 
           icons[name] = path.join(dir.base, file);
           names.push(name);
         });
-      })
-        .then(function(){
-          return names;
-        });
+      }).then(function() {
+        return names;
+      });
     })
     .then(function(names) {
-
       var bar = new ProgressBar('[:bar] :percent', {
         total: names.length
       });
 
-      return Promise.map(names, function(name) {
-
-        var sourcePath = path.join(options.searchDir, icons[name]);
-        var destName = S(name).slugify().s;
-        var destPath = path.join(
-          options.destDir, destName
-        );
-        var uploadOptions = {
-          source: sourcePath,
-          location: destPath
-        };
-        return options
-          .servers
-          .servicesPortal
-          .locals
-          .app
-          .models.Media
-          .__uploadLocalFile(uploadOptions)
-          .then(function() {
+      return Promise.map(
+        names,
+        function(name) {
+          var sourcePath = path.join(options.searchDir, icons[name]);
+          var destName = slugify(name);
+          var destPath = path.join(options.destDir, destName);
+          var uploadOptions = {
+            source: sourcePath,
+            location: destPath
+          };
+          return options.servers.servicesPortal.locals.app.models.Media.__uploadLocalFile(
+            uploadOptions
+          ).then(function() {
             bar.tick();
           });
-
-      }, {
-        concurrency: 5
-      });
+        },
+        {
+          concurrency: 5
+        }
+      );
     })
     .then(function() {
       console.log(chalk.green('Success: Icons are transfered'));

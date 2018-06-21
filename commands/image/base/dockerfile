@@ -1,20 +1,20 @@
 FROM node:8-alpine
 
 RUN apk -v --update add \
-        python \
-        openssh \
-        build-base \
-        libssh-dev \
-        git \
-        graphicsmagick \
-        bash \
-        libc6-compat \
-        gawk \
-        sed \
-        grep \
-        bc \
-        coreutils \
-        su-exec && \
+    python \
+    openssh \
+    build-base \
+    libssh-dev \
+    git \
+    graphicsmagick \
+    bash \
+    libc6-compat \
+    gawk \
+    sed \
+    grep \
+    bc \
+    coreutils \
+    su-exec && \
     apk -v --purge del py-pip && \
     rm /var/cache/apk/* && \
     mkdir -p <%-config.path.app%>
@@ -36,4 +36,3 @@ RUN <%-config.commands.installAgnetaCli%> && \
     chown -R $USER:$USER $HOME
 
 USER <%-config.user.username%>
-RUN npm install agneta-platform --prefer-offline --no-shrinkwrap --loglevel info

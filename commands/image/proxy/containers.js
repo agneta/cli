@@ -1,12 +1,10 @@
 const Promise = require('bluebird');
 const exec = require('child-process-promise').exec;
 const _ = require('lodash');
-const S = require('string');
 
 module.exports = function() {
-
   var images = {};
-  var names = ['portal_dev','live','live_dev','portal_stg'];
+  var names = ['portal_dev', 'live', 'live_dev', 'portal_stg'];
 
   return Promise.resolve()
     .then(function() {
@@ -33,29 +31,25 @@ module.exports = function() {
         }
 
         var ports = line.ports.split(',');
-        ports.map(function(port){
-          port = S(port).trim().s;
-          if(port.indexOf('9')===0){
+        ports.map(function(port) {
+          port = port.trim();
+          if (port.indexOf('9') === 0) {
             line.port = port.split('/')[0];
           }
         });
 
         names.map(function(name) {
-
-          var image = images[name] = images[name] || [];
+          var image = (images[name] = images[name] || []);
           if (line.name.indexOf(name) >= 0) {
             image.push({
               name: name,
               port: line.port
             });
           }
-
         });
-
       });
     })
     .then(function() {
       return images;
     });
-
 };

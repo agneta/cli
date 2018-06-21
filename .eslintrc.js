@@ -1,39 +1,47 @@
 module.exports = {
-  "env": {
-    "es6": true,
-    "node": true
+  env: {
+    es6: true,
+    node: true,
   },
-  "plugins": ["node"],
-  "extends": ["eslint:recommended", "plugin:node/recommended"],
-  "parserOptions": {
-    "sourceType": "module"
+  plugins: ['node'],
+  extends: ['eslint:recommended', 'plugin:node/recommended'],
+  parserOptions: {
+    sourceType: 'module',
   },
-  "rules": {
-    "node/exports-style": ["error", "module.exports"],
-    "no-process-exit": "off",
-    "no-console": ["error", {
-      allow: ["warn", "error", "log"]
-    }],
-    "no-unused-vars": ["error", {
-      "varsIgnorePattern": "^_e_"
-    }],
-    "indent": [
-      "error",
-      2, {
-        "SwitchCase": 1
-      }
+  rules: {
+    'node/exports-style': ['error', 'module.exports'],
+    'no-process-exit': 'off',
+    'no-console': [
+      'error',
+      {
+        allow: ['warn', 'error', 'log'],
+      },
     ],
-    "linebreak-style": [
-      "error",
-      "unix"
+    'no-unused-vars': [
+      'error',
+      {
+        varsIgnorePattern: '^_e_',
+      },
     ],
-    "quotes": [
-      "error",
-      "single"
+    'comma-dangle': [
+      'error',
+      {
+        arrays: 'never',
+        objects: 'never',
+        imports: 'never',
+        exports: 'never',
+        functions: 'never',
+      },
     ],
-    "semi": [
-      "error",
-      "always"
-    ]
-  }
+    indent: [
+      'error',
+      2,
+      {
+        SwitchCase: 1,
+      },
+    ],
+    'linebreak-style': ['error', 'unix'],
+    quotes: ['error', 'single'],
+    semi: ['error', 'always'],
+  },
 };

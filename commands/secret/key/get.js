@@ -36,14 +36,28 @@ function promise() {
           return Promise.reject('No secret key is stored.');
         }
 
-        return inquirer.prompt([{
-          type: 'password',
-          name: 'passphrase',
-          message: 'Enter a passphrase to decrypt the generated secret key'
-        }])
-          .then(function(answers) {
+        return Promise.resolve()
+          .then(function() {
 
-            secretKey = cryptojs.AES.decrypt(secretKey, answers.passphrase);
+            var passphrase = process.env.AGNETA_PASS;
+
+            if(passphrase){
+              return passphrase;
+            }
+
+            return inquirer.prompt([{
+              type: 'password',
+              name: 'passphrase',
+              message: 'Enter a passphrase to decrypt the generated secret key'
+            }])
+              .then(function(answers) {
+                return answers.passphrase;
+              });
+
+          })
+          .then(function(passphrase) {
+
+            secretKey = cryptojs.AES.decrypt(secretKey, passphrase);
 
             try {
               secretKey = secretKey.toString(cryptojs.enc.Utf8);

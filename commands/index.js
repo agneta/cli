@@ -8,6 +8,7 @@ module.exports = function(){
   require('./image')(yargs);
   require('./generate')(yargs);
   require('./secret')(yargs);
+  require('./cluster')(yargs);
 
   yargs.command('ps', 'List all the agneta processes running', require('./ps'));
   yargs.command('start', 'Start running agneta', require('./start').command);
