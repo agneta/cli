@@ -1,6 +1,4 @@
-
 module.exports = function() {
-
   Promise.resolve()
     .then(function() {
       return require('./stop').promise();
@@ -13,5 +11,4 @@ module.exports = function() {
       process.exit();
     })
     .catch(console.error);
-
 };

@@ -1,6 +1,5 @@
 const path = require('path');
 const pm2 = require('pm2');
-const fs = require('fs-extra');
 
 function promise() {
   // Default is portal
@@ -30,25 +29,22 @@ function promise() {
         var outputPath = path.join(base, `${name}-output.log`);
         var errorPath = path.join(base, `${name}-error.log`);
 
-        var scriptArgs;
+        var scriptArgs = [];
+        var nodeArgs = [];
         var scriptInterpreter;
-        var scriptDir = path.join(global.pathPlatform, 'main', 'server');
-        var scriptPath = path.join(scriptDir, 'index.ts');
-
-        if (fs.existsSync(scriptPath)) {
-          scriptArgs = ['--transpileOnly'];
-          scriptInterpreter = path.join(
-            __dirname,
-            '../node_modules/ts-node/dist/bin.js'
-          );
-        } else {
-          scriptPath = path.join(scriptDir, 'index.js');
-        }
+        var scriptDir = path.join(
+          global.pathPlatform,
+          'dist',
+          'main',
+          'server'
+        );
+        var scriptPath = path.join(scriptDir, 'index.js');
 
         var pm2Options = {
           name: name,
           script: scriptPath,
           args: scriptArgs,
+          node_args: nodeArgs,
           interpreter: scriptInterpreter,
           sourceMapSupport: true,
           min_uptime: '1m',
