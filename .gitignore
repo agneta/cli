@@ -4,4 +4,3 @@ node_modules
 *.sublime-workspace
 *.log
 backups
-package-lock.json
