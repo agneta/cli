@@ -4,19 +4,14 @@ const _ = require('lodash');
 _.mixin(require('lodash-deep'));
 
 global.requireMain = function(pathModule) {
-  return require(path.join('agneta-platform/main', pathModule));
+  return require(path.join('agneta-platform/dist/main', pathModule));
 };
 
 Promise.resolve()
   .then(function() {
-
     var secret = process.env.AGNETA_SECRET_KEY;
 
-    return fs.outputJson(
-      path.join(process.cwd(),
-        '../secret.json'
-      ), secret
-    );
+    return fs.outputJson(path.join(process.cwd(), '../secret.json'), secret);
   })
   .then(function() {
     return require('./ssh')();
@@ -31,7 +26,7 @@ Promise.resolve()
     console.log('Agneta setup completed');
     process.exit();
   })
-  .catch(function(err){
+  .catch(function(err) {
     console.error(err);
     process.exit(2);
   });
