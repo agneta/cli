@@ -7,7 +7,7 @@ const config = require('../config');
 module.exports = function(argv) {
 
   var composeData = {
-    config: config,
+    config: config
   };
   var templateOptions = {
     interpolate: /<%-([\s\S]+?)%>/g

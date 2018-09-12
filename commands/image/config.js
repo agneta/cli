@@ -39,13 +39,17 @@ var data = {
     portal: 8181,
     live: 8282
   },
-  port: {
-    portal: 9191,
-    live: 9292
-  },
+  port: {},
   commands: {},
   machine: config.agneta.get('machine')
 };
+
+if (!config.app.tlsTermination) {
+  data.port = {
+    portal: 9191,
+    live: 9292
+  };
+}
 
 data.path.projectPlatform = config.agneta.get('platform');
 

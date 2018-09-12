@@ -1,13 +1,12 @@
 const pm2 = require('pm2');
+const config = require('../lib/config');
 const Promise = require('bluebird');
 
 function promise() {
-  var name = 'agneta';
-
   return Promise.resolve()
     .then(function() {
       return new Promise(function(resolve, reject) {
-        pm2.describe(name, function(err, result) {
+        pm2.describe(config.processName, function(err, result) {
           if (err) {
             reject(err);
           }
@@ -23,7 +22,7 @@ function promise() {
       }
 
       return new Promise(function(resolve, reject) {
-        pm2.delete(name, function(err, list) {
+        pm2.delete(config.processName, function(err, list) {
           if (err) {
             reject(err);
           }

@@ -1,5 +1,7 @@
 const path = require('path');
 const pm2 = require('pm2');
+const config = require('../lib/config');
+const fs = require('fs-extra');
 
 function promise() {
   // Default is portal
@@ -24,24 +26,32 @@ function promise() {
     })
     .then(function() {
       return new Promise(function(resolve, reject) {
-        var name = 'agneta';
         var base = path.join(process.env.HOME, '.pm2/logs');
-        var outputPath = path.join(base, `${name}-output.log`);
-        var errorPath = path.join(base, `${name}-error.log`);
+        var outputPath = path.join(base, `${config.processName}-out.log`);
+        var errorPath = path.join(base, `${config.processName}-err.log`);
 
         var scriptArgs = [];
         var nodeArgs = [];
         var scriptInterpreter;
-        var scriptDir = path.join(
+        var scriptPath = path.join(
           global.pathPlatform,
           'dist',
           'main',
-          'server'
+          'server',
+          'index.js'
         );
-        var scriptPath = path.join(scriptDir, 'index.js');
+
+        if (!fs.existsSync(scriptPath)) {
+          scriptPath = path.join(
+            global.pathPlatform,
+            'main',
+            'server',
+            'index.js'
+          );
+        }
 
         var pm2Options = {
-          name: name,
+          name: config.processName,
           script: scriptPath,
           args: scriptArgs,
           node_args: nodeArgs,

@@ -18,10 +18,14 @@ services:
       - HOST_NAME=portal.localhost
       - SERVER_NAME=<%-config.serverName%>
       - PORT_HTTP=<%-config.portHttp.portal%>
+      <%if(config.port.portal){%>
       - PORT=<%-config.port.portal%>
+      <%}%>
     expose:
       - '<%-config.portHttp.portal%>'
+      <%if(config.port.portal){%>
       - '<%-config.port.portal%>'
+      <%}%>
   live:
     image: '<%-config.image.app%>'
     build:
@@ -33,10 +37,14 @@ services:
       - HOST_NAME=live.localhost
       - SERVER_NAME=<%-config.serverName%>
       - PORT_HTTP=<%-config.portHttp.live%>
+      <%if(config.port.live){%>
       - PORT=<%-config.port.live%>
+      <%}%>
     expose:
       - '<%-config.portHttp.live%>'
+      <%if(config.port.live){%>
       - '<%-config.port.live%>'
+      <%}%>
   portal_dev:
     extends: portal
     environment:
