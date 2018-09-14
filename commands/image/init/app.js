@@ -11,6 +11,7 @@ module.exports = function() {
   var templateOptions = {
     interpolate: /<%-([\s\S]+?)%>/g
   };
+  var pathGitIgnore = path.join(process.cwd(), '.gitignore');
 
   return (
     Promise.resolve()
@@ -55,7 +56,7 @@ module.exports = function() {
       //---------------------------------------------------------------
       // Generate Docker Ignore file
       .then(function() {
-        return fs.readFile(path.join(process.cwd(), '.gitignore'));
+        return fs.readFile(pathGitIgnore);
       })
       .then(function(content) {
         var lines = ['/.cache/', '.agneta'];
