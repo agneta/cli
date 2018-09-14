@@ -4,7 +4,6 @@ const fs = require('fs-extra');
 const path = require('path');
 
 module.exports = function(yargs) {
-
   var argv = yargs
     .options({
       mode: {
@@ -22,30 +21,23 @@ module.exports = function(yargs) {
         describe: 'Run inside docker'
       }
     })
-    .help('help')
-    .argv;
+    .help('help').argv;
 
   if (argv.docker) {
     require('./docker')();
     return;
   }
 
-  require('../init').promise(argv)
+  require('../init')
+    .promise(argv)
     .then(function() {
-      return fs.ensureDir(
-        path.join(process.cwd(), config.path.cache)
-      );
+      return fs.ensureDir(path.join(process.cwd(), config.path.cache));
     })
     .then(function() {
       return fs.copy(
-        path.join(__dirname,'../setup'),
-        path.join(process.cwd(),'.agneta/setup')
+        path.join(__dirname, '../setup'),
+        path.join(process.cwd(), '.agneta/setup')
       );
-    })
-    .then(function() {
-
-      return require('./compress')(argv.mode);
-
     })
     .then(function() {
       return require('./run')();
@@ -55,7 +47,4 @@ module.exports = function(yargs) {
       console.log(chalk.bold.green('Success!'));
       process.exit();
     });
-
-
-
 };

@@ -35,7 +35,6 @@ function promise() {
         var scriptInterpreter;
         var scriptPath = path.join(
           global.pathPlatform,
-          'dist',
           'main',
           'server',
           'index.js'
@@ -44,11 +43,18 @@ function promise() {
         if (!fs.existsSync(scriptPath)) {
           scriptPath = path.join(
             global.pathPlatform,
+            '..',
             'main',
             'server',
             'index.js'
           );
         }
+
+        if (!fs.existsSync(scriptPath)) {
+          throw new Error(`Could not find script path: ${scriptPath}`);
+        }
+
+        console.log(scriptPath);
 
         var pm2Options = {
           name: config.processName,
