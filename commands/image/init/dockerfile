@@ -1,23 +1,7 @@
-FROM <%-config.image.base%>
+FROM agneta/base:latest
 ARG AGNETA_SECRET_KEY=3
 
-RUN npm install --global --prefer-offline agneta-cli && \
-    npm config set cache /home/agneta/.cache/npm --global && \
-    npm config set package-lock false && \
-    export HOME=/home/agneta && \
-    export USER=agneta && \
-    export USER_ID=1000 && \
-    export GROUP_ID=1000 && \
-    USER_ID=${USER_ID:-9001} && \
-    GROUP_ID=${GROUP_ID:-9001} && \
-    deluser --remove-home node && \
-    addgroup -S -g $GROUP_ID $USER && \
-    adduser -S -u $USER_ID -G $USER $USER && \
-    chown -R $USER:$USER $HOME
-
-USER agneta
-
-COPY --chown=<%-config.user.username%>:<%-config.user.username%> . <%-config.path.app%>
+COPY --chown=agneta:agneta . /home/agneta/app
 
 RUN npm install --prefer-offline --no-shrinkwrap --loglevel info && \
     npm run setup
