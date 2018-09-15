@@ -10,11 +10,6 @@ module.exports = function(yargs) {
       'Init project with docker files',
       require('./init').cmd
     );
-    yargs.command(
-      'proxy',
-      'Generate files for the proxy and start the image',
-      require('./proxy')
-    );
 
     yargs.command(
       'start <service>',
