@@ -2,6 +2,7 @@ const path = require('path');
 const pm2 = require('pm2');
 const config = require('../lib/config');
 const fs = require('fs-extra');
+const chalk = require('chalk');
 
 function promise() {
   // Default is portal
@@ -9,6 +10,13 @@ function promise() {
   process.env.MODE = process.env.MODE || 'portal';
   process.env.PORT = process.env.PORT || 8383;
   process.env.PORT_HTTP = process.env.PORT_HTTP || 8181;
+
+  if (!global.pathPlatform) {
+    console.warn(
+      chalk.yellow('Agneta platform is needed to start an application.')
+    );
+    return;
+  }
 
   return Promise.resolve()
     .then(function() {
@@ -78,6 +86,8 @@ function promise() {
           }
           resolve();
         });
+      }).then(function() {
+        return true;
       });
     });
 }

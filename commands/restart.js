@@ -1,3 +1,4 @@
+const chalk = require('chalk');
 module.exports = function() {
   Promise.resolve()
     .then(function() {
@@ -6,8 +7,10 @@ module.exports = function() {
     .then(function() {
       return require('./start').promise();
     })
-    .then(function() {
-      console.log('Process restarted');
+    .then(function(started) {
+      if (started) {
+        console.log(chalk.green('Process restarted'));
+      }
       process.exit();
     })
     .catch(console.error);
