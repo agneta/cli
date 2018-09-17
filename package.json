@@ -1,5 +1,5 @@
 {
-  "name": "agneta-cli",
+  "name": "@agneta/cli",
   "version": "0.14.7",
   "bin": {
     "agneta": "./bin/agneta"
@@ -31,6 +31,7 @@
     "configstore": "^4.0.0",
     "crypto-js": "3.1.9-1",
     "crypto-random-string": "1.0.0",
+    "dockerode": "^2.5.6",
     "fs-extra": "^7.0.0",
     "glob": "^7.1.3",
     "inquirer": "^6.2.0",

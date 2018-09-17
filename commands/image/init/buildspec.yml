@@ -13,7 +13,6 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - npm update -g --no-shrinkwrap agneta-cli
       - agneta image build -i $IMAGE_REPO_NAME:$IMAGE_TAG -m portal
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
   post_build:

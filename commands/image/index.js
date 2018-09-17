@@ -11,53 +11,8 @@ module.exports = function(yargs) {
       require('./init').cmd
     );
 
-    yargs.command(
-      'start <service>',
-      'Start running the image built',
-      builder,
-      require('./start')
-    );
-    yargs.command(
-      'stop <service>',
-      'Stop running the image',
-      builder,
-      require('./stop').cmd
-    );
-    yargs.command(
-      'restart <service>',
-      'Restart the image',
-      builder,
-      require('./restart')
-    );
-
-    var exec = require('./exec');
-    yargs.command(
-      'output <service>',
-      'Open output log of the running image',
-      builder,
-      exec.output
-    );
-    yargs.command(
-      'error <service>',
-      'Open error log of the running image',
-      builder,
-      exec.error
-    );
-    yargs.command(
-      'terminal <service>',
-      'Open a terminal of the running image',
-      builder,
-      exec.terminal
-    );
+    yargs.command('start', 'Start running the image built', require('./start'));
 
     require('../default')(yargs);
-
-    function builder(yargs) {
-      yargs.positional('service', {
-        describe: 'The name of the service in the docker-compose.yml',
-        type: 'string',
-        required: true
-      });
-    }
   });
 };

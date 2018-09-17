@@ -4,7 +4,7 @@ const _ = require('lodash');
 _.mixin(require('lodash-deep'));
 
 global.requireMain = function(pathModule) {
-  return require(path.join('agneta-platform/dist/main', pathModule));
+  return require(path.join('@agneta/platform/dist/main', pathModule));
 };
 
 Promise.resolve()

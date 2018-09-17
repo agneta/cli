@@ -5,11 +5,11 @@ const glob = Promise.promisify(require('glob'));
 var base = 'source';
 
 module.exports = {
-  module: 'agneta-icons',
+  module: '@agneta/icons',
   dir: 'agneta',
   search: function(options) {
     return function(item) {
-      if(item!=base){
+      if (item != base) {
         return;
       }
       var svgDir = path.join(options.searchDir, base);
@@ -26,9 +26,7 @@ module.exports = {
             files: found
           });
         })
-        .catch(function() {
-
-        });
+        .catch(function() {});
     };
   }
 };

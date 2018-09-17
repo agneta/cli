@@ -3,7 +3,6 @@ const Promise = require('bluebird');
 const _ = require('lodash');
 
 module.exports = function() {
-
   var config = {
     templates: {
       'package.json': true,
@@ -13,14 +12,10 @@ module.exports = function() {
   };
   return Promise.resolve()
     .then(function() {
-      return packageJson('agneta-platform');
-
+      return packageJson('@agneta/platform');
     })
     .then(function(json) {
-
       config.platform = _.pick(json, ['name', 'version']);
       return config;
-
     });
-
 };
