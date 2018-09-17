@@ -24,6 +24,7 @@
   "author": "Agneta Network Applications",
   "license": "Apache-2.0",
   "dependencies": {
+    "@kubernetes/client-node": "^0.6.0",
     "bluebird": "^3.5.2",
     "chalk": "2.4.1",
     "child-process-promise": "2.2.1",
