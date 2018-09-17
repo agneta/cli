@@ -2,7 +2,6 @@ const inquirer = require('inquirer');
 const _ = require('lodash');
 
 module.exports = function() {
-
   var answers;
 
   return Promise.resolve()
@@ -12,29 +11,29 @@ module.exports = function() {
       });
     })
     .then(function(email) {
-
-      if(_.get(email,'provider')){
-        console.log(`Your email provider is already selected. (${email.provider})`);
+      if (_.get(email, 'provider')) {
+        console.log(
+          `Your email provider is already selected. (${email.provider})`
+        );
         return;
       }
 
       console.log('Select an email ...');
 
-      return inquirer.prompt([{
-        type: 'list',
-        name: 'provider',
-        choices:[
+      return inquirer
+        .prompt([
           {
-            name: 'Nodemailer',
-            value: 'nodemailer'
-          },
-          {
-            name: 'Sendgrid',
-            value: 'sendgrid'
+            type: 'list',
+            name: 'provider',
+            choices: [
+              {
+                name: 'SMTP',
+                value: 'smtp'
+              }
+            ],
+            message: 'Select an email provider:'
           }
-        ],
-        message: 'Select an email provider:'
-      }])
+        ])
         .then(function(_answers) {
           answers = _answers;
           return require(`./${answers.provider}`)();
