@@ -1,6 +1,6 @@
 {
   "name": "@agneta/cli",
-  "version": "0.14.7",
+  "version": "0.14.8",
   "bin": {
     "agneta": "./bin/agneta"
   },
