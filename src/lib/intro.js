@@ -20,31 +20,27 @@ module.exports = {
       )
     );
 
-    var pathCLI = path.join(__dirname, '../package.json');
-    if (fs.existsSync(pathCLI)) {
-      let versionCLI = require(pathCLI).version;
-      log('CLI', `${versionCLI} - ${__dirname}`);
-    }
+    log('CLI', path.join(__dirname, '../..'));
   },
   project: function() {
     if (global.pathPlatform) {
-      var pathPlatform = path.join(global.pathPlatform, 'package.json');
-      if (fs.existsSync(pathPlatform)) {
-        let versionPlatform = require(pathPlatform).version;
-        log('Platform', `${versionPlatform} - ${global.pathPlatform}`);
-      }
+      var projectPaths = global.requireMain('paths');
+
+      log('Platform', global.pathPlatform);
+      log('Portal', projectPaths.portal.base);
+      log('Frontend', projectPaths.app.frontend.base);
     }
 
-    var pathConfig = path.join(process.cwd(), 'package.json');
-    if (fs.existsSync(pathConfig)) {
-      let configProject = require(pathConfig);
-      log('Project', configProject.version);
-    }
+    log('Project', process.cwd());
 
     console.log();
   }
 };
 
-function log(label, value) {
-  console.log(`${chalk.bold.cyan(label)}: ${value}`);
+function log(label, dir) {
+  var pathPackage = path.join(dir, 'package.json');
+  if (fs.existsSync(pathPackage)) {
+    let version = require(pathPackage).version;
+    console.log(`${chalk.bold.cyan(label)}: ${version} - ${dir}`);
+  }
 }

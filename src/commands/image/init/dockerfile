@@ -5,6 +5,6 @@ COPY --chown=agneta:agneta . /home/agneta/app
 
 RUN npm install --global --prefer-offline --no-shrinkwrap --loglevel info --only=production @agneta/cli && \
     npm install --prefer-offline --no-shrinkwrap --loglevel info --only=production && \
-    agneta setup
+    agneta image setup
 
 CMD ["agneta", "start"]
