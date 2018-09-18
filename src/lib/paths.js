@@ -38,6 +38,10 @@ module.exports = function() {
     distFolder = pathPlatform;
   }
 
+  global.srcPath = function(srcPath) {
+    return path.join(__dirname, '../../src', srcPath);
+  };
+
   global.requireMain = function(pathModule) {
     return require(path.join(distFolder, 'main', pathModule));
   };

@@ -20,12 +20,17 @@ module.exports = function(yargs) {
       require('./log')
     );
 
-    yargs.command('start', 'Start running the image built', require('./start'));
-
     yargs.command(
-      'stop',
-      'Stop running a running container',
-      require('./stop')
+      'start',
+      'Start running a container with the built image',
+      require('./start')
+    );
+
+    yargs.command('stop', 'Stop running a container', require('./stop'));
+    yargs.command(
+      'bash',
+      'Create a bash session in a container',
+      require('./bash')
     );
 
     require('../default')(yargs);

@@ -19,7 +19,7 @@ module.exports = function() {
       //-------------------------------------------------------------------
       // Generate dockerfile
       .then(function() {
-        return fs.readFile(path.join(__dirname, 'dockerfile'));
+        return fs.readFile(global.srcPath('commands/image/init/dockerfile'));
       })
       .then(function(content) {
         var template = _.template(content, templateOptions);
@@ -40,7 +40,7 @@ module.exports = function() {
       //---------------------------------------------------------------
       // Generate compose file
       .then(function() {
-        return fs.readFile(path.join(__dirname, 'compose.yml'));
+        return fs.readFile(global.srcPath('commands/image/init/compose.yml'));
       })
       .then(function(content) {
         var template = _.template(content, templateOptions);
@@ -76,7 +76,7 @@ module.exports = function() {
       // Generate Docker Ignore file
       .then(function() {
         return fs.copy(
-          path.join(__dirname, 'buildspec.yml'),
+          global.srcPath('commands/image/init/buildspec.yml'),
           path.join(process.cwd(), 'buildspec.yml')
         );
       })
