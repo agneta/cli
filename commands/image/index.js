@@ -5,6 +5,9 @@ module.exports = function(yargs) {
       'Build the an image of the agneta project',
       require('./build')
     );
+
+    yargs.command('setup', 'Setup the project to be ready', require('./setup'));
+
     yargs.command(
       'init',
       'Init project with docker files',

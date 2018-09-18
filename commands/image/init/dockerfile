@@ -4,6 +4,6 @@ ARG AGNETA_SECRET_KEY=3
 COPY --chown=agneta:agneta . /home/agneta/app
 
 RUN npm install --prefer-offline --no-shrinkwrap --loglevel info --only=production && \
-    npm run setup
+    agneta image setup
 
 CMD ["agneta", "process", "start"]

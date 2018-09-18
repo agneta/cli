@@ -34,12 +34,6 @@ module.exports = function(yargs) {
       return fs.ensureDir(path.join(process.cwd(), config.path.cache));
     })
     .then(function() {
-      return fs.copy(
-        path.join(__dirname, '../setup'),
-        path.join(process.cwd(), '.agneta/setup')
-      );
-    })
-    .then(function() {
       return require('./run')();
     })
     .then(function() {
