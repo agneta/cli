@@ -9,6 +9,7 @@ module.exports = function() {
     ExposedPorts: {
       '8383/tcp': {}
     },
+    Env: ['NODE_ENV=development'],
     HostConfig: {
       PortBindings: {
         '8383/tcp': [{ HostPort: '8383' }]
