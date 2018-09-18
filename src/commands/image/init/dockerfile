@@ -1,0 +1,10 @@
+FROM agneta/base:latest
+ARG AGNETA_SECRET_KEY=3
+ENV PATH "$PATH:/home/agneta/.npm-global/bin"
+COPY --chown=agneta:agneta . /home/agneta/app
+
+RUN npm install --global --prefer-offline --no-shrinkwrap --loglevel info --only=production @agneta/cli && \
+    npm install --prefer-offline --no-shrinkwrap --loglevel info --only=production && \
+    agneta image setup
+
+CMD ["agneta", "start"]

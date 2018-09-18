@@ -8,6 +8,7 @@
   "preferGlobal": true,
   "main": "index.js",
   "devDependencies": {
+    "@types/dockerode": "^2.5.5",
     "@types/fs-extra": "^5.0.4",
     "@types/lodash": "^4.14.116",
     "@types/yargs": "^11.1.1",
@@ -47,6 +48,7 @@
     "pm2": "^3.1.2",
     "progress": "2.0.0",
     "simple-git": "1.96.0",
+    "source-map-support": "^0.5.9",
     "y18n": "4.0.0",
     "yargonaut": "^1.1.4",
     "yargs": "^12.0.2"

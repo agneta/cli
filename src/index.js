@@ -1,3 +1,5 @@
+require('source-map-support').install();
+
 const _ = require('lodash');
 const chalk = require('chalk');
 
