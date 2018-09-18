@@ -1,5 +1,4 @@
 module.exports = function(yargs) {
-
   var options = {
     argv: yargs.argv
   };
@@ -46,5 +45,4 @@ module.exports = function(yargs) {
     .catch(function(error) {
       console.error(error);
     });
-
 };

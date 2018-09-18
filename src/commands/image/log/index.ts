@@ -1,21 +1,17 @@
 import Docker = require('dockerode');
-
+const ContainerSelect = require('../container-select');
 module.exports = function() {
   var docker = new Docker();
 
-  docker
-    .listContainers({
-      filters: {
-        ancestor: 'evolvingcycles_web'
-      }
-    })
-    .then(function(containers: [Docker.ContainerInfo]) {
-      console.log(containers);
-    });
+  let containerSelect = ContainerSelect(docker);
+  containerSelect().then(function(container: Docker.Container) {
+    runExec(container, 'output');
+    runExec(container, 'errors');
+  });
 
-  function runExec(container: Docker.Container) {
+  function runExec(container: Docker.Container, type: string) {
     var options = {
-      Cmd: ['bash', '-c', 'agneta output'],
+      Cmd: ['bash', '-c', `agneta ${type}`],
       AttachStdout: true,
       AttachStderr: true
     };

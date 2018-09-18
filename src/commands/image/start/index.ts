@@ -1,10 +1,11 @@
 import Docker = require('dockerode');
+const config = require('../config');
 
 module.exports = function() {
   var docker = new Docker();
   console.log('starting...');
 
-  docker.run('evolvingcycles_web:latest', null, process.stdout, {
+  docker.run(config.image.app, null, process.stdout, {
     ExposedPorts: {
       '8383/tcp': {}
     },

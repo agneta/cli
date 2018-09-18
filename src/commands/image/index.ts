@@ -14,7 +14,19 @@ module.exports = function(yargs) {
       require('./init').cmd
     );
 
+    yargs.command(
+      'log',
+      'View info and errors from a running container',
+      require('./log')
+    );
+
     yargs.command('start', 'Start running the image built', require('./start'));
+
+    yargs.command(
+      'stop',
+      'Stop running a running container',
+      require('./stop')
+    );
 
     require('../default')(yargs);
   });
