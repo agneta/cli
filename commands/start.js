@@ -38,11 +38,9 @@ function promise() {
         var outputPath = path.join(base, `${config.processName}-out.log`);
         var errorPath = path.join(base, `${config.processName}-err.log`);
 
-        var scriptArgs = [];
-        var nodeArgs = [];
-        var scriptInterpreter;
         var scriptPath = path.join(
           global.pathPlatform,
+          'dist',
           'main',
           'server',
           'index.js'
@@ -51,7 +49,6 @@ function promise() {
         if (!fs.existsSync(scriptPath)) {
           scriptPath = path.join(
             global.pathPlatform,
-            '..',
             'main',
             'server',
             'index.js'
@@ -62,14 +59,9 @@ function promise() {
           throw new Error(`Could not find script path: ${scriptPath}`);
         }
 
-        console.log(scriptPath);
-
         var pm2Options = {
           name: config.processName,
           script: scriptPath,
-          args: scriptArgs,
-          node_args: nodeArgs,
-          interpreter: scriptInterpreter,
           sourceMapSupport: true,
           min_uptime: '1m',
           max_restarts: 10,
