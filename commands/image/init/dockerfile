@@ -3,7 +3,8 @@ ARG AGNETA_SECRET_KEY=3
 
 COPY --chown=agneta:agneta . /home/agneta/app
 
-RUN npm install --prefer-offline --no-shrinkwrap --loglevel info --only=production && \
-    agneta image setup
+RUN npm update @agneta/cli --global --prefer-offline --no-shrinkwrap --loglevel info --only=production && \
+    npm install --prefer-offline --no-shrinkwrap --loglevel info --only=production && \
+    /home/agneta/.npm-global/bin/agneta image setup
 
 CMD ["agneta", "process", "start"]

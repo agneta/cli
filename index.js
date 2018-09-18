@@ -2,8 +2,10 @@ const _ = require('lodash');
 const chalk = require('chalk');
 
 _.mixin(require('lodash-deep'));
+var intro = require('./lib/intro');
+intro.cli();
 require('./lib/paths')();
-require('./lib/intro')();
+intro.project();
 
 Promise.resolve()
   .then(function() {
