@@ -9,18 +9,20 @@ module.exports = function() {
     config.agneta.get('platform'),
     path.join(process.cwd(), 'node_modules', '@agneta/platform')
   ];
+  var pathPlatform;
 
-  for (var pathPlatform of paths) {
-    if (!pathPlatform) {
+  for (var pathCheck of paths) {
+    if (!pathCheck) {
       continue;
     }
-    if (!fs.existsSync(path.join(pathPlatform, 'package.json'))) {
+    if (!fs.existsSync(path.join(pathCheck, 'package.json'))) {
       console.warn(
         chalk.red(
-          `Could not find package.json of platform path: ${pathPlatform}`
+          `Could not find package.json of platform path: ${pathCheck}`
         )
       );
     } else {
+      pathPlatform = pathCheck;
       break;
     }
   }
