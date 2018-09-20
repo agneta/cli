@@ -17,9 +17,7 @@ module.exports = function() {
     }
     if (!fs.existsSync(path.join(pathCheck, 'package.json'))) {
       console.warn(
-        chalk.red(
-          `Could not find package.json of platform path: ${pathCheck}`
-        )
+        chalk.red(`Could not find package.json of platform path: ${pathCheck}`)
       );
     } else {
       pathPlatform = pathCheck;
@@ -27,27 +25,26 @@ module.exports = function() {
     }
   }
 
-  if (!pathPlatform) {
+  if (pathPlatform) {
+    global.pathPlatform = pathPlatform;
+
+    var distFolder;
+    distFolder = path.join(pathPlatform, 'dist');
+    if (!fs.existsSync(distFolder)) {
+      distFolder = pathPlatform;
+    }
+
+    global.requireMain = function(pathModule) {
+      return require(path.join(distFolder, 'main', pathModule));
+    };
+    global.requireServices = function(pathModule) {
+      return require(path.join(distFolder, 'services', pathModule));
+    };
+  } else {
     console.warn(chalk.red('Agneta Platform not found'));
-    return;
-  }
-
-  global.pathPlatform = pathPlatform;
-
-  var distFolder;
-  distFolder = path.join(pathPlatform, 'dist');
-  if (!fs.existsSync(distFolder)) {
-    distFolder = pathPlatform;
   }
 
   global.srcPath = function(srcPath) {
     return path.join(__dirname, '../../src', srcPath);
-  };
-
-  global.requireMain = function(pathModule) {
-    return require(path.join(distFolder, 'main', pathModule));
-  };
-  global.requireServices = function(pathModule) {
-    return require(path.join(distFolder, 'services', pathModule));
   };
 };
