@@ -5,6 +5,7 @@ const chalk = require('chalk');
 
 module.exports = function() {
   let paths = [
+    config.app.platform,
     config.project.get('platform'),
     config.agneta.get('platform'),
     path.join(process.cwd(), 'node_modules', '@agneta/platform')
@@ -14,6 +15,9 @@ module.exports = function() {
   for (var pathCheck of paths) {
     if (!pathCheck) {
       continue;
+    }
+    if (pathCheck[0] == '.') {
+      pathCheck = path.join(process.cwd(), pathCheck);
     }
     if (!fs.existsSync(path.join(pathCheck, 'package.json'))) {
       console.warn(

@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const _ = require('lodash');
 const chalk = require('chalk');
 const yargonaut = require('yargonaut')
   .style('cyan')
@@ -28,7 +29,7 @@ module.exports = {
 
       log('Platform', global.pathPlatform);
       log('Portal', projectPaths.portal.base);
-      log('Frontend', projectPaths.app.frontend.base);
+      log('Frontend', _.get(projectPaths, 'app.frontend.base'));
     }
 
     log('Project', process.cwd());
@@ -38,6 +39,9 @@ module.exports = {
 };
 
 function log(label, dir) {
+  if (!dir) {
+    return;
+  }
   var pathPackage = path.join(dir, 'package.json');
   if (fs.existsSync(pathPackage)) {
     let version = require(pathPackage).version;
