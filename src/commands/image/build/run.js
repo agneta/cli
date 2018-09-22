@@ -1,12 +1,9 @@
 const fs = require('fs-extra');
 const Promise = require('bluebird');
 const config = require('../config');
-const {
-  spawn
-} = require('child_process');
+const { spawn } = require('child_process');
 
-module.exports = function() {
-
+module.exports = function(argv) {
   return Promise.resolve()
     .then(function() {
       return require('../machine')();
@@ -15,25 +12,27 @@ module.exports = function() {
       return fs.ensureDir('tmp');
     })
     .then(function() {
-
       return require('../../secret/key/get').promise();
-
     })
     .then(function(secretKey) {
-      var child = spawn('docker', ['build',
-        '--build-arg',
-        `AGNETA_SECRET_KEY=${secretKey}`,
-        '--tag',
-        `${config.image.app}`,
-        '--file',
-        `${config.image.file}`,
-        '.'
-      ], {
-        stdio: 'inherit'
-      });
+      var child = spawn(
+        'docker',
+        [
+          'build',
+          '--build-arg',
+          `AGNETA_SECRET_KEY=${secretKey}`,
+          '--tag',
+          `${argv.tag || config.image.app}`,
+          '--file',
+          `${config.image.file}`,
+          '.'
+        ],
+        {
+          stdio: 'inherit'
+        }
+      );
 
-      return new Promise(function(resolve,reject) {
-
+      return new Promise(function(resolve, reject) {
         child.on('error', function(err) {
           reject(err);
         });
@@ -45,7 +44,6 @@ module.exports = function() {
         child.on('close', function() {
           resolve();
         });
-
       });
     });
 };

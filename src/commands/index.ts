@@ -4,6 +4,7 @@ module.exports = function() {
   require('./cert')(yargs);
   require('./config')(yargs);
   require('./image')(yargs);
+  require('./kube')(yargs);
   require('./generate')(yargs);
   require('./secret')(yargs);
 

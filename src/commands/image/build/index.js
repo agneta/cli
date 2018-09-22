@@ -12,9 +12,9 @@ module.exports = function(yargs) {
         choices: ['development', 'portal'],
         default: 'development'
       },
-      image: {
-        alias: 'i',
-        describe: 'Image name'
+      tag: {
+        alias: 't',
+        describe: 'Image tag'
       },
       docker: {
         alias: 'd',
@@ -34,7 +34,7 @@ module.exports = function(yargs) {
       return fs.ensureDir(path.join(process.cwd(), config.path.cache));
     })
     .then(function() {
-      return require('./run')();
+      return require('./run')(argv);
     })
     .then(function() {
       console.log();
