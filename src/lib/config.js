@@ -43,7 +43,7 @@ var conf = {
 };
 
 conf.name = name;
-conf.processName = name;
+conf.processName = name || 'agneta';
 
 conf.dir = {
   absolute: dirAbsolute,
