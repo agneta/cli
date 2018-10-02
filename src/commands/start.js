@@ -66,7 +66,7 @@ function promise() {
           min_uptime: '1m',
           max_restarts: 10,
           exec_mode: 'fork',
-          logDateFormat: '>> YYYY-MM-DD HH:mm:ss Z :',
+          color: true,
           output: outputPath,
           error: errorPath,
           cwd: process.cwd()

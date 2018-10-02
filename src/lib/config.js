@@ -43,7 +43,7 @@ var conf = {
 };
 
 conf.name = name;
-conf.processName = md5(process.cwd());
+conf.processName = name;
 
 conf.dir = {
   absolute: dirAbsolute,

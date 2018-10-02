@@ -6,7 +6,7 @@ function tail(exclusive) {
   return Promise.resolve()
 
     .then(function() {
-      pm2.streamLogs(config.processName, 1000, false, '', exclusive);
+      pm2.streamLogs(config.processName, 1000, true, '', exclusive);
     })
     .catch(console.error);
 }
