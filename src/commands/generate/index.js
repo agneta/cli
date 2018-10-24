@@ -8,12 +8,25 @@ module.exports = function(yargs) {
       init('dependencies')
     );
     yargs.command(
-      'scripts',
-      'Create bundled scripts for your project',
-      init('scripts')
+      'services',
+      'Gerenate services that point to your API',
+      init('scripts', {
+        script: {
+          services: true
+        }
+      })
+    );
+    yargs.command(
+      'bundles',
+      'Create bundle scripts for your project',
+      init('scripts', {
+        script: {
+          bundles: true
+        }
+      })
     );
 
-    function init(name) {
+    function init(name, options) {
       const terminal = global.requireMain('server/terminal');
       const progress = global.requireMain('progress');
 
@@ -27,16 +40,18 @@ module.exports = function(yargs) {
             return terminal();
           })
           .then(function(servers) {
-            console.log(servers.webPages.locals.project.paths);
             var paths = servers.webPages.locals.project.paths;
             return require(path.join(
               paths.portal.website,
               `utilities/generate/${name}`
-            ))({
-              locals: servers.webPortal.locals,
-              log: console.log,
-              progress: progress
-            });
+            ))(
+              {
+                locals: servers.webPortal.locals,
+                log: console.log,
+                progress: progress
+              },
+              options
+            );
           })
           .catch(function(err) {
             console.error(err);
